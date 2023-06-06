@@ -26,7 +26,7 @@
                 <li><a href="login.php">Conectare</a></li>';
         }
         else {
-          if($user_id == 2) {
+          if($user_id == 1) {
             echo '<li><a href="books.php">Cărți</a></li>
                   <li><a href="book.php">Adaugă carte</a></li>
                   <li><a href="authors_publications.php">Autori și publicații</a></li>

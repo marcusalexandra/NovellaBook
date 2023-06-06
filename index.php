@@ -1,5 +1,5 @@
 <?php
-  include '../conn.php';
+  include 'conn.php';
   error_reporting(0);
   session_start();
   $user_id = "";
@@ -30,7 +30,7 @@
                 <li><a href="links/login.php">Conectare</a></li>';
         }
         else {
-          if($user_id == 2) {
+          if($user_id == 1) {
             echo '<li><a href="links/books.php">Cărți</a></li>
                   <li><a href="links/book.php">Adaugă carte</a></li>
                   <li><a href="links/authors_publications.php">Autori și publicații</a></li>

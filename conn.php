@@ -3,5 +3,5 @@
   $user="root";
   $password="";
   $databasename="novellabook";
-  $connect=mysqli_connect($servername,$user,$pass,$databasename);
+  $connect=mysqli_connect($servername,$user,$password,$databasename);
 ?>
