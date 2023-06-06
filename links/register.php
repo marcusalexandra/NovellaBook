@@ -1,5 +1,5 @@
 <?php
-include 'conn.php';
+include '../conn.php';
 error_reporting(0);
 session_start();
 
@@ -87,7 +87,7 @@ if(isset($_POST['submit'])) {
 			<div class="input-group">
 				<button name="submit" class="btn">Sign Up</button>
 			</div>
-			<p class="login-register-text">Have an account? <a href="index.php">Log In Here</a>.</p>
+			<p class="login-register-text">Have an account? <a href="login.php">Log In Here</a>.</p>
 		</form>
 	</div>
 </body>
