@@ -4,7 +4,23 @@
   session_start();
   $user_id = "";
   $user_id = $_SESSION['user_id'];
-  // echo $user_id;
+  if(isset($_POST['return'])){
+    $bookReturn_id = $_POST['book_id'];
+    $reservation_id = $_POST['reservation_id'];
+    $sql = "SELECT * FROM books WHERE book_id = '$bookReturn_id'";
+    $result = mysqli_query($connect, $sql);
+    $books_array = array();
+    while ($row = $result->fetch_assoc()){
+      $books_array['copies'] = $row['copies'];
+    }
+    $copies = $books_array['copies']+1;
+    $sql = "UPDATE books SET copies = '$copies' WHERE book_id = '$bookReturn_id'";
+    mysqli_query($connect,$sql);
+    $sql = "DELETE FROM reservations WHERE reservation_id = '$reservation_id'";
+    mysqli_query($connect,$sql);
+
+    header("Refresh:0");
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,7 +57,25 @@
 			<li><a href="#footer">Contact</a></li>
 		</ul>
 	</nav>
-
+        <?php
+          $sql = "SELECT * FROM reservations where user_id = '$user_id'";
+          $results = mysqli_query($connect, $sql);
+          while ($row = $results->fetch_assoc()){
+            $reservation_id = $row['reservation_id'];
+            $book_id = $row['book_id'];
+            $sql = "SELECT * FROM books WHERE book_id = '$book_id'";
+            $results_title = mysqli_query($connect, $sql);
+            while ($row_title = $results_title->fetch_assoc()){
+              $book_title = $row_title['title'];
+              echo "<div style='background-color:red'><form action ='' method = 'POST'>
+                  <p>$book_title</p>
+                  <input type = 'hidden' name = 'reservation_id' value = '$reservation_id'>
+                  <input type = 'hidden' name = 'book_id' value = '$book_id'>
+                  <button name='return' class='search-bar__button' type='submit'>
+              </form></div>";
+            }
+          }
+        ?>
 </header>
 </body>
 </html>

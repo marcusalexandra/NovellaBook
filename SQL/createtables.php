@@ -90,10 +90,8 @@
     }
     $createtable6 = mysqli_query($connect, "CREATE TABLE reservations (
         reservation_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        title VARCHAR(100),
-        publishing_year INT(4),
-        price INT(4),
-        copies INT(4),
+        reservation_date DATE,
+        return_date DATE,
         user_id INT UNSIGNED,
         FOREIGN KEY (user_id) REFERENCES users(user_id),
         book_id INT UNSIGNED,
