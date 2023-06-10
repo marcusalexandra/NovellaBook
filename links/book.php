@@ -64,7 +64,7 @@
 		<ul class="navbar__links">
 			<li><a href="../index.php">Acasă</a></li>
       <?php
-       if($user_id == null){
+      if($user_id == null){
           echo '<li><a href="login.php">Rezervări</a></li>
                 <li><a href="login.php">Profil</a></li>
                 <li><a href="login.php">Conectare</a></li>';
@@ -90,7 +90,7 @@
 		<form action="" method="POST" class="login-email">
           <p class="login-text" style="font-size: 2rem; font-weight: 800;">Adaugă o carte</p>
           <?php
-         echo "<div class='input-group'>
+        echo "<div class='input-group'>
                 <label for='authors'>Selectează un autor existent:</label>
                 <select name='authors' >
                 <option name = 'NULL' value = ''></option>";
@@ -141,7 +141,7 @@
 			<div class="input-group">
 				<input type="number" placeholder="Anul publicării" name="publishing_year" value="" required>
 			</div>
-       <?php
+      <?php
         echo "<div class='input-group'>
                 <label for='publisher'>Selectează o publicație existentă:</label>
                 <select name='publisher' >
@@ -177,7 +177,7 @@
 				<input type="textbox" placeholder="Descriere" name="description" value="">
 			</div>
         <div class="input-group">
-				  <button name="submit" class="btn">Adaugă</button>
+				<button name="submit" class="btn">Adaugă</button>
 			</div>
 		</form>
 </div>

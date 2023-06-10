@@ -12,19 +12,32 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="CSS/style.css">
   <title>Home</title>
 </head>
 <body>
-  <header>
-	<nav>
+  <header id="main-menu">
+	<nav class="navbar navbar-default">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+          <div class="logo-container">
+            <a href="SQL/index.php" class="logo">
+              <img id="logo" src="Images/novella_logo.png" alt="Combs 'n' Fro Logo"/>
+            </a>
+          </div>
+      </div>
+    </div>
 		<ul class="navbar__links">
 			<li><a href="index.php">Acasă</a></li>
       <?php
-       if($user_id == null){
+      if($user_id == null){
           echo '<li><a href="links/login.php">Rezervări</a></li>
                 <li><a href="links/login.php">Profil</a></li>
                 <li><a href="links/login.php">Conectare</a></li>';
@@ -45,7 +58,6 @@
 			<li><a href="#footer">Contact</a></li>
 		</ul>
 	</nav>
-
 </header>
 </body>
 </html>
