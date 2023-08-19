@@ -8,45 +8,49 @@
     $title = $_POST['title'];
     $publiYear = $_POST['publishing_year'];
     $price = $_POST['price'];
-    $copies = $_POST['copies'];
+    $age = $_POST['age'];
+    $pages = $_POST['pages'];
     $language = $_POST['language'];
     $description = $_POST['description'];
     $selectedAuthor = $_POST['authors'];
     $selectedCategory = $_POST['category'];
     $selectedPublisher =  $_POST['publisher'];
     $names = explode(" ", $selectedAuthor);
-
+    $book_picture = '';
     $sql = "SELECT category_id FROM category WHERE name = '$selectedCategory'";
     $result = mysqli_query($connect, $sql);
     while ($row = $result->fetch_assoc()){
               $category_id = $row['category_id'];
             }
 
-    $sql = "SELECT publisher_id FROM publisher WHERE name = '$selectedPublisher'";
+    $sql = "SELECT publisher_id FROM publisher WHERE publisher_name = '$selectedPublisher'";
     $result = mysqli_query($connect, $sql);
     while ($row = $result->fetch_assoc()){
               $publisher_id = $row['publisher_id'];
             }
-
     $sql = "SELECT author_id FROM authors WHERE firstname = '$names[0]' AND lastname = '$names[1]'";
     $result = mysqli_query($connect, $sql);
     while ($row = $result->fetch_assoc()){
               $author_id = $row['author_id'];
             }
 
-    $sql = "INSERT INTO books(title, publishing_year, price, copies, language, author_id, publisher_id, category_id, description)
-            VALUES ('$title', '$publiYear', '$price', '$copies', '$language', '$author_id', '$publisher_id', '$category_id', '$description')";
-        $result = mysqli_query($connect, $sql);
-        $title = "";
-        $publiYear = "";
-        $price = "";
-        $copies = "";
-        $language = "";
-        $description = "";
-        $selectedAuthor = "";
-        $selectedCategory = "";
-        $selectedPublisher = "";
-        echo "Bravo!";
+    $sql = "INSERT INTO books(title, publishing_year, price, age, pages, language, author_id, publisher_id, category_id, description, book_picture)
+            VALUES ('$title', '$publiYear', '$price', $age, $pages, '$language', '$author_id', '$publisher_id', '$category_id', '$description', '$book_picture')";
+    $result = mysqli_query($connect, $sql);
+    $sql = "SELECT book_id FROM books WHERE title = '$title' AND publishing_year = '$publiYear' AND price = '$price' AND language = '$language' AND author_id = '$author_id' AND publisher_id = '$publisher_id' AND category_id = '$category_id' AND description = '$description'";
+    $result = mysqli_query($connect, $sql);
+    while ($row = $result->fetch_assoc()){
+      $book_id = $row['book_id'];
+    }
+    $filename = $_FILES["uploadfile"]["name"];
+    $tempname = $_FILES["uploadfile"]["tmp_name"];
+    $extension = pathinfo($_FILES["uploadfile"]["name"], PATHINFO_EXTENSION);
+    $folder = '../photos/' . $book_id . '.' . $extension;
+    if($filename != NULL){
+      $sql = "UPDATE books SET book_picture = '$folder' WHERE book_id = '$book_id'";
+      mysqli_query($connect, $sql);
+      move_uploaded_file($tempname, $folder);
+    }
   }
 ?>
 <!DOCTYPE html>
@@ -87,7 +91,7 @@
 	</nav>
 </header>
 <div class="container">
-		<form action="" method="POST" class="login-email">
+		<form action="" method="POST" class="login-email" enctype="multipart/form-data">
           <p class="login-text" style="font-size: 2rem; font-weight: 800;">Adaugă o carte</p>
           <?php
         echo "<div class='input-group'>
@@ -110,6 +114,7 @@
                 echo '<option name = "'.$name.'" value="'.$name.' '.$lastname.'">' . $name.' '. $lastname. '</option>';
               }
             }
+            echo "</select>";
             echo "</div>";
         ?>
 			<div class="input-group">
@@ -135,6 +140,7 @@
                 echo '<option name = "'.$name.'" value="'.$name.' ">' . $name.'</option>';
               }
             }
+            echo "</select>";
             echo "</div>";
 
       ?>
@@ -155,12 +161,13 @@
             }
             $count = count($pub_id);
             for($i = 0; $i < $count; $i++){
-              $sql = mysqli_query($connect, "SELECT name FROM publisher WHERE publisher_id = '$pub_id[$i]'");
+              $sql = mysqli_query($connect, "SELECT publisher_name FROM publisher WHERE publisher_id = '$pub_id[$i]'");
               while ($row = $sql->fetch_assoc()){
-                $name = $row['name'];
+                $name = $row['publisher_name'];
                 echo '<option name = "'.$name.'" value="'.$name.' ">' . $name.'</option>';
               }
             }
+            echo "</select>";
             echo "</div>";
 
       ?>
@@ -168,7 +175,10 @@
 				<input type="number" placeholder="Preț" name="price" value="" required>
 			</div>
       <div class="input-group">
-				<input type="number" placeholder="Număr copii" name="copies" value="" required>
+				<input type="number" placeholder="Vârstă" name="age" value="" required>
+			</div>
+      <div class="input-group">
+				<input type="number" placeholder="Pagini" name="pages" value="" required>
 			</div>
 			<div class="input-group">
 				<input type="text" placeholder="Limbă" name="language" value="">
@@ -176,10 +186,13 @@
 			<div class="input-group">
 				<input type="textbox" placeholder="Descriere" name="description" value="">
 			</div>
+      <div class="input-group">
+        <input type="file" class="custom-file-input" name="uploadfile" id="customFileInput" aria-describedby="customFileInput">
+      </div>
         <div class="input-group">
 				<button name="submit" class="btn">Adaugă</button>
 			</div>
-		</form>
+    </form>
 </div>
 </body>
 </html>

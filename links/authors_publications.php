@@ -45,7 +45,7 @@
     if($_POST['pemail'] != null) {
         $pemail = $_POST["pemail"];
     }
-      $sql = "INSERT INTO publisher (email, name, phone)
+      $sql = "INSERT INTO publisher (publisher_email, publisher_name, publisher_phone)
               VALUES ('$pemail', '$pname', '$pnumber')";
           $result = mysqli_query($connect, $sql);
           $pname = "";

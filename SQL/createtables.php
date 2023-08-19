@@ -27,9 +27,9 @@
     }
     $createtable2 = mysqli_query($connect, "CREATE TABLE publisher (
         publisher_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        email VARCHAR(100),
-        name VARCHAR(100),
-        phone VARCHAR(15)
+        publisher_email VARCHAR(100),
+        publisher_name VARCHAR(100),
+        publisher_phone VARCHAR(15)
       )"
     );
     //Checks if the table has been created
@@ -71,7 +71,9 @@
         title VARCHAR(100),
         publishing_year INT(4),
         price INT(4),
-        copies INT(4),
+        age INT(4),
+        pages INT(4),
+        book_picture BLOB,
         language VARCHAR (100),
         author_id INT UNSIGNED,
         FOREIGN KEY (author_id) REFERENCES authors(author_id),
@@ -108,4 +110,21 @@
   }else{
     echo "Connection Failed! <br>";
   }
+
+  $createtable7 = mysqli_query($connect, "CREATE TABLE reviews (
+        review_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        review LONGTEXT,
+        rating VARCHAR(100),
+        user_id INT UNSIGNED,
+        FOREIGN KEY (user_id) REFERENCES users(user_id),
+        book_id INT UNSIGNED,
+        FOREIGN KEY (book_id) REFERENCES books(book_id)
+      )"
+    );
+    //Checks if the table has been created
+    if($createtable7){
+        echo "Reviews table created succsesfully! <br>";
+    }else{
+        echo "Failed to create reviews table! <br>";
+    }
 ?>

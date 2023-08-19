@@ -11,9 +11,11 @@
     while ($row = $result->fetch_assoc()){
       $books_array['title'] = $row['title'];
       $books_array['publishing_year']=$row['publishing_year'];
-      $books_array['copies'] = $row['copies'];
       $books_array['price']=$row['price'];
+      $books_array['age'] = $row ['age'];
+      $books_array['pages'] = $row['pages'];
       $books_array['language']=$row['language'];
+      $books_array['photo'] = $row['book_picture'];
       $author_id = $row['author_id'];
       $sql = "SELECT *  FROM authors WHERE author_id = '$author_id'";
       $result_author = mysqli_query($connect, $sql);
@@ -33,26 +35,75 @@
       $sql = "SELECT *  FROM publisher WHERE publisher_id = '$publisher_id'";
       $result_publisher = mysqli_query($connect, $sql);
       while($row_publisher = $result_publisher -> fetch_assoc()) {
-        $books_array['publisher_name'] = $row_publisher["name"];
-        $books_array['publisher_email'] = $row_publisher["email"];
-        $books_array['publisher_phone'] = $row_publisher["phone"];
+        $books_array['publisher_name'] = $row_publisher["publiser_name"];
+        $books_array['publisher_email'] = $row_publisher["publiser_email"];
+        $books_array['publisher_phone'] = $row_publisher["publiser_phone"];
       }
       $books_array['description']=$row['description'];
     }
-    $copies_initial = $books_array['copies'];
-    if(isset($_POST['reserve'])){
-      $reserv_date = date("Y-m-d");
-      $return_date = date('Y-m-d', strtotime($reserv_date. ' + 30 days'));
-      $sql = "INSERT INTO reservations (reservation_date, return_date, user_id, book_id)
-              VALUES ('$reserv_date', '$return_date', '$user_id', '$book_id')";
-      $reserv_date = "";
-      $return_date = "";
+    if(isset($_POST['review'])) {
+      $reviews = $_POST['reviews'];
+      $rating = $_POST['rating'];
+      $sql = "INSERT INTO reviews(review, rating, user_id, book_id)
+            VALUES ('$reviews', '$rating', '$user_id', '$book_id')";
       mysqli_query($connect,$sql);
-      $copies = $books_array['copies']-1;
       header("Refresh:0");
-      $sql = "UPDATE books SET copies = '$copies' WHERE book_id = '$book_id'";
-      mysqli_query($connect,$sql);
     }
+      $reserved_dates = array();
+
+      $sql = "SELECT reservation_date, return_date FROM reservations WHERE book_id = '$book_id'";
+      $result = mysqli_query($connect, $sql);
+
+      while ($row = mysqli_fetch_assoc($result)) {
+      $start_date = $row['reservation_date'];
+      $end_date = $row['return_date'];
+      $reserved_dates = array_merge($reserved_dates, generateDateRange($start_date, $end_date));
+      }
+      function generateDateRange($start_date, $end_date) {
+      $dates = array();
+      $current_date = strtotime($start_date);
+
+      while ($current_date <= strtotime($end_date)) {
+          $dates[] = date('Y-m-d', $current_date);
+          $current_date = strtotime('+1 day', $current_date);
+      }
+      return $dates;
+      }
+      if(isset($_POST['reserve'])){
+        $reserve_date = $_POST['checkin'];
+        $return_date = $_POST['checkout'];
+
+        $reserve_date_obj = new DateTime($reserve_date);
+        $return_date_obj = new DateTime($return_date);
+
+        $isOverlap = false;
+        foreach ($reserved_dates as $range) {
+            list($start, $end) = explode(' - ', $range);
+
+            $start_date_obj = new DateTime($start);
+            $end_date_obj = new DateTime($end);
+
+            if (($reserve_date_obj <= $end_date_obj) && ($return_date_obj >= $start_date_obj)) {
+                $isOverlap = true;
+                break;
+            }
+        }
+
+        if (!$isOverlap) {
+            $sql = "INSERT INTO reservations (reservation_date, return_date, user_id, book_id)
+                    VALUES ('$reserve_date', '$return_date', '$user_id', '$book_id')";
+            mysqli_query($connect, $sql);
+            // header("Refresh:0");
+        } else {
+            echo "Error: The selected date range overlaps with an existing reservation. Please choose different dates.";
+        }
+    }
+
+
+
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,7 +111,72 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+  $(function () {
+    // Initialize Datepicker for check-in and check-out inputs
+    $("#checkin, #checkout").datepicker({
+      dateFormat: "yy-mm-dd", // Set your desired date format
+      minDate: 0, // Disable past dates
+      onSelect: function (selectedDate) {
+        var option = this.id == "checkin" ? "minDate" : "maxDate",
+          instance = $(this).data("datepicker"),
+          date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
+        dates.not(this).datepicker("option", option, date);
+      },
+      beforeShowDay: function (date) {
+        var stringDate = $.datepicker.formatDate('yy-mm-dd', date);
+        return [reserved_dates.indexOf(stringDate) == -1]; // Gray out reserved dates
+      }
+    });
+  });
+
+  var reserved_dates = <?php echo json_encode($reserved_dates); ?>;
+</script>
   <title></title>
+  <style>
+  label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+input[type="text"] {
+  width: 100px;
+}
+.star-rating {
+  display: inline-block;
+  font-size: 0; /* Remove extra spacing between radio buttons */
+  direction: rtl; /* Set the direction to right-to-left */
+}
+
+.star-rating input[type="radio"] {
+  display: none;
+}
+
+.star-rating label {
+  font-size: 24px;
+  color: #ccc;
+  cursor: pointer;
+  display: inline-block; /* Display the stars next to each other */
+  margin-right: 5px; /* Add some spacing between stars */
+}
+
+.star-rating label:before {
+  content: "\2605"; /* Unicode character for star */
+}
+
+.star-rating input[type="radio"]:checked ~ label {
+  color: gold;
+}
+
+</style>
 </head>
 <body>
 <header>
@@ -89,22 +205,96 @@
 			<li><a href="#footer">Contact</a></li>
 		</ul>
 	</nav>
-        <?php
-        $title = $books_array['title'];
-        echo "<div style= 'background-color:blue;'><p>$title</p></div>";
-        ?>
-        <?php
-        if($copies_initial >= 1){
-          echo "<form action='' method ='POST' >
-          <button name='reserve' class='search-bar__button' type='submit'>Rezerva</button>
-          </form>";
-        }
-        else{
-          echo "Nu mai sunt carti disponibile";
-        }
-
-        ?>
-
 </header>
+        <?php
+
+          $title = $books_array['title'];
+          $photo = $books_array['photo'];
+          echo "<div style= 'background-color:blue;'><p>$title</p></div>";
+
+          echo "<img src='$photo' style = 'height:90px; width:90px;' alt='$title'>";
+
+        ?>
+        <?php
+        if($user_id != NULL){
+          echo "<form action='' method ='POST' >
+          <label for='checkin'>Check-In Date:</label>
+          <input type='text' id='checkin' name='checkin'>
+
+          <label for='checkout'>Check-Out Date:</label>
+          <input type='text' id='checkout' name='checkout'>
+
+            <button name='reserve' class='search-bar__button' type='submit'>Rezerva</button>
+            </form>";
+        }
+
+        ?>
+    <?php
+      if($user_id != NULL){
+        echo "<div class='container'>
+            <form action='' method='POST'>
+            <h4>Rate this book:</h4>
+            <div class='star-rating'>
+              <input type='radio' id='star5' name='rating' value='5'>
+              <label for='star5'></label>
+              <input type='radio' id='star4' name='rating' value='4'>
+              <label for='star4'></label>
+              <input type='radio' id='star3' name='rating' value='3'>
+              <label for='star3'></label>
+              <input type='radio' id='star2' name='rating' value='2'>
+              <label for='star2'></label>
+              <input type='radio' id='star1' name='rating' value='1'>
+              <label for='star1'></label>
+            </div>
+            <div class='input-group'>
+              <input type='textbox' placeholder='Adaugă o recenzie' name='reviews' value='' required>
+            </div>
+              <button name='review' class='search-bar__button' type='submit'>Adaugă o recenzie</button>
+            </form>
+        </div>";
+      }
+  ?>
+   <div id="booking-calendar"></div>
+  <?php
+      $avg_query = "SELECT AVG(rating) AS avg_rating FROM reviews WHERE book_id = $book_id";
+      $result = mysqli_query($connect, $avg_query);
+      $row = mysqli_fetch_assoc($result);
+      $average_rating = $row['avg_rating'];
+      $avg = number_format((float)$average_rating, 2, '.', '');
+      echo "<div><p>Nota: $avg /5</p></div>";
+       $sql = "SELECT r.book_id, r.user_id, r.review, r.rating, u.firstname, u.lastname
+                    FROM reviews AS r
+                    JOIN users AS u ON r.user_id = u.user_id
+                    WHERE r.book_id = '$book_id'";
+        $result = mysqli_query($connect, $sql);
+        $i = 0;
+        while ($row = mysqli_fetch_assoc($result)) {
+            $reviews[$i]['firstname'] = $row['firstname'];
+            $reviews[$i]['lastname']= $row['lastname'];
+            $reviews[$i]['review'] = $row['review'];
+            $reviews[$i]['rating'] = $row['rating'];
+            $i++;
+        }
+        $num_of_reviews = count($reviews);
+  ?>
+  <div class="container">
+  <h4>Reviews</h4>
+  <div style="overflow-y: scroll; max-height: 300px; background-color: gray;">
+    <?php
+    foreach ($reviews as $review) {
+      $authorFullName = $review['firstname'] . ' ' . $review['lastname'];
+      $reviewContent = $review['review'];
+      $rating = $review['rating'];
+
+      echo "<div class='review'>
+              <p><strong>Author:</strong> $authorFullName</p>
+              <p><strong>Review:</strong> $reviewContent</p>
+              <p><strong>Rating:</strong> $rating</p>
+            </div>";
+    }
+    ?>
+  </div>
+</div>
+
 </body>
 </html>

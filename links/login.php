@@ -47,7 +47,7 @@ if(isset($_POST['submit'])) {
         <input type="password" placeholder="Password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"   required title="Password must be 8 characters including 1 uppercase letter, 1 lowercase letter and numeric characters" name="pass" value="<?php echo $pass ?>" required>
       </div>
       <div class="input-group">
-        <button name="submit" class="btn">Sign Up</button>
+        <button name="submit" class="btn">Log In</button>
       </div>
       <p class="login-register-text" style = "text-align:center;">Don't have an account? <a href="register.php">Sign Up Here</a>.</p>
     </form>

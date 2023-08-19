@@ -10,12 +10,6 @@
     $sql = "SELECT * FROM books WHERE book_id = '$bookReturn_id'";
     $result = mysqli_query($connect, $sql);
     $books_array = array();
-    while ($row = $result->fetch_assoc()){
-      $books_array['copies'] = $row['copies'];
-    }
-    $copies = $books_array['copies']+1;
-    $sql = "UPDATE books SET copies = '$copies' WHERE book_id = '$bookReturn_id'";
-    mysqli_query($connect,$sql);
     $sql = "DELETE FROM reservations WHERE reservation_id = '$reservation_id'";
     mysqli_query($connect,$sql);
 
@@ -58,7 +52,7 @@
 		</ul>
 	</nav>
         <?php
-          $sql = "SELECT * FROM reservations where user_id = '$user_id'";
+          $sql = "SELECT * FROM reservations WHERE user_id = '$user_id' AND return_date >= CURDATE()";
           $results = mysqli_query($connect, $sql);
           while ($row = $results->fetch_assoc()){
             $reservation_id = $row['reservation_id'];
@@ -77,5 +71,16 @@
           }
         ?>
 </header>
+</body>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservations</title>
+</head>
+<body>
+
 </body>
 </html>

@@ -6,7 +6,26 @@
   $user_id = $_SESSION['user_id'];
   if(isset($_POST['search_button'])) {
     $search = $_POST['search'];
+    $price = $_POST['price'];
+    $age = $_POST['age'];
+    $category = $_POST['category'];
+    $sql = "SELECT category_id FROM category WHERE name = '$category'";
+    $result = mysqli_query($connect, $sql);
+    while ($row = $result->fetch_assoc()){
+      $category_id = $row['category_id'];
+    }
     $sql = "SELECT * FROM books WHERE title RLIKE('$search')";
+    if (!empty($category)) {
+        $sql .= " AND category_id = '$category_id'";
+    }
+
+    if (!empty($price)) {
+      $sql .= " AND price <= $price";
+    }
+
+    if (!empty($age)) {
+        $sql .= " AND age <= $age";
+    }
     $result = mysqli_query($connect, $sql);
     $i = 0;
     $books_array = array();
@@ -14,7 +33,6 @@
       $books_array[$i]['book_id'] = $row['book_id'];
       $books_array[$i]['title'] = $row['title'];
       $books_array[$i]['publishing_year']=$row['publishing_year'];
-      $books_array[$i]['copies'] = $row['copies'];
       $books_array[$i]['price']=$row['price'];
       $books_array[$i]['language']=$row['language'];
       $author_id = $row['author_id'];
@@ -36,9 +54,9 @@
       $sql = "SELECT *  FROM publisher WHERE publisher_id = '$publisher_id'";
       $result_publisher = mysqli_query($connect, $sql);
       while($row_publisher = $result_publisher -> fetch_assoc()) {
-        $books_array[$i]['publisher_name'] = $row_publisher["name"];
-        $books_array[$i]['publisher_email'] = $row_publisher["email"];
-        $books_array[$i]['publisher_phone'] = $row_publisher["phone"];
+        $books_array[$i]['publisher_name'] = $row_publisher["publiser_name"];
+        $books_array[$i]['publisher_email'] = $row_publisher["publiser_email"];
+        $books_array[$i]['publisher_phone'] = $row_publisher["publiser_phone"];
       }
       $books_array[$i]['description']=$row['description'];
       $i++;
@@ -105,28 +123,73 @@
 </header>
       <form action="" method="POST">
         <input class="search-bar__bar" type="text" placeholder="Search..." name="search" id="search" />
+        <div class="input-group">
+          <label for='publisher'>Selectează prețul maxim:</label>
+				  <input type="number" placeholder="Preț" name="price" value="">
+			  </div>
+        <div class="input-group">
+          <label for='publisher'>Selectează vârsta maximă:</label>
+			  	<input type="number" placeholder="Vârstă" name="age" value="">
+			  </div>
+        <?php
+        echo "<div class='input-group'>
+                <label for='category'>Selectează o categorie existentă:</label>
+                <select name='category' >
+                <option name = 'NULL' value = ''></option>";
+        $sql = mysqli_query($connect, "SELECT category_id FROM category");
+            $i = 0;
+            $cat_id = array();
+            while ($row = $sql->fetch_assoc()){
+              $cat_id[$i] = $row['category_id'];
+              $i++;
+            }
+            $count = count($cat_id);
+            for($i = 0; $i < $count; $i++){
+              $sql = mysqli_query($connect, "SELECT name FROM category WHERE category_id = '$cat_id[$i]'");
+              while ($row = $sql->fetch_assoc()){
+                $name = $row['name'];
+                echo '<option name = "'.$name.'" value="'.$name.' ">' . $name.'</option>';
+              }
+            }
+            echo "</select>";
+            echo "</div>";
+
+      ?>
 		  	<button name="search_button" class="search-bar__button" type="submit">
           <i class="fa fa-search"></i>
       </button>
       </form>
       <?php
-      if($books_array != null){
-        $count = count($books_array);
-        for($j=0;$j<$count;$j++)
-        {
-          $title = $books_array[$j]['title'];
-          $book_id = $books_array[$j]['book_id'];
-          echo "<form action='' method='POST'><div class=container style='background-color:red;'><p>'$title'</p></div>";
-          echo "<input type='hidden' name='one_book' value= '$book_id' />";
-          echo "<button name='see_more' class='search-bar__button' type='submit'></form></div>
-          <br>
-          <br>";
+      if ($books_array != null) {
+    $count = count($books_array);
+    for ($j = 0; $j < $count; $j++) {
+        $title = $books_array[$j]['title'];
+        $book_id = $books_array[$j]['book_id'];
 
-        }
+        // Opening the form and container div
+        echo "<form action='' method='POST'>";
+        echo "<div class=container style='background-color:grey;'>";
 
-      }
-      else {
-      }
+        // Output the book title within a <p> tag
+        echo "<p>$title</p>";
+
+        // Use a hidden input to store the book_id value
+        echo "<input type='hidden' name='one_book' value='$book_id' />";
+
+        // Closing the container div
+        echo "</div>";
+
+        // Submit button (a button within a form should be of type 'submit')
+        echo "<button name='see_more' class='search-bar__button' type='submit'>See More</button>";
+
+        // Close the form
+        echo "</form>";
+
+        // Adding line breaks
+        echo "<br><br>";
+    }
+}
+
       ?>
 </body>
 </html>
