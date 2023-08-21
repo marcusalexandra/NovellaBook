@@ -60,9 +60,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <title>Adaugă carte</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Adaugă o carte</title>
 </head>
-<body>
+<body style="background-color: #e4e5e6;">
 <header>
 	<nav>
 		<ul class="navbar__links">
@@ -91,10 +92,14 @@
 	</nav>
 </header>
 <div class="container">
-		<form action="" method="POST" class="login-email" enctype="multipart/form-data">
-          <p class="login-text" style="font-size: 2rem; font-weight: 800;">Adaugă o carte</p>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card-module">
+        <div class="card-content">
+          <form action="" method="POST" class="login-email" enctype="multipart/form-data">
+            <p class="login-text" style="font-size: 40px; margin-bottom: 70px;">Adaugă o carte</p>
           <?php
-        echo "<div class='input-group'>
+          echo "<div class='input-group email-group'>
                 <label for='authors'>Selectează un autor existent:</label>
                 <select name='authors' >
                 <option name = 'NULL' value = ''></option>";
@@ -117,11 +122,9 @@
             echo "</select>";
             echo "</div>";
         ?>
-			<div class="input-group">
-				<input type="text" placeholder="Titlu" name="title" value="" required>
-			</div>
+			
       <?php
-        echo "<div class='input-group'>
+        echo "<div class='input-group email-group'>
                 <label for='category'>Selectează o categorie existentă:</label>
                 <select name='category' >
                 <option name = 'NULL' value = ''></option>";
@@ -144,11 +147,9 @@
             echo "</div>";
 
       ?>
-			<div class="input-group">
-				<input type="number" placeholder="Anul publicării" name="publishing_year" value="" required>
-			</div>
+			
       <?php
-        echo "<div class='input-group'>
+        echo "<div class='input-group email-group'>
                 <label for='publisher'>Selectează o publicație existentă:</label>
                 <select name='publisher' >
                 <option name = 'NULL' value = ''></option>";
@@ -171,28 +172,185 @@
             echo "</div>";
 
       ?>
-      <div class="input-group">
-				<input type="number" placeholder="Preț" name="price" value="" required>
+      <div class="input-group email-group">
+        <i class="fa fa-book" aria-hidden="true"></i>
+				<input type="text" class="form-control" placeholder="Titlu" name="title" value="" required>
 			</div>
-      <div class="input-group">
-				<input type="number" placeholder="Vârstă" name="age" value="" required>
+      <div class="input-group email-group">
+        <i class="fa fa-book" aria-hidden="true"></i>
+				<input type="number" class="form-control" placeholder="Anul publicării" name="publishing_year" value="" required>
 			</div>
-      <div class="input-group">
-				<input type="number" placeholder="Pagini" name="pages" value="" required>
+      <div class="input-group email-group">
+        <i class="fa fa-credit-card" aria-hidden="true"></i>
+				<input type="number" class="form-control" placeholder="Preț" name="price" value="" required>
 			</div>
-			<div class="input-group">
-				<input type="text" placeholder="Limbă" name="language" value="">
+      <div class="input-group email-group">
+        <i class="fa fa-id-card-o" aria-hidden="true"></i>
+				<input type="number" class="form-control" placeholder="Vârstă" name="age" value="" required>
 			</div>
-			<div class="input-group">
-				<input type="textbox" placeholder="Descriere" name="description" value="">
+      <div class="input-group email-group">
+        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+				<input type="number" class="form-control" placeholder="Pagini" name="pages" value="" required>
 			</div>
-      <div class="input-group">
+			<div class="input-group email-group">
+        <i class="fa fa-globe" aria-hidden="true"></i>
+				<input type="text" class="form-control" placeholder="Limbă" name="language" value="">
+			</div>
+			<div class="input-group email-group">
+        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+				<input type="textbox" class="form-control" placeholder="Descriere" name="description" value="">
+			</div>
+      <div class="input-group email-group">
+        <i class="fa fa-picture-o" aria-hidden="true"></i>
         <input type="file" class="custom-file-input" name="uploadfile" id="customFileInput" aria-describedby="customFileInput">
       </div>
         <div class="input-group">
 				<button name="submit" class="btn">Adaugă</button>
 			</div>
     </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+<style>
+  .card-module{
+  margin-bottom:30px;
+  position: relative;
+  background-color: #fff;
+  border-radius: 3px;
+  padding: 25px;
+  margin-bottom: 15px;
+  width: 100%;
+  height:1000px;
+  box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
+  -moz-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
+  -webkit-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
+}
+.card-content{
+  margin-bottom: 15px;
+  word-wrap: break-word;
+  text-align: center;
+  width:700px;
+}
+.card-module {
+  /* Restul stilurilor existente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sr-only{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip:rect(0,0,0,0);
+    border: 0;
+    }
+    .form-control{
+    display: inline-block;
+    width: 84%;
+    padding: 10px 10px 5px 0;
+    color: #9ca1af;
+    border-style: none;
+    border-bottom: 1px solid #eaeaec;
+    border-radius: 0;
+    box-shadow: none;
+    }
+    .input-group{
+    margin-bottom: 20px;
+    cursor: pointer;
+    min-height: 35px;
+    }
+    .email-group {
+    display: flex;
+    align-items: center;}
+    .email-group i {
+    margin-right: 10px;
+    margin-top: 3px;
+  }
+  /* Anulează stilurile implicite pentru elementele active/focus */
+  .input-group input:focus {
+    outline: none; /* Elimină conturul albastru la focus */
+    border-color: #eaeaec; /* Setează culoarea chenarului la focus */
+    box-shadow: none; /* Elimină umbra la focus */
+}
+
+/* Adaugă stil personalizat pentru casuța email */
+.email-group input {
+    border-radius: 0; /* Elimină colțurile rotunjite ale casuței */
+}
+
+/* Adaugă stil personalizat pentru casuța parolă */
+.input-group input[type="password"] {
+    border-top: none; /* Elimină partea superioară a chenarului */
+    border-left: none; /* Elimină latura stângă a chenarului */
+    border-right: none; /* Elimină latura dreaptă a chenarului */
+    border-bottom-color: #eaeaec; /* Setează culoarea chenarului pentru partea de jos la focus */
+    border-radius: 0; /* Elimină colțurile rotunjite ale casuței */
+}
+.btn {
+    background-color: #9ca1af;
+    color: #fff;
+    border: none;
+    border-radius: 1;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    width: 300px;
+    margin-top:10px;
+}
+.input-group.email-group {
+  margin-bottom: 20px;
+}
+
+.input-group.email-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #999; /* Lighter font color */
+  width: 1000px;
+  margin-right:10px;
+}
+
+.input-group.email-group select {
+  width: 500%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #666; /* Lighter font color */
+}
+@media (max-width: 767px) {
+  /* Adjustments for smaller screens */
+  .input-group.email-group label {
+    font-size: 14px; /* Decrease font size for better readability */
+    width: auto; /* Adjust width to fit content on smaller screens */
+    margin-right: 5px; /* Decrease margin for better spacing */
+  }
+
+  .input-group.email-group select {
+    width: 100%; /* Set select width to 100% for better layout */
+  }
+
+  .card-module {
+    height: auto; /* Allow height to adjust for content on smaller screens */
+  }
+
+  .login-text {
+    font-size: 30px; /* Decrease font size for a more compact header */
+    margin-bottom: 30px; /* Adjust margin for improved spacing */
+  }
+
+  .btn {
+    width: 100%; /* Set button width to 100% for full-width buttons */
+  }
+}
+
+</style>
 </body>
 </html>

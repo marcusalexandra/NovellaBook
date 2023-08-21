@@ -51,7 +51,7 @@
 		<ul class="navbar__links">
 			<li><a href="../index.php">Acasă</a></li>
       <?php
-       if($user_id == null){
+      if($user_id == null){
           echo '<li><a href="login.php">Rezervări</a></li>
                 <li><a href="login.php">Profil</a></li>
                 <li><a href="login.php">Conectare</a></li>';
@@ -81,7 +81,7 @@
       </form>
       <?php
       if ($book != null) {
-     $count = count($book);
+    $count = count($book);
     for ($j = 0; $j < $count; $j++) {
         $book_id = $book[$j]['book_id'];
         $title = $book[$j]['title'];

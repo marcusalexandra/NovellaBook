@@ -76,26 +76,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="CSS/style.css">
-  <title>Home</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> <!-- Add this line for the sidebar icons -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="JS/scripts.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+  <title>Acasă</title>
 </head>
 <body>
-  <header id="main-menu">
-	<nav class="navbar navbar-default">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-          <div class="logo-container">
-            <a href="index.php" class="logo">
-              <img id="logo" src="Images/novella_logo.png" width="200px" height="90px"  alt="Combs 'n' Fro Logo"/>
-            </a>
-          </div>
-      </div>
-    </div>
+  <header>
 		<ul class="navbar__links">
 			<li><a href="index.php">Acasă</a></li>
       <?php
@@ -119,8 +109,6 @@
         ?>
 			<li><a href="#footer">Contact</a></li>
 		</ul>
-	</nav>
-</header>
       <form action="" method="POST">
         <input class="search-bar__bar" type="text" placeholder="Search..." name="search" id="search" />
         <div class="input-group">
