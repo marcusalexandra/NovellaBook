@@ -172,6 +172,7 @@
             echo "</div>";
 
       ?>
+      <br>
       <div class="input-group email-group">
         <i class="fa fa-book" aria-hidden="true"></i>
 				<input type="text" class="form-control" placeholder="Titlu" name="title" value="" required>

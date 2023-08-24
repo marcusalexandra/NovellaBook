@@ -45,6 +45,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <title>Profil</title>
 </head>
 <body style="background-color: #e4e5e6;">
@@ -61,7 +63,7 @@
         else {
           if($user_id == 1) {
             echo '<li><a href="books.php">Cărți</a></li>
-                  <li><a href="book.php">Adaugă carte</a></li>
+                  <li><a href="book.php">Adaugă o carte</a></li>
                   <li><a href="authors_publications.php">Autori și publicații</a></li>
                   <li><a href="users.php">Utilizatori</a></li>';
 
@@ -76,13 +78,38 @@
 	</nav>
 
 </header>
-<p><?php echo $user['firstname'];  ?></p>
-<p><?php echo $user['lastname'];  ?></p>
-<p><?php echo $user['phone'];  ?></p>
-<p><?php echo $user['email'];  ?></p>
-<p><?php echo $user['address'];  ?></p>
+<div class="profile-card">
+    <div class="profile-details">
+      <div class="profile-icon">
+      <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+      </div>
+      <div class="user-details">
+    <div class="profile-icon">
+        <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+    </div>
+    <div class="row">
+        <label for="last_name">Nume</label>
+        <p><?php echo $user['lastname']; ?></p>
+        <label for="first_name">Prenume</label>
+        <p><?php echo $user['firstname']; ?></p>
+    </div>
+    <div class="row">
+        <label for="phone">Număr de telefon</label>
+        <p><?php echo $user['phone']; ?></p>
+        <label for="email">Email</label>
+        <p><?php echo $user['email']; ?></p>
+    </div>
+    <div class="row">
+        <label for="address">Adresă</label>
+        <p><?php echo $user['address']; ?></p>
+    </div>
+    <button class="settings-button" id="settingsButton">Setări</button>
+</div>
 
-<div class="container">
+    </div>
+    <div class="settings-form" id="settingsForm">
+      <form action="" method="POST" class="login-email">
+      <div class="container">
   <div class="row">
     <div class="col-md-12">
       <div class="card-module">
@@ -121,7 +148,46 @@
     </div>
   </div>
 </div>
+      </form>
+      </div>
+  </div>
 <style>
+  .profile-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.profile-details {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
+  padding: 20px;
+}
+
+
+.settings-button {
+  background-color: #9ca1af;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.settings-form {
+  display: none;
+  margin-top: 20px;
+}
+
+.show {
+  display: block;
+}
+
   .card-module{
   margin-bottom:30px;
   position: relative;
@@ -129,7 +195,7 @@
   border-radius: 3px;
   padding: 25px;
   margin-bottom: 15px;
-  width: 50%;
+  width: 50%; 
   height: 500px;
   box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
   -moz-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
@@ -139,7 +205,7 @@
   margin-bottom: 15px;
   word-wrap: break-word;
   text-align: center;
-  width:100px;
+  /*width:100px;*/
 }
 .card-module {
   /* Restul stilurilor existente */
@@ -212,6 +278,74 @@
     width: 300px;
     margin-top:10px;
 }
+.profile-icon {
+      width: 100px;
+      height: 100px;
+      background-color: #f3f3f3;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 20px;
+      border: 1px solid #ccc;
+    }
+
+    .profile-icon i {
+      font-size: 60px;
+      color: #9ca1af;
+    }
+
+    .settings-button {
+      background-color: #9ca1af;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    .settings-form {
+      display: none;
+    margin-top: 20px;
+    clear: both; 
+    }
+
+    .show {
+      display: block;
+    }
+    .user-details {
+      display: flex;
+    flex-direction: column;
+    /* Alte stiluri aici */
+}
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px; /* Reducerea spațiului dintre rânduri */
+}
+
+.row label,
+.row p {
+    margin: 0;
+}
+
 </style>
+<script>
+const settingsButton = document.getElementById('settingsButton');
+const settingsForm = document.getElementById('settingsForm');
+
+settingsButton.addEventListener('click', () => {
+    settingsForm.classList.toggle('show');
+    if (settingsForm.classList.contains('show')) {
+        settingsButton.textContent = 'Ascunde Setările';
+    } else {
+        settingsButton.textContent = 'Setări';
+    }
+});
+
+</script>
 </body>
 </html>
