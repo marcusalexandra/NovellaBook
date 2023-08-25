@@ -112,7 +112,7 @@
           </div>
           <div class="input-group email-group">
             <i class="fa fa-phone" aria-hidden="true"></i>
-            <label for="email" class="sr-only">Număr telefon</label>
+            <label for="email" class="sr-only">Număr de telefon</label>
             <input type="text" class="form-control" placeholder="Număr de telefon" name="anumber" pattern="[0-9]{10}" value="<?php echo $anumber ?>">
           </div>
           <div class="input-group email-group">
