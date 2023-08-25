@@ -127,6 +127,7 @@ if ($user_id == null) {
           <input class="search-bar__bar" type="text" name="search" id="search" />
           <button name="search_button" class="search-bar__button" type="submit"><i class="fa fa-search search-icon"></i></button>
           </form>
+          <div class="input-group-row">
           <div class="input-group">
             <label for="publisher">Selectează prețul maxim:</label>
             <input type="number" placeholder="Preț" name="price" value="">
@@ -134,11 +135,11 @@ if ($user_id == null) {
           <div class="input-group">
             <label for="publisher">Selectează vârsta maximă:</label>
             <input type="number" placeholder="Vârstă" name="age" value="">
-          </div>';
-          echo "<div class='input-group'>
-                <label for='category'>Selectează o categorie existentă:</label>
-                <select name='category' >
-                <option name = 'NULL' value = ''></option>";
+          </div>
+          <div class="input-group">
+          <label for="category">Selectează o categorie existentă:</label>
+          <select name="category">
+          <option value=""></option>';
         $sql = mysqli_query($connect, "SELECT category_id FROM category");
             $i = 0;
             $cat_id = array();
@@ -155,6 +156,7 @@ if ($user_id == null) {
               }
             }
             echo "</select>";
+            echo "</div>";
             echo "</div>";
             if ($books_array != null) {
               $count = count($books_array);
@@ -302,10 +304,7 @@ h1 {
 }
 
 .search-bar__button i {
-  font-weight: lighter;
   font-size: 20px;
-  position: relative;
-  float: left;
 }
 .corner-image {
     position: absolute;
@@ -315,6 +314,26 @@ h1 {
     bottom: 0;
     left: 0;
 }
+.input-group-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 10px; /* Spațiu între grupurile de input-uri */
+  margin-top:30px;
+}
+
+.input-group {
+  flex: 1;
+  margin-right: 10px; /* Spațiu între input-uri */
+}
+
+.input-group label,
+.input-group input,
+.input-group select {
+  display: block;
+  margin-bottom: 5px;
+}
+
 </style>
 </body>
 <footer id="footer">
