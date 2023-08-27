@@ -69,31 +69,26 @@
       }
       return $dates;
       }
-      if(isset($_POST['reserve'])){
+      if (isset($_POST['reserve'])) {
         $reserve_date = $_POST['checkin'];
         $return_date = $_POST['checkout'];
 
         $reserve_date_obj = new DateTime($reserve_date);
         $return_date_obj = new DateTime($return_date);
 
-        $isOverlap = false;
-        foreach ($reserved_dates as $range) {
-            list($start, $end) = explode(' - ', $range);
+        $sql = "SELECT * FROM reservations WHERE book_id = '$book_id'
+                AND reservation_date <= '$return_date' AND return_date >= '$reserve_date'";
+        $result = mysqli_query($connect, $sql);
 
-            $start_date_obj = new DateTime($start);
-            $end_date_obj = new DateTime($end);
-
-            if (($reserve_date_obj <= $end_date_obj) && ($return_date_obj >= $start_date_obj)) {
-                $isOverlap = true;
-                break;
-            }
-        }
-
-        if (!$isOverlap) {
+        if (mysqli_num_rows($result) == 0) {
             $sql = "INSERT INTO reservations (reservation_date, return_date, user_id, book_id)
                     VALUES ('$reserve_date', '$return_date', '$user_id', '$book_id')";
-            mysqli_query($connect, $sql);
-            // header("Refresh:0");
+            if (mysqli_query($connect, $sql)) {
+              header("Refresh:0");
+                exit();
+            } else {
+                echo "Error: " . mysqli_error($connect);
+              }
         } else {
             echo "Error: The selected date range overlaps with an existing reservation. Please choose different dates.";
         }

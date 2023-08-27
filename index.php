@@ -109,8 +109,14 @@
                   <li><a href="links/users.php">Utilizatori</a></li>';
                 }
                 echo '<li><a href="links/reservations.php">Rezervări</a></li>
-                <li><a href="links/profile.php">Profil</a></li>
-                <li><a href="links/logout.php">Deconectare</a></li>';
+                <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-user-circle-o" aria-hidden="true"></i> Profil <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                <li><a href="links/profile.php">Vezi profil</a></li>
+                <li><a href="links/logout.php">Deconectare</a></li>
+                </ul>
+                </li>';
               }
               ?>
               <li><a href="#footer">Contact</a></li>
@@ -120,26 +126,29 @@
     </nav>
   </header>
   <?php
-if ($user_id == null) {
-  echo '<div class="main">
+if ($user_id != 1) {
+  echo '<div class="main-container">
           <h1>Descoperă lumi noi între paginile noastre</h1>
           <form action="" method="POST" class="search-bar">
-          <input class="search-bar__bar" type="text" name="search" id="search" />
-          <button name="search_button" class="search-bar__button" type="submit"><i class="fa fa-search search-icon"></i></button>
+          <button name="search_button" class="search-bar__button" type="submit">
+          <i class="fa fa-search search-icon" style="border-right: 1px solid #888888; position:relative; padding-right:15px;"></i>
+          </button>
+          <input class="search-bar__bar" type="text" name="search" id="search"/>
           </form>
-          <div class="input-group-row">
-          <div class="input-group">
-            <label for="publisher">Selectează prețul maxim:</label>
-            <input type="number" placeholder="Preț" name="price" value="">
-          </div>
-          <div class="input-group">
-            <label for="publisher">Selectează vârsta maximă:</label>
-            <input type="number" placeholder="Vârstă" name="age" value="">
-          </div>
-          <div class="input-group">
-          <label for="category">Selectează o categorie existentă:</label>
-          <select name="category">
-          <option value=""></option>';
+          <div class="row input-group-row">
+  <div class="column input-column">
+    <label for="price">Selectează prețul maxim:</label>
+    <input type="number" class="form-control" name="price" value="">
+  </div>
+  <div class="column input-column">
+    <label for="age">Selectează vârsta maximă:</label>
+    <input type="number" class="form-control" name="age" value="">
+  </div>
+  <div class="column input-column">
+    <label for="category">Selectează o categorie existentă:</label>
+    <select name="category">
+      <option value=""></option>
+          ';
         $sql = mysqli_query($connect, "SELECT category_id FROM category");
             $i = 0;
             $cat_id = array();
@@ -187,7 +196,7 @@ if ($user_id == null) {
                   echo "<br><br>";
               }
           }
-          echo '<img class=corner-image src="Images/home_ill.svg">';
+          echo '<img class="corner-image" src="Images/fundal.png">';
           echo "</div>";
 }
 ?>
@@ -199,6 +208,55 @@ if ($user_id == null) {
     box-sizing: border-box;
     text-decoration: none;
     list-style: none;
+}
+.input-group-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 1000px;
+  margin-top: 20px;
+}
+
+.input-column {
+  flex: 1;
+  background-color: #e4e5e6;
+  padding: 10px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.input-column:last-child {
+  margin-right: 0; /* Elimină marginul dreapta pentru ultimul element */
+}
+
+.input-column label {
+  display: block;
+  font-size: 14px;
+  color: #606060;
+  margin-bottom: 5px;
+}
+
+.input-column select,
+.input-column input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #D0D0D0;
+}
+/* Eliminarea culorii albastre la focus pe câmpurile de selectie și input */
+.input-column select:focus,
+.input-column input:focus {
+  outline: none; /* Elimină conturul la focus */
+  box-shadow: none; /* Elimină umbra la focus */
+}
+/* Eliminarea conturului albastru la focus pe câmpurile de selectie și input */
+.input-column select:focus,
+.input-column input:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: #ccc; /* Setează culoarea dorită pentru bordură */
 }
   .navbar-default{
     margin-bottom:0;
@@ -252,13 +310,23 @@ if ($user_id == null) {
     font-size: 16px;
     margin-top:10px;
   }
-  .main {
+  .main-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding-top: 15px;
-    height: 95px;
+}
+
+/* Adăugarea regulii pentru poziționarea footer-ului */
+#footer {
+    background-color: #B8B8B8;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin-top:264px
 }
 h1 {
     font-size: 70px;
@@ -267,64 +335,73 @@ h1 {
 }
 /* Stilizare pentru câmpul de căutare */
 .search-bar {
-  display: flex;
-  align-items: center;
-  background-color: #D0D0D0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 5px;
-  margin-right: 10px;
-  margin-top: 20px;
-}
-
-.search-icon {
-  font-size: 20px;
-  margin-right: 10px;
-  color: #333; /* Culoarea pentru iconiță */
-}
-
-.search-bar__bar {
-  border: none;
-  padding: 5px;
-  width: 300px;
-  font-size: 16px;
-  color: #333; /* Culoarea pentru text */
-  background-color: #D0D0D0;
-  width: 500px;
+    display: flex;
+    align-items: center;
+    background-color: #D0D0D0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    margin-right: 10px;
+    margin-top: 20px;
 }
 
 .search-bar__button {
-  background-color: #D0D0D0;
-  border: none;
-  border-radius: 5px;
-  color: #fff;
-  cursor: pointer;
-  padding: 6px 12px;
-  font-size: 16px;
+    background-color: #D0D0D0;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    padding: 6px 12px;
+    font-size: 16px;
+    margin-right: 10px; /* Adjust this margin to control spacing between icon and input */
+}
+
+.search-icon {
+    font-size: 20px;
+    color: #333; /* Culoarea pentru iconiță */
+}
+
+.search-bar__bar {
+    border: none;
+    padding: 5px;
+    width: 300px;
+    font-size: 16px;
+    color: #333; /* Culoarea pentru text */
+    background-color: #D0D0D0;
+    width: 500px;
 }
 
 .search-bar__button i {
   font-size: 20px;
+  color: #888888;
+  font-weight: lighter;
 }
 .corner-image {
-    position: absolute;
-    max-width: 700px;
-    min-width: 300px;
-    width: 25vw;
-    bottom: 0;
-    left: 0;
-}
+      position: absolute;
+      width: 700px;
+      min-width: 200px;
+      left: -5px;
+    }
+.main-container .corner-image {
+    margin-top: 155px; /* Eliminăm margin-top */
+    bottom: auto; /* Eliminăm poziționarea "bottom" */
+    top: 100%; /* Plasăm imaginea deasupra footer-ului */
+    transform: translateY(-100%); /* Plasăm imaginea în zona de vizibilitate */
+  } 
 .input-group-row {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   margin-bottom: 10px; /* Spațiu între grupurile de input-uri */
-  margin-top:30px;
+  margin-top:50px;
+  width: 1100px;
+  text-align: center;
 }
 
 .input-group {
   flex: 1;
-  margin-right: 10px; /* Spațiu între input-uri */
+  margin-right: 10px;
+   /* Spațiu între input-uri */
 }
 
 .input-group label,
@@ -333,11 +410,199 @@ h1 {
   display: block;
   margin-bottom: 5px;
 }
+input:focus {
+    outline: none;
+} 
+.input-group{
+    margin-bottom: 20px;
+    cursor: pointer;
+    min-height: 35px;
+    }
+    .email-group {
+    display: flex;
+    align-items: center;}
+    .input-group.email-group {
+  margin-bottom: 20px;
+}
 
+.input-group.email-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size:14px;
+  color: #404040; 
+  margin-right:10px;
+}
+
+.input-group.email-group select {
+  width: 500%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #666; /* Lighter font color */
+}
 </style>
 </body>
-<footer id="footer">
-  <p>ana</p>
-</footer>
-      
+<footer id="footer"> 
+  <div class="container" style="height:350px;">
+    <div class="row">
+      <div class="column" style="background-color:#B8B8B8; margin-left:55px;">
+        <h3 style="color:#333;">Informații suplimentare</h3>
+        <ul class="informations">
+          <li>
+            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+            <a href="#">Despre noi</a>
+          </li>
+          <li>
+            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+            <a href="#">Politici de confidențialitate</a>
+          </li>
+          <li>
+            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+            <a href="#">Blog</a>
+          </li>
+        </ul>
+      </div>
+      <div class="column" style="background-color:#B8B8B8; width:25%;"></div>
+      <div class="column" style="background-color:#B8B8B8;">
+        <h3 style="color:#333;margin-right:165px;">Contact</h3>
+        <ul class="informations">
+          <li>
+            <i class="fa fa-map-marker" aria-hidden="true"></i>
+            <a>Oradea, Strada Teilor, Nr.256</a>
+          </li>
+          <li>
+            <i class="fa fa-envelope" aria-hidden="true"></i>
+            <a>novella.book@gmail.com</a>
+          </li>
+          <li>
+            <i class="fa fa-phone" aria-hidden="true"></i>
+            <a>+01 234 567 88</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="col-md-6 col-lg-8">
+      <p class="author-rights">Drept de autor ©
+        <script>document.write(new Date().getFullYear());</script>
+        Toate drepturile sunt rezervate
+      </p>
+    </div>
+    <div class="col-md-6 col-lg-4">
+    <ul class="footer-social">
+      <li class="social-media-icon">
+        <a href="#" data-toogle="toolip" data-placement="top" title data-original-title="Twitter">
+          <i class="fa fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+      <li class="social-media-icon">
+        <a href="#" data-toogle="toolip" data-placement="top" title data-original-title="Facebook">
+          <i class="fa fa-facebook" aria-hidden="true"></i>
+        </a>
+      </li>
+      <li class="social-media-icon">
+        <a href="#" data-toogle="toolip" data-placement="top" title data-original-title="Instagram">
+          <i class="fa fa-instagram" aria-hidden="true"></i>
+        </a>
+      </li>
+    </ul>
+    </div>
+  </div>
+<style>
+  .corner-image {
+    position: absolute;
+    max-width: 700px;
+    min-width: 300px;
+    width: 25vw;
+    top: 0; /* Plasăm imaginea în partea de sus a footer-ului */
+    right: 0; /* Poziționăm imaginea în colțul din dreapta sus */
+  }
+
+  /* Create three equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 33.33%;
+  padding: 10px;
+  height: 200px;
+  margin-top:5px; 
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.author-rights{
+  color:#333;
+  margin-top:15px;
+  float: left;
+}
+.divider{
+  border:1px solid #333;
+  margin-top:25px;
+  margin-bottom: 25px;
+}
+
+.footer-social li {
+  list-style: none;
+  margin: 0 10px 0 0;
+  display: inline-block;
+}
+
+.footer-social li a {
+  height: 40px;
+  width: 40px;
+  display: block;
+  background: #aaa;
+  border-radius: 50%;
+  position: relative;
+  text-decoration: none;
+}
+
+/* Remove the '.ftco-footer-social' class from this selector */
+.footer-social li a i {
+  position: absolute;
+  font-size: 20px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the icon */
+  color: #333;
+}
+.informations {
+    list-style: none;
+    padding: 0;
+    margin-left: 85px;
+    margin-top:25px;
+}
+
+.informations li {
+    margin-bottom: 10px; /* Adaugă spațiu între elementele listei */
+    display: flex; /* Folosim flexbox pentru a alinia iconița și textul */
+    align-items: center; /* Aliniem elementele pe axa verticală */
+}
+
+.informations li a {
+    text-decoration: none;
+    color: #333; /* Schimbăm culoarea textului la o nuanță mai închisă */
+    margin-left: 10px; /* Adaugă spațiu între iconiță și text */
+}
+
+.informations li i {
+    color: #333; /* Schimbăm culoarea iconiței la o nuanță mai închisă */
+    font-size: 18px; /* Mărimea iconiței */
+    margin-right: 5px; /* Adaugă spațiu între iconiță și link */
+}
+.informations li:hover {
+    color: #f0f0f0; /* Schimbăm culoarea de fundal la trecerea cursorului peste element */
+}
+
+.informations li:hover a {
+    color: #555; /* Schimbăm culoarea textului la trecerea cursorului peste link */
+    text-decoration: none; /* Eliminăm sublinierea */
+}
+</style>
+</footer>     
 </html>

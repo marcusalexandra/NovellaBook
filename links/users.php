@@ -6,7 +6,7 @@
   $user_id = $_SESSION['user_id'];
   if(isset($_POST['search_button'])) {
     $search = $_POST['search'];
-    $sql = "SELECT * FROM users WHERE user_id <>'1' AND lastname = '$search' ";
+    $sql = "SELECT * FROM users WHERE user_id <>'1' AND lastname RLIKE('$search') ";
     $result = mysqli_query($connect, $sql);
     $user = array();
     $i = 0;
@@ -68,40 +68,57 @@
           <i class="fa fa-search"></i>
         </button>
       </form>
-   <?php
-    if ($user != null) {
-     $count = count($user);
-    for ($j = 0; $j < $count; $j++) {
-        $firstname = $user[$j]['firstname'];
-        $lastname = $user[$j]['lastname'];
-        $email = $user[$j]['email'];
-        $phone = $user[$j]['phone'];
-        $user_id = $user[$j]['user_id'];
+    <table border="1">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        if (!empty($user)) {
+            foreach ($user as $userData) {
+                $firstname = $userData['firstname'];
+                $lastname = $userData['lastname'];
+                $email = $userData['email'];
+                $phone = $userData['phone'];
+                $user_id = $userData['user_id'];
 
-        // Opening the form and container div
-        echo "<form action='' method='POST'>";
-        echo "<div class=container style='background-color:gray;'>";
+                echo "<tr>";
+                echo "<td>$firstname</td>";
+                echo "<td>$lastname</td>";
+                echo "<td>$email</td>";
+                echo "<td>$phone</td>";
 
-        // Output the user information within a <p> tag
-        echo "<p>$firstname, $lastname, $email, $phone</p>";
+                // Opening the form and container div
+                echo "<td><form action='' method='POST'>";
+                echo "<div class='container' style='background-color: gray;'>";
 
-        // Use a hidden input to store the user_id value
-        echo "<input type='hidden' name='user_delete' value='$user_id' />";
+                // Use a hidden input to store the user_id value
+                echo "<input type='hidden' name='user_delete' value='$user_id' />";
 
-        // Closing the container div
-        echo "</div>";
+                // Submit button (a button within a form should be of type 'submit')
+                echo "<button name='delete' class='search-bar__button' type='submit'>Delete</button>";
 
-        // Submit button (a button within a form should be of type 'submit')
-        echo "<button name='delete' class='search-bar__button' type='submit'>Delete</button>";
+                // Close the form
+                echo "</form></div></td>";
 
-        // Close the form
-        echo "</form>";
+                // Close the table row
+                echo "</tr>";
+            }
+        } else {
+            echo "<tr><td colspan='5'>No results found.</td></tr>";
+        }
+        ?>
+    </tbody>
+</table>
 
-        // Adding line breaks
-        echo "<br><br>";
-    }
-}
-
-      ?>
+      
+    </tbody>
+</table>
 </body>
 </html>
