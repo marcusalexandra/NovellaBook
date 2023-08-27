@@ -84,47 +84,78 @@
   <title>Acasă</title>
 </head>
 <body style="background-color: #e4e5e6;">
-  <header>
-    <nav class="navbar navbar-default navbar-shadow">
-      <div class="container">
-        <div class="navbar-header">
-          <div class="logo-container">
-            <a href="index.php">
-              <img class="logo" src="Images/logo.png" alt="logo" style="width:120px; height:70px;">
-            </a>
+<?php
+    if($user_id != 1){
+      echo'<header>
+        <nav class="navbar navbar-default navbar-shadow">
+          <div class="container">
+            <div class="navbar-header">
+              <div class="logo-container">
+                <a href="index.php">
+                  <img class="logo" src="Images/logo.png" alt="logo" style="width:120px; height:70px;">
+                </a>
+              </div>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="index.php">Acasă</a></li>
+                <li><a href="links/all_books.php">Cărți</a></li>';
+                if($user_id == null){
+                  echo '<li><a href="links/login.php">Conectare</a></li>';
+                  }
+                  else {
+                    echo '<li><a href="links/reservations.php">Rezervări</a></li>
+                    <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-user-circle-o" aria-hidden="true"></i> Profil <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="links/profile.php">Vezi profil</a></li>
+                    <li><a href="links/logout.php">Deconectare</a></li>
+                    </ul>
+                    </li>';
+                  }
+                  echo '<li><a href="#footer">Contact</a></li>
+                </ul>
+            </div>
           </div>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="index.php">Acasă</a></li>
-            <?php
-            if($user_id == null){
-              echo '<li><a href="links/login.php">Conectare</a></li>';
-              }
-              else {
-                if($user_id == 1) {
+        </nav>
+      </header>';
+    }elseif($user_id == 1){
+      //header nou
+      echo'<header>
+        <nav class="navbar navbar-default navbar-shadow">
+          <div class="container">
+            <div class="navbar-header">
+              <div class="logo-container">
+                <a href="index.php">
+                  <img class="logo" src="Images/logo.png" alt="logo" style="width:120px; height:70px;">
+                </a>
+              </div>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="index.php">Acasă</a></li>';
                   echo '<li><a href="links/books.php">Cărți</a></li>
                   <li><a href="links/book.php">Adaugă carte</a></li>
                   <li><a href="links/authors_publications.php">Autori și publicații</a></li>
                   <li><a href="links/users.php">Utilizatori</a></li>';
-                }
                 echo '<li><a href="links/reservations.php">Rezervări</a></li>
-                <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-user-circle-o" aria-hidden="true"></i> Profil <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                <li><a href="links/profile.php">Vezi profil</a></li>
-                <li><a href="links/logout.php">Deconectare</a></li>
+                    <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-user-circle-o" aria-hidden="true"></i> Profil <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="links/profile.php">Vezi profil</a></li>
+                    <li><a href="links/logout.php">Deconectare</a></li>
+                    </ul>
+                    </li>';
+                echo '<li><a href="#footer">Contact</a></li>
                 </ul>
-                </li>';
-              }
-              ?>
-              <li><a href="#footer">Contact</a></li>
-            </ul>
-        </div>
-      </div>
-    </nav>
-  </header>
+            </div>
+          </div>
+        </nav>
+      </header>';
+    }
+  ?>
   <?php
 if ($user_id != 1) {
   echo '<div class="main-container">

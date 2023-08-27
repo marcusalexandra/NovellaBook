@@ -51,8 +51,9 @@ if(isset($_POST['submit'])) {
           <div class="input-group email-group">
             <i class="fa fa-lock" aria-hidden="true"></i>
             <label for="password" class="sr-only">Parolă</label>
-            <input type="password" class="form-control" placeholder="Parolă" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"   required title="Password must be 8 characters including 1 uppercase letter, 1 lowercase letter and numeric characters" name="pass" value="<?php echo $pass ?>" required>
+            <input type="password" class="form-control" placeholder="Parolă" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required title="Password must be 8 characters including 1 uppercase letter, 1 lowercase letter and numeric characters" name="pass" value="<?php echo $pass ?>" required>
           </div>
+          <div class="error-message" id="error-message"></div>
           <div class="input-group">
             <button name="submit" class="btn">Conectare</button>
           </div>
@@ -62,7 +63,6 @@ if(isset($_POST['submit'])) {
         </form>
       </div>
     </div>
-  </div>
   <style>
     .auth-page{
       margin:0 auto;
@@ -184,40 +184,7 @@ if(isset($_POST['submit'])) {
     align-items: center;
     margin-top: 20px;
 }
-/* Stilurile pentru ecranul mare (desktop) */
-@media screen and (min-width: 768px) {
-      .auth-box.form-box {
-        max-width: 500px;
-      }
-    }
-    
-    /* Stilurile pentru ecranul mic (mobil) */
-    @media screen and (max-width: 767px) {
-      .auth-box.form-box {
-        max-width: 300px;
-        padding: 20px;
-      }
-      .user-login {
-        font-size: 24px;
-        margin-bottom: 15px;
-      }
-      .input-group.email-group,
-      .input-group.password-group {
-        flex-direction: column;
-        border-bottom: none;
-        margin-bottom: 15px;
-        padding-bottom: 0;
-      }
-      .email-group i,
-      .password-group i {
-        margin-right: 0;
-        margin-bottom: 5px;
-      }
-      .btn {
-        width: 100%;
-      }
-    }
-
 </style>
+
 </body>
 </html>
