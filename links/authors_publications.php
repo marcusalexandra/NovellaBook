@@ -23,7 +23,7 @@
         $alname = "";
         $anumber = "";
         $aemail = "";
-        echo "Bravo!";
+        
   }
 
   if(isset($_POST['csubmit'])) {
@@ -32,7 +32,7 @@
             VALUES ('$cname')";
         $result = mysqli_query($connect, $sql);
         $cname = "";
-        echo "Bravo!";
+        
   }
 
   if(isset($_POST['psubmit'])) {
@@ -51,7 +51,7 @@
           $pname = "";
           $pnumber = "";
           $pemail = "";
-          echo "Bravo!";
+          
     }
 
 ?>

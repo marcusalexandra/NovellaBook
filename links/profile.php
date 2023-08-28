@@ -326,33 +326,11 @@ $pass = $cpassword = ""; // Initialize these variables to avoid errors
   cursor: pointer;
 }
 
-.settings-form {
-  display: none;
-  position: absolute;
-  top: 0;
-  left: 100%; /* Change this to 100% */
-  width: 300px; /* Adjust the width as needed */
-  padding: 20px; /* Add padding */
-  background-color: #fff;
-  box-shadow: 0px 2px 5px rgba(6, 6, 6, 0.16);
-}
 
 .show {
   display: block;
 }
 
-  .card-module{
-  margin-bottom:30px;
-  position: relative;
-  background-color: #fff;
-  border-radius: 3px;
-  padding: 25px;
-  margin-bottom: 15px;
-  height: 500px;
-  box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
-  -moz-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
-  -webkit-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
-}
 .card-content{
   margin-bottom: 15px;
   word-wrap: break-word;
@@ -453,12 +431,21 @@ $pass = $cpassword = ""; // Initialize these variables to avoid errors
   }
 }
 
-    .settings-form {
-      display: none;
-  margin-top: 62px; /* Increase the margin to 25px */
-  clear: both; 
-  margin-left:150px;
-    }
+.settings-form {
+  display: none;
+  position: absolute;
+  top: -100px;
+  left: calc(100% + 10px); /* Position it to the right of the profile card */
+  width: 500px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0px 2px 5px rgba(6, 6, 6, 0.16);
+  margin-top:100px;
+}
+.show-settings .settings-form {
+  display: block; /* Show the form when the show-settings class is present */
+  left: calc(100% + 10px); /* Position it to the right of the profile card */
+}
 
     .show {
       display: block;

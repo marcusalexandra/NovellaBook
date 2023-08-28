@@ -68,38 +68,55 @@
       </header>';
     }elseif($user_id == 1){
       //header nou
-      echo'<header>
-        <nav class="navbar navbar-default navbar-shadow">
-          <div class="container">
-            <div class="navbar-header">
+      echo'
+      <div class="container">
+      <div class="row">
+          <!-- Sidebar -->
+          <div class="col-md-2 sidenav">
+              <ul class="nav flex-column">
               <div class="logo-container">
                 <a href="../index.php">
-                  <img class="logo" src="../Images/logo.png" alt="logo" style="width:120px; height:70px;">
+                  <img class="logo" src="../Images/logo_sidebar.png" alt="logo" style="width:120px; height:70px;">
                 </a>
               </div>
-            </div>
-            <div id="navbar" class="collapse navbar-collapse">
-              <ul class="nav navbar-nav">
-                <li><a href="../index.php">Acasă</a></li>';
-                  echo '<li><a href="books.php">Cărți</a></li>
-                  <li><a href="book.php">Adaugă carte</a></li>
-                  <li><a href="authors_publications.php">Autori și publicații</a></li>
-                  <li><a href="users.php">Utilizatori</a></li>';
-                echo '<li><a href="reservations.php">Rezervări</a></li>
-                    <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i> Profil <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                    <li><a href="profile.php">Vezi profil</a></li>
-                    <li><a href="logout.php">Deconectare</a></li>
-                    </ul>
-                    </li>';
-                echo '<li><a href="#footer">Contact</a></li>
-                </ul>
-            </div>
+                  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                  <li class="nav-item"><i class="fa fa-book" aria-hidden="true"></i><a class="nav-link" href="books.php">Cărți</a></li>
+                  <li class="nav-item"><i class="fa fa-book" aria-hidden="true"></i><a class="nav-link" href="book.php">Adaugă o carte</a></li>
+                  <li class="nav-item"><i class="fa fa-user" aria-hidden="true"></i><a class="nav-link" href="authors_publications.php">Autori și publicații</a></li>
+                  <li class="nav-item"><i class="fa fa-users" aria-hidden="true"></i><a class="nav-link" href="users.php">Utilizatori</a></li>
+                  <li class="nav-item"><i class="fa fa-pencil" aria-hidden="true"></i><a class="nav-link" href="reservations.php">Rezervări</a></li>
+              </ul>
           </div>
-        </nav>
-      </header>';
+          <!-- Main Content -->
+          <div class="col-md-10">
+              <header>
+                  <nav class="navbar navbar-default navbar-shadow">
+                      <div class="container">
+                          <div class="navbar-header">
+                          </div>
+                          <div id="navbar" class="collapse navbar-collapse">
+                              <ul class="nav navbar-nav">
+                              <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>
+                                  <li><a href="../index.php">Acasă</a></li>
+                                  <li class="dropdown">
+                                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                          <i class="fa fa-user-circle-o" aria-hidden="true"></i> Profil <span class="caret"></span></a>
+                                      <ul class="dropdown-menu">
+                                          <li><a href="profile.php">Vezi profil</a></li>
+                                          <li><a href="logout.php">Deconectare</a></li>
+                                      </ul>
+                                  </li>
+                                  <li><a href="#footer">Contact</a></li>
+                              </ul>
+                          </div>
+                      </div>
+                  </nav>
+              </header>
+              <!-- Main content goes here -->
+          </div>
+      </div>
+  </div>
+      ';
     }
   ?>
         <?php
@@ -129,6 +146,48 @@
     box-sizing: border-box;
     text-decoration: none;
     list-style: none;
+}
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+.sidenav {
+    background-color: #808088; /* Set your desired background color */
+    height:800px;
+}
+
+/* Style for the navigation items */
+.sidenav .nav-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-left:15px; /* Add some spacing between items */
+}
+
+.sidenav .nav-item i {
+    margin-right: 10px; /* Add spacing between icon and text */
+}
+
+.sidenav .nav-link {
+    text-decoration: none;
+    color: #333; /* Set your desired text color */
+    font-size: 14px; /* Set your desired font size */
 }
   .navbar-default{
     margin-bottom:0;
@@ -182,6 +241,180 @@
     font-size: 16px;
     margin-top:10px;
   }
+  #footer {
+    background-color: #B8B8B8;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
 </style>
+<script>
+  function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+  document.getElementById("navbar navbar-default navbar-shadow").style.marginLeft = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+  document.getElementById("navbar navbar-default navbar-shadow").style.marginLeft= "0";
+}
+</script>
 </body>
+<footer id="footer">
+  <div class="container" style="height:350px;">
+    <div class="row">
+      <div class="column" style="background-color:#B8B8B8; margin-left:55px;">
+        <h3 style="color:#333;">Informații suplimentare</h3>
+        <ul class="informations">
+          <li>
+            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+            <a href="#">Despre noi</a>
+          </li>
+          <li>
+            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+            <a href="#">Politici de confidențialitate</a>
+          </li>
+          <li>
+            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+            <a href="#">Blog</a>
+          </li>
+        </ul>
+      </div>
+      <div class="column" style="background-color:#B8B8B8; width:25%;"></div>
+      <div class="column" style="background-color:#B8B8B8;">
+        <h3 style="color:#333;margin-right:165px;">Contact</h3>
+        <ul class="informations">
+          <li>
+            <i class="fa fa-map-marker" aria-hidden="true"></i>
+            <a>Oradea, Strada Teilor, Nr.256</a>
+          </li>
+          <li>
+            <i class="fa fa-envelope" aria-hidden="true"></i>
+            <a>novella.book@gmail.com</a>
+          </li>
+          <li>
+            <i class="fa fa-phone" aria-hidden="true"></i>
+            <a>+01 234 567 88</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="col-md-6 col-lg-8">
+      <p class="author-rights">Drept de autor ©
+        <script>document.write(new Date().getFullYear());</script>
+        Toate drepturile sunt rezervate
+      </p>
+    </div>
+    <div class="col-md-6 col-lg-4">
+    <ul class="footer-social">
+      <li class="social-media-icon">
+        <a href="#" data-toogle="toolip" data-placement="top" title data-original-title="Twitter">
+          <i class="fa fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+      <li class="social-media-icon">
+        <a href="#" data-toogle="toolip" data-placement="top" title data-original-title="Facebook">
+          <i class="fa fa-facebook" aria-hidden="true"></i>
+        </a>
+      </li>
+      <li class="social-media-icon">
+        <a href="#" data-toogle="toolip" data-placement="top" title data-original-title="Instagram">
+          <i class="fa fa-instagram" aria-hidden="true"></i>
+        </a>
+      </li>
+    </ul>
+    </div>
+  </div>
+<style>
+  
+  /* Create three equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 33.33%;
+  padding: 10px;
+  height: 200px;
+  margin-top:5px; 
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.author-rights{
+  color:#333;
+  margin-top:15px;
+  float: left;
+}
+.divider{
+  border:1px solid #333;
+  margin-top:25px;
+  margin-bottom: 25px;
+}
+
+.footer-social li {
+  list-style: none;
+  margin: 0 10px 0 0;
+  display: inline-block;
+}
+
+.footer-social li a {
+  height: 40px;
+  width: 40px;
+  display: block;
+  background: #aaa;
+  border-radius: 50%;
+  position: relative;
+  text-decoration: none;
+}
+
+/* Remove the '.ftco-footer-social' class from this selector */
+.footer-social li a i {
+  position: absolute;
+  font-size: 20px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the icon */
+  color: #333;
+}
+.informations {
+    list-style: none;
+    padding: 0;
+    margin-left: 85px;
+    margin-top:25px;
+}
+
+.informations li {
+    margin-bottom: 10px; /* Adaugă spațiu între elementele listei */
+    display: flex; /* Folosim flexbox pentru a alinia iconița și textul */
+    align-items: center; /* Aliniem elementele pe axa verticală */
+}
+
+.informations li a {
+    text-decoration: none;
+    color: #333; /* Schimbăm culoarea textului la o nuanță mai închisă */
+    margin-left: 10px; /* Adaugă spațiu între iconiță și text */
+}
+
+.informations li i {
+    color: #333; /* Schimbăm culoarea iconiței la o nuanță mai închisă */
+    font-size: 18px; /* Mărimea iconiței */
+    margin-right: 5px; /* Adaugă spațiu între iconiță și link */
+}
+.informations li:hover {
+    color: #f0f0f0; /* Schimbăm culoarea de fundal la trecerea cursorului peste element */
+}
+
+.informations li:hover a {
+    color: #555; /* Schimbăm culoarea textului la trecerea cursorului peste link */
+    text-decoration: none; /* Eliminăm sublinierea */
+}
+</style>
+</footer> 
 </html>
