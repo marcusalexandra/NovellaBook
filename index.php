@@ -229,6 +229,33 @@ if ($user_id != 1) {
           }
           echo '<img class="corner-image" src="Images/fundal.png">';
           echo "</div>";
+}elseif($user_id == 1){
+  $sql_authors = "SELECT COUNT(*) as author_count FROM authors";
+  $sql_users = "SELECT COUNT(*) as users_count FROM users";
+  $sql_publishers = "SELECT COUNT(*) as publisher_count FROM publisher";
+  $sql_books = "SELECT COUNT(*) as book_count FROM books";
+
+  $result_authors = mysqli_query($connect, $sql_authors);
+  $result_users = mysqli_query($connect, $sql_users);
+  $result_publishers = mysqli_query($connect, $sql_publishers);
+  $result_books = mysqli_query($connect, $sql_books);
+
+  $row_authors = $result_authors->fetch_assoc();
+  $row_users = $result_users->fetch_assoc();
+  $row_publishers = $result_publishers->fetch_assoc();
+  $row_books = $result_books->fetch_assoc();
+
+  $authors_number = $row_authors['author_count'];
+  $users_number = $row_users['users_count'];
+  $publisher_number = $row_publishers['publisher_count'];
+  $book_number = $row_books['book_count'];
+    echo '<div>';
+        echo '<h2>Statistici ale bazei de date</h2>';
+        echo '<p>Numărul total de autori: ' . $authors_number . '</p>';
+        echo '<p>Numărul total de utilizatori: ' . $users_number . '</p>';
+        echo '<p>Numărul total de edituri: ' . $publisher_number . '</p>';
+        echo '<p>Numărul total de cărți: ' . $book_number . '</p>';
+    echo '</div>';
 }
 ?>
 

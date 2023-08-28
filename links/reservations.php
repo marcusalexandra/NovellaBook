@@ -120,17 +120,24 @@
     }
   ?>
         <?php
-          $sql = "SELECT * FROM reservations WHERE user_id = '$user_id' AND return_date >= CURDATE()";
+          $sql = "SELECT * FROM reservations WHERE user_id = '$user_id'";
           $results = mysqli_query($connect, $sql);
           while ($row = $results->fetch_assoc()){
             $reservation_id = $row['reservation_id'];
+            $reservation_date = $row['reservation_date'];
+            $return_date = $row['return_date'];
             $book_id = $row['book_id'];
             $sql = "SELECT * FROM books WHERE book_id = '$book_id'";
             $results_title = mysqli_query($connect, $sql);
             while ($row_title = $results_title->fetch_assoc()){
               $book_title = $row_title['title'];
-              echo "<div style='background-color:red'><form action ='' method = 'POST'>
-                  <p>$book_title</p>
+              echo "<div style='background-color:green'><form action ='' method = 'POST'>";
+              if($return_date <= date("Y-m-d")){
+                echo "Această carte trebuie returnată!";
+              }
+                echo "<p>$book_title</p>
+                  <p>De la: $reservation_date</p>
+                  <p>Pana la: $return_date</p>
                   <input type = 'hidden' name = 'reservation_id' value = '$reservation_id'>
                   <input type = 'hidden' name = 'book_id' value = '$book_id'>
                   <button name='return' class='search-bar__button' type='submit'>
