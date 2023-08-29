@@ -96,10 +96,8 @@
 
 
 
-
-
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -135,7 +133,7 @@
 
   var reserved_dates = <?php echo json_encode($reserved_dates); ?>;
 </script>
-  <title></title>
+<title>Rezervare carte</title>
   <style>
   label {
   display: block;
@@ -170,43 +168,53 @@ input[type="text"] {
 .star-rating input[type="radio"]:checked ~ label {
   color: gold;
 }
-
 </style>
 </head>
-<body>
-<header>
-	<nav>
-		<ul class="navbar__links">
-			<li><a href="../index.php">Acasă</a></li>
-      <?php
-       if($user_id == null){
-          echo '<li><a href="login.php">Rezervări</a></li>
-                <li><a href="login.php">Profil</a></li>
-                <li><a href="login.php">Conectare</a></li>';
-        }
-        else {
-          if($user_id == 1) {
-            echo '<li><a href="books.php">Cărți</a></li>
-                  <li><a href="book.php">Adaugă carte</a></li>
-                  <li><a href="authors_publications.php">Autori și publicații</a></li>
-                  <li><a href="users.php">Utilizatori</a></li>';
+<body style="background-color: #e4e5e6;">
+<?php
+    if($user_id != 1){
+      echo'<header>
+        <nav class="navbar navbar-default navbar-shadow">
+          <div class="container">
+            <div class="navbar-header">
+              <div class="logo-container">
+                <a href="../index.php">
+                  <img class="logo" src="../Images/logo.png" alt="logo" style="width:120px; height:70px;">
+                </a>
+              </div>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="../index.php">Acasă</a></li>
+                <li><a href="all_books.php">Cărți</a></li>';
+                if($user_id == null){
+                  echo '<li><a href="login.php">Conectare</a></li>';
+                  }
+                  else {
+                    echo '<li><a href="reservations.php">Rezervări</a></li>
+                    <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-user-circle-o" aria-hidden="true"></i> Profil <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="profile.php">Vezi profil</a></li>
+                    <li><a href="logout.php">Deconectare</a></li>
+                    </ul>
+                    </li>';
+                  }
+                  echo '<li><a href="#footer">Contact</a></li>
+                </ul>
+            </div>
+          </div>
+        </nav>
+      </header>';
+    }
+  ?>
 
-          }
-          echo '<li><a href="reservations.php">Rezervări</a></li>
-                <li><a href="profile.php">Profil</a></li>
-                <li><a href="logout.php">Deconectare</a></li>';
-        }
-        ?>
-			<li><a href="#footer">Contact</a></li>
-		</ul>
-	</nav>
-</header>
         <?php
 
           $title = $books_array['title'];
           $photo = $books_array['photo'];
           echo "<div style= 'background-color:blue;'><p>$title</p></div>";
-
           echo "<img src='$photo' style = 'height:90px; width:90px;' alt='$title'>";
 
         ?>
@@ -290,6 +298,66 @@ input[type="text"] {
     ?>
   </div>
 </div>
+<style>
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+}
 
+.navbar-default{
+    margin-bottom:0;
+    border:none;
+  }
+  .navbar-shadow {
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Aici puteți personaliza umbra */
+}
+  .navbar{
+    position:relative;
+    min-height:50px;
+    margin-bottom:20px;
+  }
+  .container{
+    max-width:1280px;
+    width:100%;
+    padding-right:15px;
+    padding-left:15px;
+    margin-right:auto;
+    margin-left:auto;
+  }
+  .container>.navba-header{
+    margin-right: 0;
+    margin-left: 0;
+  }
+  .logo-container{
+    padding:20px 0;
+  }
+  #navbar{
+    min-height:85px;
+  }
+  .container>.navbar-collapse{
+    margin-right: 0;
+    margin-left: 0;
+  }
+  .navbar-nav{
+    margin-right: -15px;
+    float:right;
+  }
+  .nav>li{
+    position: relative;
+    display:block;
+  }
+  .nav{
+    list-style:none;
+  }
+  .navbar-default .navbar-nav>li>a{
+    padding:20px 30px;
+    line-height: 55px;
+    font-size: 16px;
+    margin-top:10px;
+  }
+</style>
 </body>
 </html>

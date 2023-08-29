@@ -68,69 +68,55 @@
       </header>';
     }elseif($user_id == 1){
       //header nou
-      echo'
-      <div class="container-fluid">
-      <div class="row">
-          <!-- Sidebar -->
-          <div class="col-md-2 sidenav">
-              <ul class="nav flex-column">
+      echo'<header>
+        <nav class="navbar navbar-default navbar-shadow">
+          <div class="container">
+            <div class="navbar-header">
               <div class="logo-container">
-                <a href="../index.php">
-                  <img class="logo" src="../Images/logo_sidebar.png" alt="logo" style="width:120px; height:70px;">
+                <a href="index.php">
+                  <img class="logo" src="../Images/logo.png" alt="logo" style="width:120px; height:70px;">
                 </a>
               </div>
-                  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                  <li class="nav-item"><i class="fa fa-book" aria-hidden="true"></i><a class="nav-link" href="books.php">Cărți</a></li>
-                  <li class="nav-item"><i class="fa fa-book" aria-hidden="true"></i><a class="nav-link" href="book.php">Adaugă o carte</a></li>
-                  <li class="nav-item"><i class="fa fa-user" aria-hidden="true"></i><a class="nav-link" href="authors_publications.php">Autori și publicații</a></li>
-                  <li class="nav-item"><i class="fa fa-users" aria-hidden="true"></i><a class="nav-link" href="users.php">Utilizatori</a></li>
-                  <li class="nav-item"><i class="fa fa-pencil" aria-hidden="true"></i><a class="nav-link" href="reservations.php">Rezervări</a></li>
-              </ul>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="index.php">Acasă</a></li>';
+                  echo '<li><a href="links/books.php">Cărți</a></li>
+                  <li><a href="links/book.php">Adaugă carte</a></li>
+                  <li><a href="links/authors_publications.php">Autori și publicații</a></li>
+                  <li><a href="links/users.php">Utilizatori</a></li>';
+                echo '<li><a href="links/reservations.php">Rezervări</a></li>
+                    <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-user-circle-o" aria-hidden="true"></i> Profil <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="profile.php">Vezi profil</a></li>
+                    <li><a href="logout.php">Deconectare</a></li>
+                    </ul>
+                    </li>';
+                echo '<li><a href="#footer">Contact</a></li>
+                </ul>
+            </div>
           </div>
-          <!-- Main Content -->
-          <div class="col-md-10">
-              <header>
-                  <nav class="navbar navbar-default navbar-shadow">
-                      <div class="container">
-                          <div class="navbar-header">
-                          </div>
-                          <div id="navbar" class="collapse navbar-collapse">
-                              <ul class="nav navbar-nav">
-                                  <li><a href="../index.php">Acasă</a></li>
-                                  <li class="dropdown">
-                                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                          <i class="fa fa-user-circle-o" aria-hidden="true"></i> Profil <span class="caret"></span></a>
-                                      <ul class="dropdown-menu">
-                                          <li><a href="profile.php">Vezi profil</a></li>
-                                          <li><a href="logout.php">Deconectare</a></li>
-                                      </ul>
-                                  </li>
-                                  <li><a href="#footer">Contact</a></li>
-                              </ul>
-                          </div>
-                      </div>
-                  </nav>
-              </header>
-              <!-- Main content goes here -->
-          </div>
-      </div>
-  </div>
-      ';
+        </nav>
+      </header>';
     }
   ?>
         <?php
+        if($user_id != 1){
           $sql = "SELECT * FROM reservations WHERE user_id = '$user_id'";
           $results = mysqli_query($connect, $sql);
-          while ($row = $results->fetch_assoc()){
-            $reservation_id = $row['reservation_id'];
-            $reservation_date = $row['reservation_date'];
-            $return_date = $row['return_date'];
-            $book_id = $row['book_id'];
-            $sql = "SELECT * FROM books WHERE book_id = '$book_id'";
-            $results_title = mysqli_query($connect, $sql);
-            while ($row_title = $results_title->fetch_assoc()){
-              $book_title = $row_title['title'];
-              echo '<div class="container" style="background-color:red;">
+          while ($row = $results->fetch_assoc()) {
+              $reservation_id = $row['reservation_id'];
+              $reservation_date = $row['reservation_date'];
+              $return_date = $row['return_date'];
+              $book_id = $row['book_id'];
+              $sql = "SELECT * FROM books WHERE book_id = '$book_id'";
+              $results_title = mysqli_query($connect, $sql);
+              while ($row_title = $results_title->fetch_assoc()) {
+                  $book_title = $row_title['title'];
+                  $book_picture = $row_title['book_picture'];
+              echo '<div class="container">
               <div class="row">
                 <div class="col-md-12">
                   <div class="card-module">
@@ -139,15 +125,51 @@
               if($return_date <= date("Y-m-d")){
                 echo "Această carte trebuie returnată!";
               }
-                echo "<p>$book_title</p>
-                  <p>De la: $reservation_date</p>
-                  <p>Pana la: $return_date</p>
+              echo "<img src='$book_picture' alt='$book_title' style='max-width: 50%; height: 50%;'>";
+              echo "<p style='font-size:22px; margin-top:15px;'>$book_title</p>
+                  <p>Această carte a fot rezervată de la data de $reservation_date</p>
+                  <p>Cartea trebuie returnată în data de $return_date</p>
                   <input type = 'hidden' name = 'reservation_id' value = '$reservation_id'>
                   <input type = 'hidden' name = 'book_id' value = '$book_id'>
-                  <button name='return' class='search-bar__button' type='submit'>
+                  <button name='return' class='search-bar__button' type='submit'>Returnare
               </form></div></div></div></div></div>";
             }
           }
+        }elseif($user_id == 1){
+          $sql = "SELECT r.*, u.firstname AS user_firstname, u.lastname AS user_lastname FROM reservations r JOIN users u ON r.user_id = u.user_id";
+          $results = mysqli_query($connect, $sql);
+          while ($row = $results->fetch_assoc()){
+            $firstname = $row['user_firstname'];
+            $lastname = $row['user_lastname'];
+            $reservation_id = $row['reservation_id'];
+            $reservation_date = $row['reservation_date'];
+            $return_date = $row['return_date'];
+            $book_id = $row['book_id'];
+            $sql = "SELECT * FROM books WHERE book_id = '$book_id'";
+            $results_title = mysqli_query($connect, $sql);
+            while ($row_title = $results_title->fetch_assoc()){
+              $book_title = $row_title['title'];
+              $book_picture = $row_title['book_picture'];
+              echo '<div class="container">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card-module">
+                    <div class="card-content">
+                    <form action ="" method = "POST">';
+              if($return_date <= date("Y-m-d")){
+                echo "Această carte trebuie returnată!";
+              }
+              echo "<img src='$book_picture' alt='$book_title' style='max-width: 50%; height: 50%;'>";
+                echo "<p style='font-size:22px; margin-top:15px;'>$book_title</p>
+                  <p>Utilizator: $lastname $firstname</p>
+                  <p>Cartea este împrumutată de la data de $reservation_date</p>
+                  <p>Cartea trebuie returnată la data de $return_date</p>
+                  <input type = 'hidden' name = 'reservation_id' value = '$reservation_id'>
+                  <input type = 'hidden' name = 'book_id' value = '$book_id'>
+              </form></div></div></div></div></div>";
+            }
+          }
+        }
         ?>
 
 <style>
@@ -158,48 +180,7 @@
     text-decoration: none;
     list-style: none;
 }
-.sidenav a {
-  padding: 8px 8px 8px 32px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
-  transition: 0.3s;
-}
 
-.sidenav a:hover {
-  color: #f1f1f1;
-}
-
-.sidenav .closebtn {
-  position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 36px;
-  margin-left: 50px;
-}
-.sidenav {
-    background-color: #808088; /* Set your desired background color */
-    height:800px;
-}
-
-/* Style for the navigation items */
-.sidenav .nav-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    padding-left:15px; /* Add some spacing between items */
-}
-
-.sidenav .nav-item i {
-    margin-right: 10px; /* Add spacing between icon and text */
-}
-
-.sidenav .nav-link {
-    text-decoration: none;
-    color: #333; /* Set your desired text color */
-    font-size: 14px; /* Set your desired font size */
-}
   .navbar-default{
     margin-bottom:0;
     border:none;
@@ -212,6 +193,8 @@
     position:relative;
     min-height:50px;
     margin-bottom:20px;
+    width: 100%;
+    top: 0;
   }
   .container{
     max-width:1280px;
@@ -252,6 +235,44 @@
     font-size: 16px;
     margin-top:10px;
   }
+  .card-module {
+    margin: 0 auto; /* Center horizontally */
+    background-color: #fff;
+    border-radius: 3px;
+    padding: 25px;
+    margin-bottom: 100px;
+    margin-top: 50px;
+    width: 50%;
+    height: 600px;
+    box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
+    -moz-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
+    -webkit-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
+    display: flex; /* Apply flexbox */
+    flex-direction: column; /* Align children vertically */
+    justify-content: center; /* Center children vertically */
+}
+.card-content{
+  margin-bottom: 15px;
+  word-wrap: break-word;
+  text-align: center;
+  width:700px;
+}
+.card-module {
+  /* Restul stilurilor existente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.search-bar__button {
+    background-color: #D0D0D0;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    padding: 6px 12px;
+    font-size: 16px;
+    margin-right: 10px; /* Adjust this margin to control spacing between icon and input */
+}
   #footer {
     background-color: #B8B8B8;
     color: #fff;
@@ -262,17 +283,6 @@
     width: 100%;
 }
 </style>
-<script>
-  function openNav() {
-  document.getElementById("mySidenav").style.width = "250px";
-  document.getElementById("navbar navbar-default navbar-shadow").style.marginLeft = "250px";
-}
-
-function closeNav() {
-  document.getElementById("mySidenav").style.width = "0";
-  document.getElementById("navbar navbar-default navbar-shadow").style.marginLeft= "0";
-}
-</script>
 </body>
 <footer id="footer">
   <div class="container" style="height:350px;">

@@ -1,5 +1,5 @@
 <?php
-  include '../conn.php';
+ include '../conn.php';
   error_reporting(0);
   session_start();
   $user_id = "";
@@ -21,13 +21,13 @@
 
   if (isset($_POST['search_button'])) {
     $searchTerm = mysqli_real_escape_string($connect, $_POST['search']);
-    $sql = "SELECT a.title, a.publishing_year, a.price, a.pages, a.author_id, a.category_id, a.age, a.book_picture, au.firstname AS firstname, au.lastname AS lastname, c.name AS name
+    $sql = "SELECT a.book_id, a.title, a.publishing_year, a.price, a.pages, a.author_id, a.category_id, a.age, a.book_picture, au.firstname AS firstname, au.lastname AS lastname, c.name AS name
         FROM books a
         JOIN authors au ON a.author_id = au.author_id
         JOIN category c ON a.category_id = c.category_id
         WHERE a.title LIKE '%$searchTerm%'";
 } else {
-    $sql = "SELECT a.title, a.publishing_year, a.price, a.pages, a.author_id, a.category_id, a.age, a.book_picture, au.firstname AS firstname, au.lastname AS lastname, c.name AS name
+    $sql = "SELECT a.book_id, a.title, a.publishing_year, a.price, a.pages, a.author_id, a.category_id, a.age, a.book_picture, au.firstname AS firstname, au.lastname AS lastname, c.name AS name
         FROM books a JOIN authors au ON a.author_id = au.author_id JOIN category c ON a.category_id = c.category_id
         LIMIT $offset, $booksPerPage";
 }
@@ -44,9 +44,15 @@
     $books_array[$i]['author_lastname']=$row['lastname'];
     $books_array[$i]['name']=$row['name'];
     $books_array[$i]['book_picture'] = $row['book_picture'];
+    $books_array[$i]['book_id'] = $row['book_id'];
     $i++;
   }
-  
+  if(isset($_POST['see_more'])) {
+    $one_book = $_POST['one_book'];
+    $_SESSION['one_book'] = $one_book;
+    header("Location: one_book.php");
+  }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -113,6 +119,14 @@
         for ($i = 0; $i < count($books_array); $i++) {
             echo '<div class="col-xs-12 col-sm-6 col-md-4">';
             echo '<div class="card">';
+            if($user_id != null){
+            echo "<form action='' method='POST'>";
+                  echo "<div class=container style='background-color:grey;'>";
+                  echo '<input type="hidden" name="one_book" value="' . $books_array[$i]['book_id'] . '" />';
+                  echo "</div>";
+                  echo "<button name='see_more' class='search-bar__button' type='submit'>Rezervă</button>";
+                  echo "</form>";
+            }
             echo '<img src="' . $books_array[$i]['book_picture'] . '" class="card-img-top" alt="' . $books_array[$i]['title'] . '">';
             echo '<div class="card-body text-center">';
             echo '<h5 class="card-title">' . $books_array[$i]['title'] . '</h5>';
@@ -123,7 +137,6 @@
             echo '<p>Publishing Year: ' . $books_array[$i]['publishing_year'] . '</p>';
             echo '<p>Price: ' . $books_array[$i]['price'] . '</p>';
             echo '<p>Pages: ' . $books_array[$i]['pages'] . '</p>';
-            // Adăugați alte detalii aici
             echo '</div>';
             echo '</div>';
             echo '</div>';
@@ -274,7 +287,7 @@
 .card-title {
     font-size: 24px;
     margin-top: 15px;
-    
+
 }
 
 .card-text {
@@ -339,7 +352,7 @@ input:focus {
         });
     });
 </script>
-<footer id="footer"> 
+<footer id="footer">
   <div class="container" style="height:350px;">
     <div class="row">
       <div class="column" style="background-color:#B8B8B8; margin-left:55px;">
@@ -421,7 +434,7 @@ input:focus {
   width: 33.33%;
   padding: 10px;
   height: 200px;
-  margin-top:5px; 
+  margin-top:5px;
 }
 
 /* Clear floats after the columns */

@@ -209,7 +209,6 @@ if ($user_id != 1) {
                   echo "<div class=container style='background-color:grey;'>";
           
                   // Output the book title within a <p> tag
-                  echo "<p>$title</p>";
           
                   // Use a hidden input to store the book_id value
                   echo "<input type='hidden' name='one_book' value='$book_id' />";
@@ -218,7 +217,7 @@ if ($user_id != 1) {
                   echo "</div>";
           
                   // Submit button (a button within a form should be of type 'submit')
-                  echo "<button name='see_more' class='search-bar__button' type='submit'>Vezi aici</button>";
+                  echo "<button name='see_more' class='search-bar__button' type='submit'>Cartea ta te așteaptă aici</button>";
           
                   // Close the form
                   echo "</form>";
