@@ -218,7 +218,7 @@ if ($user_id != 1) {
                   echo "</div>";
           
                   // Submit button (a button within a form should be of type 'submit')
-                  echo "<button name='see_more' class='search-bar__button' type='submit'>See More</button>";
+                  echo "<button name='see_more' class='search-bar__button' type='submit'>Vezi aici</button>";
           
                   // Close the form
                   echo "</form>";

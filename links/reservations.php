@@ -130,7 +130,12 @@
             $results_title = mysqli_query($connect, $sql);
             while ($row_title = $results_title->fetch_assoc()){
               $book_title = $row_title['title'];
-              echo "<div style='background-color:green'><form action ='' method = 'POST'>";
+              echo '<div class="container" style="background-color:red;">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card-module">
+                    <div class="card-content">
+                    <form action ="" method = "POST">';
               if($return_date <= date("Y-m-d")){
                 echo "Această carte trebuie returnată!";
               }
@@ -140,7 +145,7 @@
                   <input type = 'hidden' name = 'reservation_id' value = '$reservation_id'>
                   <input type = 'hidden' name = 'book_id' value = '$book_id'>
                   <button name='return' class='search-bar__button' type='submit'>
-              </form></div>";
+              </form></div></div></div></div></div>";
             }
           }
         ?>

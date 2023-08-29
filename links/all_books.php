@@ -19,9 +19,18 @@
 
   $offset = ($currentPage - 1) * $booksPerPage;
 
-  $sql = "SELECT a.title, a.publishing_year, a.price, a.pages, a.author_id, a.category_id, a.age, a.book_picture, au.firstname AS firstname, au.lastname AS lastname, c.name AS name
+  if (isset($_POST['search_button'])) {
+    $searchTerm = mysqli_real_escape_string($connect, $_POST['search']);
+    $sql = "SELECT a.title, a.publishing_year, a.price, a.pages, a.author_id, a.category_id, a.age, a.book_picture, au.firstname AS firstname, au.lastname AS lastname, c.name AS name
+        FROM books a
+        JOIN authors au ON a.author_id = au.author_id
+        JOIN category c ON a.category_id = c.category_id
+        WHERE a.title LIKE '%$searchTerm%'";
+} else {
+    $sql = "SELECT a.title, a.publishing_year, a.price, a.pages, a.author_id, a.category_id, a.age, a.book_picture, au.firstname AS firstname, au.lastname AS lastname, c.name AS name
         FROM books a JOIN authors au ON a.author_id = au.author_id JOIN category c ON a.category_id = c.category_id
         LIMIT $offset, $booksPerPage";
+}
   $result = mysqli_query($connect, $sql);
   $i = 0;
   $books_array = array();
@@ -92,22 +101,22 @@
     }
   ?>
 </body>
-<div class="container">
-    <div class="row">
-    <form action="" method="POST" class="search-bar">
-          <button name="search_button" class="search-bar__button" type="submit">
-          <i class="fa fa-search search-icon" style="border-right: 1px solid #888888; position:relative; padding-right:15px;"></i>
-          </button>
-          <input class="search-bar__bar" type="text" name="search" id="search"/>
-          </form>
+<div class="container" style="padding-top:50px;padding-bottom:50px;">
+  <form action="" method="POST" class="search-bar" style="width:600px; margin-bottom:50px;margin-left:350px;">
+    <button name="search_button" class="search-bar__button" type="submit">
+      <i class="fa fa-search search-icon" style="border-right: 1px solid #888888; position:relative; padding-right:15px;"></i>
+    </button>
+    <input class="search-bar__bar" type="text" name="search" id="search"/>
+  </form>
+  <div class="row">
         <?php
         for ($i = 0; $i < count($books_array); $i++) {
-            echo '<div class="col-md-4">';
+            echo '<div class="col-xs-12 col-sm-6 col-md-4">';
             echo '<div class="card">';
             echo '<img src="' . $books_array[$i]['book_picture'] . '" class="card-img-top" alt="' . $books_array[$i]['title'] . '">';
-            echo '<div class="card-body">';
+            echo '<div class="card-body text-center">';
             echo '<h5 class="card-title">' . $books_array[$i]['title'] . '</h5>';
-            echo '<p class="card-text">Author: ' . $books_array[$i]['author_firstname'] . ' ' . $books_array[$i]['author_lastname'] . '</p>';
+            echo '<p class="card-text"> ' . $books_array[$i]['author_firstname'] . ' ' . $books_array[$i]['author_lastname'] . '</p>';
             echo '<a href="#" class="btn btn-primary btn-details">Detalii</a>';
             echo '</div>';
             echo '<div class="card-details hidden">';
@@ -188,38 +197,119 @@
     font-size: 16px;
     margin-top:10px;
   }
+  .search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #D0D0D0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    margin-right: 10px;
+    margin-top: 20px;
+}
+
+.search-bar__button {
+    background-color: #D0D0D0;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    padding: 6px 12px;
+    font-size: 16px;
+    margin-right: 10px; /* Adjust this margin to control spacing between icon and input */
+}
+
+.search-icon {
+    font-size: 20px;
+    color: #333; /* Culoarea pentru iconiță */
+}
+
+.search-bar__bar {
+    border: none;
+    padding: 5px;
+    width: 300px;
+    font-size: 16px;
+    color: #333; /* Culoarea pentru text */
+    background-color: #D0D0D0;
+    width: 500px;
+}
+
+.search-bar__button i {
+  font-size: 20px;
+  color: #888888;
+  font-weight: lighter;
+}
   .hidden {
     display: none;
 }
 .card {
     border: none;
-    margin-bottom: 20px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom:30px;
+  position: relative;
+  background-color: #fff;
+  border-radius: 3px;
+  padding: 25px;
+  margin-bottom: 15px;
+  width: 100%;
+  height:500px;
+  box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
+  -moz-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
+  -webkit-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
 }
-
+.card-body.text-center {
+    text-align: center;
+}
+.card-module img {
+    max-width: 100%; /* Asigură că imaginea nu depășește lățimea containerului */
+    height: auto; /* Păstrează proporțiile originale ale imaginii */
+}
 .card-img-top {
-    width: 100%;
-    height: 200px;
+    max-width: 60%; /* Asigură că imaginea nu depășește lățimea containerului */
+    height: 60%;
     object-fit: cover;
+    display: block; /* Add this line to center-align the image */
+    margin: 0 auto; /* Add this line to center-align the image */
 }
 
 .card-title {
-    font-size: 1.25rem;
-    margin-top: 10px;
+    font-size: 24px;
+    margin-top: 15px;
+    
 }
 
 .card-text {
-    font-size: 1rem;
+    font-size: 14px;
     color: #555;
 }
 
-.btn-primary {
-    background-color: #007bff;
+.btn {
+    background-color: #9ca1af;
+    color: #fff;
     border: none;
+    border-radius: 1;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    width: 300px;
+    margin-top:10px;
+}
+.btn-primary {
+    background-color: #337ab7;
+    border-color: #337ab7;
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
+    background-color: #286090;
+    border-color: #204d74;
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+input:focus {
+    outline: none;
 }
   #footer {
     background-color: #B8B8B8;

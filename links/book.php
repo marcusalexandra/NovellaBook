@@ -43,14 +43,44 @@
       $book_id = $row['book_id'];
     }
     $filename = $_FILES["uploadfile"]["name"];
-    $tempname = $_FILES["uploadfile"]["tmp_name"];
-    $extension = pathinfo($_FILES["uploadfile"]["name"], PATHINFO_EXTENSION);
-    $folder = '../photos/' . $book_id . '.' . $extension;
-    if($filename != NULL){
-      $sql = "UPDATE books SET book_picture = '$folder' WHERE book_id = '$book_id'";
-      mysqli_query($connect, $sql);
-      move_uploaded_file($tempname, $folder);
+$tempname = $_FILES["uploadfile"]["tmp_name"];
+$extension = pathinfo($_FILES["uploadfile"]["name"], PATHINFO_EXTENSION);
+$folder = '../photos/' . $book_id . '.' . $extension;
+
+// Redimensionare imagine
+$maxWidth = 300;
+$maxHeight = 300;
+list($width, $height) = getimagesize($tempname);
+$aspectRatio = $width / $height;
+
+if ($width > $maxWidth || $height > $maxHeight) {
+    if ($aspectRatio > 1) {
+        $newWidth = $maxWidth;
+        $newHeight = $maxWidth / $aspectRatio;
+    } else {
+        $newWidth = $maxHeight * $aspectRatio;
+        $newHeight = $maxHeight;
     }
+} else {
+    $newWidth = $width;
+    $newHeight = $height;
+}
+
+// Creează o nouă imagine redimensionată
+$newImage = imagecreatetruecolor($newWidth, $newHeight);
+$sourceImage = imagecreatefromjpeg($tempname); // Sau imagecreatefrompng, imagecreatefromgif în funcție de tipul de imagine
+imagecopyresampled($newImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+// Salvează imaginea redimensionată
+imagejpeg($newImage, $folder, 80); // Salvează imaginea în format JPEG cu calitate de 80%
+
+// Eliberează memoria
+imagedestroy($newImage);
+imagedestroy($sourceImage);
+
+// Actualizează calea imaginii în baza de date
+$sql = "UPDATE books SET book_picture = '$folder' WHERE book_id = '$book_id'";
+mysqli_query($connect, $sql);
   }
 ?>
 <!DOCTYPE html>
