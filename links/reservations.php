@@ -69,7 +69,7 @@
     }elseif($user_id == 1){
       //header nou
       echo'
-      <div class="container">
+      <div class="container-fluid">
       <div class="row">
           <!-- Sidebar -->
           <div class="col-md-2 sidenav">
@@ -96,7 +96,6 @@
                           </div>
                           <div id="navbar" class="collapse navbar-collapse">
                               <ul class="nav navbar-nav">
-                              <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>
                                   <li><a href="../index.php">Acasă</a></li>
                                   <li class="dropdown">
                                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
