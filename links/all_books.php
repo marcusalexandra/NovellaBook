@@ -119,24 +119,16 @@
         for ($i = 0; $i < count($books_array); $i++) {
             echo '<div class="col-xs-12 col-sm-6 col-md-4">';
             echo '<div class="card">';
-            if($user_id != null){
+            echo '<img src="' . $books_array[$i]['book_picture'] . '" class="card-img-top" alt="' . $books_array[$i]['title'] . '">';
+            echo '<div class="card-body text-center">';
+            echo '<h5 class="card-title">' . $books_array[$i]['title'] . '</h5>';
+            echo '<p class="card-text"> ' . $books_array[$i]['author_firstname'] . ' ' . $books_array[$i]['author_lastname'] . '</p>';
             echo "<form action='' method='POST'>";
                   echo "<div class=container style='background-color:grey;'>";
                   echo '<input type="hidden" name="one_book" value="' . $books_array[$i]['book_id'] . '" />';
                   echo "</div>";
                   echo "<button name='see_more' class='search-bar__button' type='submit'>Rezervă</button>";
                   echo "</form>";
-            }
-            echo '<img src="' . $books_array[$i]['book_picture'] . '" class="card-img-top" alt="' . $books_array[$i]['title'] . '">';
-            echo '<div class="card-body text-center">';
-            echo '<h5 class="card-title">' . $books_array[$i]['title'] . '</h5>';
-            echo '<p class="card-text"> ' . $books_array[$i]['author_firstname'] . ' ' . $books_array[$i]['author_lastname'] . '</p>';
-            echo '<a href="#" class="btn btn-primary btn-details">Detalii</a>';
-            echo '</div>';
-            echo '<div class="card-details hidden">';
-            echo '<p>Publishing Year: ' . $books_array[$i]['publishing_year'] . '</p>';
-            echo '<p>Price: ' . $books_array[$i]['price'] . '</p>';
-            echo '<p>Pages: ' . $books_array[$i]['pages'] . '</p>';
             echo '</div>';
             echo '</div>';
             echo '</div>';
@@ -334,24 +326,6 @@ input:focus {
     width: 100%;
 }
 </style>
-<script>
-    // Obțineți toate butoanele de detalii
-    var detailButtons = document.querySelectorAll('.btn-details');
-
-    // Iterați prin fiecare buton de detalii
-    detailButtons.forEach(function(button) {
-        button.addEventListener('click', function() {
-            // Găsiți elementul card părinte
-            var card = button.closest('.card');
-
-            // Găsiți elementul de detalii din card
-            var details = card.querySelector('.card-details');
-
-            // Comutați afișarea detaliilor
-            details.classList.toggle('hidden');
-        });
-    });
-</script>
 <footer id="footer">
   <div class="container" style="height:350px;">
     <div class="row">

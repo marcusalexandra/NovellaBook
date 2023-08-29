@@ -94,33 +94,6 @@ mysqli_query($connect, $sql);
   <title>Adaugă o carte</title>
 </head>
 <body style="background-color: #e4e5e6;">
-<header>
-	<nav>
-		<ul class="navbar__links">
-			<li><a href="../index.php">Acasă</a></li>
-      <?php
-      if($user_id == null){
-          echo '<li><a href="login.php">Rezervări</a></li>
-                <li><a href="login.php">Profil</a></li>
-                <li><a href="login.php">Conectare</a></li>';
-        }
-        else {
-          if($user_id == 1) {
-            echo '<li><a href="books.php">Cărți</a></li>
-                  <li><a href="book.php">Adaugă carte</a></li>
-                  <li><a href="authors_publications.php">Autori și publicații</a></li>
-                  <li><a href="users.php">Utilizatori</a></li>';
-
-          }
-          echo '<li><a href="reservations.php">Rezervări</a></li>
-                <li><a href="profile.php">Profil</a></li>
-                <li><a href="logout.php">Deconectare</a></li>';
-        }
-        ?>
-			<li><a href="#footer">Contact</a></li>
-		</ul>
-	</nav>
-</header>
 <div class="container">
   <div class="row">
     <div class="col-md-12">
@@ -251,7 +224,8 @@ mysqli_query($connect, $sql);
   background-color: #fff;
   border-radius: 3px;
   padding: 25px;
-  margin-bottom: 15px;
+  margin-bottom: 100px;
+  margin-top: 100px;
   width: 100%;
   height:1000px;
   box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);

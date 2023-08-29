@@ -132,5 +132,64 @@
     }
   }
 ?>
+<?php
+  if ($book != null) {
+    echo '<table border="1" cellpadding="5" cellspacing="0">
+      <tr>
+        <th>Titlu</th>
+        <th>Anul Publicării</th>
+        <th>Preț</th>
+        <th>Limbă</th>
+        <th>Email Autor</th>
+        <th>Prenume Autor</th>
+        <th>Nume Autor</th>
+        <th>Telefon Autor</th>
+        <th>Categorie</th>
+        <th>Email Editor</th>
+        <th>Nume Editor</th>
+        <th>Telefon Editor</th>
+        <th>Acțiuni</th>
+      </tr>';
+
+    $count = count($book);
+    for ($j = 0; $j < $count; $j++) {
+      // ... Restul codului
+
+      // Output the table rows
+      echo "<tr>
+        <td>$title</td>
+        <td>$publishing_year</td>
+        <td>$price</td>
+        <td>$language</td>
+        <td>$email</td>
+        <td>$firstname</td>
+        <td>$lastname</td>
+        <td>$author_phone</td>
+        <td>$category_name</td>
+        <td>$publisher_email</td>
+        <td>$publisher_name</td>
+        <td>$publisher_phone</td>
+        <td>
+          <!-- Adaugă un buton de ștergere pentru fiecare carte -->
+          <form action='' method='POST'>
+            <input type='hidden' name='book_delete' value='$book_id' />
+            <button name='delete' class='search-bar__button' type='submit'>Delete</button>
+          </form>
+          <form action='edit_book.php' method='GET'>
+            <input type='hidden' name='book_id' value='$book_id' />
+            <button class='search-bar__button' type='submit'>Editează</button>
+          </form>
+        </td>
+      </tr>";
+    }
+
+    echo '</table>';
+  }
+  ?>
+  <div>
+    <form action='book.php' method='GET'>
+      <button class='search-bar__button' type='submit'>Adaugă o carte</button>
+    </form>
+  </div>
 </body>
 </html>

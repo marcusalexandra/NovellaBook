@@ -35,9 +35,9 @@
       $sql = "SELECT *  FROM publisher WHERE publisher_id = '$publisher_id'";
       $result_publisher = mysqli_query($connect, $sql);
       while($row_publisher = $result_publisher -> fetch_assoc()) {
-        $books_array['publisher_name'] = $row_publisher["publiser_name"];
-        $books_array['publisher_email'] = $row_publisher["publiser_email"];
-        $books_array['publisher_phone'] = $row_publisher["publiser_phone"];
+        $books_array['publisher_name'] = $row_publisher["publisher_name"];
+        $books_array['publisher_email'] = $row_publisher["publisher_email"];
+        $books_array['publisher_phone'] = $row_publisher["publisher_phone"];
       }
       $books_array['description']=$row['description'];
     }
@@ -105,7 +105,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> <!-- Add this line for the sidebar icons -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
   <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -207,6 +208,40 @@ input[type="text"] {
           </div>
         </nav>
       </header>';
+    }elseif($user_id == 1){
+      //header nou
+      echo'<header>
+        <nav class="navbar navbar-default navbar-shadow">
+          <div class="container">
+            <div class="navbar-header">
+              <div class="logo-container">
+                <a href="../index.php">
+                  <img class="logo" src="../Images/logo.png" alt="logo" style="width:120px; height:70px;">
+                </a>
+              </div>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="../index.php">Acasă</a></li>';
+                  echo '<li><a href="books.php">Cărți</a></li>
+                  <li><a href="book.php">Adaugă carte</a></li>
+                  <li><a href="authors_publications.php">Autori și publicații</a></li>
+                  <li><a href="users.php">Utilizatori</a></li>';
+                echo '<li><a href="reservations.php">Rezervări</a></li>
+                    <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-user-circle-o" aria-hidden="true"></i> Profil <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                    <li><a href="profile.php">Vezi profil</a></li>
+                    <li><a href="logout.php">Deconectare</a></li>
+                    </ul>
+                    </li>';
+                echo '<li><a href="#footer">Contact</a></li>
+                </ul>
+            </div>
+          </div>
+        </nav>
+      </header>';
     }
   ?>
 
@@ -214,9 +249,31 @@ input[type="text"] {
 
           $title = $books_array['title'];
           $photo = $books_array['photo'];
+          print_r($photo);
           echo "<div style= 'background-color:blue;'><p>$title</p></div>";
-          echo "<img src='$photo' style = 'height:90px; width:90px;' alt='$title'>";
+          echo "<img src='$photo' style='height: 90px; width: 90px;' alt='$title'>";
+          echo '<br>';
+          echo "<p>Price: " . $books_array['price'] . "</p>";
+          echo "<p>Age: " . $books_array['age'] . "</p>";
+          echo "<p>Pages: " . $books_array['pages'] . "</p>";
+          echo "<p>Language: " . $books_array['language'] . "</p>";
+          echo "<p>Publishing year: " . $books_array['publishing_year'] . "</p>";
+          echo "<p>Publisher name: " . $books_array["publisher_name"] . "</p>";
+          if($books_array["publisher_phone"] != null){
+            echo "<p>Publisher phone: " . $books_array["publisher_phone"] . "</p>";
+          }
 
+          if($books_array["publisher_email"] != null ){
+              echo "<p>Publisher email: " . $books_array["publisher_email"] . "</p>";
+          }
+
+          echo "<p>Author name: " . $books_array['author_firstname'] . " " . $books_array['author_lastname']. "</p>";
+          if($books_array["author_email"] != null){
+            echo "<p>Author email: " . $books_array["author_email"] . "</p>";
+          }
+          if($books_array["author_phone"] != null){
+            echo "<p>Author phone: " . $books_array["author_phone"] . "</p>";
+          }
         ?>
         <?php
         if($user_id != NULL){
@@ -361,3 +418,4 @@ input[type="text"] {
 </style>
 </body>
 </html>
+Scrie pentru David Pituțiu

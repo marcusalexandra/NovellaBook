@@ -136,8 +136,8 @@
               <ul class="nav navbar-nav">
                 <li><a href="index.php">Acasă</a></li>';
                   echo '<li><a href="links/books.php">Cărți</a></li>
-                  <li><a href="links/book.php">Adaugă carte</a></li>
                   <li><a href="links/authors_publications.php">Autori și publicații</a></li>
+                  <li><a href="links/authors.php">Autori</a></li>
                   <li><a href="links/users.php">Utilizatori</a></li>';
                 echo '<li><a href="links/reservations.php">Rezervări</a></li>
                     <li class="dropdown">

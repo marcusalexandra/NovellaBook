@@ -73,19 +73,19 @@
           <div class="container">
             <div class="navbar-header">
               <div class="logo-container">
-                <a href="index.php">
+                <a href="../index.php">
                   <img class="logo" src="../Images/logo.png" alt="logo" style="width:120px; height:70px;">
                 </a>
               </div>
             </div>
             <div id="navbar" class="collapse navbar-collapse">
               <ul class="nav navbar-nav">
-                <li><a href="index.php">Acasă</a></li>';
-                  echo '<li><a href="links/books.php">Cărți</a></li>
-                  <li><a href="links/book.php">Adaugă carte</a></li>
-                  <li><a href="links/authors_publications.php">Autori și publicații</a></li>
-                  <li><a href="links/users.php">Utilizatori</a></li>';
-                echo '<li><a href="links/reservations.php">Rezervări</a></li>
+                <li><a href="../index.php">Acasă</a></li>';
+                  echo '<li><a href="books.php">Cărți</a></li>
+                  <li><a href="book.php">Adaugă o carte</a></li>
+                  <li><a href="authors_publications.php">Autori și publicații</a></li>
+                  <li><a href="users.php">Utilizatori</a></li>';
+                echo '<li><a href="reservations.php">Rezervări</a></li>
                     <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-user-circle-o" aria-hidden="true"></i> Profil <span class="caret"></span></a>
