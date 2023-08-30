@@ -81,12 +81,19 @@
             <div id="navbar" class="collapse navbar-collapse">
               <ul class="nav navbar-nav">
                 <li><a href="../index.php">Acasă</a></li>';
-                  echo '<li><a href="books.php">Cărți</a></li>
-                  <li><a href="book.php">Adaugă o carte</a></li>
-                  <li><a href="authors_publications.php">Autori și publicații</a></li>
-                  <li><a href="users.php">Utilizatori</a></li>';
-                echo '<li><a href="reservations.php">Rezervări</a></li>
-                    <li class="dropdown">
+                echo '<li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-users" aria-hidden="true"></i> Gestiuni <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                <li><a href="books.php">Cărți</a></li>
+                <li><a href="authors.php">Autori</a></li>
+                <li><a href="categories.php">Categorii</a></li>
+                <li><a href="publishers.php">Edituri</a></li>
+                <li><a href="users.php">Utilizatori</a></li>
+                <li><a href="reservations.php">Rezervări</a></li>
+                </ul>
+                  </li>';
+                echo '<li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-user-circle-o" aria-hidden="true"></i> Profil <span class="caret"></span></a>
                     <ul class="dropdown-menu">

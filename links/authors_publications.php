@@ -67,33 +67,11 @@
 </head>
 <body style="background-color: #e4e5e6;">
 <header>
-	<nav>
-		<ul class="navbar__links">
-			<li><a href="../index.php">Acasă</a></li>
-      <?php
-        if($user_id == null){
-          echo '<li><a href="login.php">Rezervări</a></li>
-                <li><a href="login.php">Profil</a></li>
-                <li><a href="login.php">Conectare</a></li>';
-        }
-        else {
-          if($user_id == 1) {
-            echo '<li><a href="books.php">Cărți</a></li>
-                  <li><a href="book.php">Adaugă carte</a></li>
-                  <li><a href="authors_publications.php">Autori și publicații</a></li>
-                  <li><a href="users.php">Utilizatori</a></li>';
-
-          }
-          echo '<li><a href="reservations.php">Rezervări</a></li>
-                <li><a href="profile.php">Profil</a></li>
-                <li><a href="logout.php">Deconectare</a></li>';
-        }
-        ?>
-			<li><a href="#footer">Contact</a></li>
-		</ul>
-	</nav>
+  <a href="authors.php">
+    <i class="fa fa-arrow-left" aria-hidden="true" style="padding:50px; position:relative; font-size:25px; color:#333;"></i>
+  </a>
 </header>
-<div class="container">
+<div class="container" style="margin-top:20px;">
   <div class="row">
     <div class="col-xs-12 col-sm-6 col-md-4 text-center">
       <div class="card-module">

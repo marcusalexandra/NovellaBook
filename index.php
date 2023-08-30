@@ -135,12 +135,19 @@
             <div id="navbar" class="collapse navbar-collapse">
               <ul class="nav navbar-nav">
                 <li><a href="index.php">Acasă</a></li>';
-                  echo '<li><a href="links/books.php">Cărți</a></li>
-                  <li><a href="links/authors_publications.php">Autori și publicații</a></li>
+                  echo '<li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-users" aria-hidden="true"></i> Gestiuni <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                  <li><a href="links/books.php">Cărți</a></li>
                   <li><a href="links/authors.php">Autori</a></li>
-                  <li><a href="links/users.php">Utilizatori</a></li>';
-                echo '<li><a href="links/reservations.php">Rezervări</a></li>
-                    <li class="dropdown">
+                  <li><a href="links/categories.php">Categorii</a></li>
+                  <li><a href="links/publishers.php">Edituri</a></li>
+                  <li><a href="links/users.php">Utilizatori</a></li>
+                  <li><a href="links/reservations.php">Rezervări</a></li>
+                  </ul>
+                    </li>';
+                echo '<li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-user-circle-o" aria-hidden="true"></i> Profil <span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -233,11 +240,13 @@ if ($user_id != 1) {
   $sql_users = "SELECT COUNT(*) as users_count FROM users";
   $sql_publishers = "SELECT COUNT(*) as publisher_count FROM publisher";
   $sql_books = "SELECT COUNT(*) as book_count FROM books";
+  
 
   $result_authors = mysqli_query($connect, $sql_authors);
   $result_users = mysqli_query($connect, $sql_users);
   $result_publishers = mysqli_query($connect, $sql_publishers);
   $result_books = mysqli_query($connect, $sql_books);
+  
 
   $row_authors = $result_authors->fetch_assoc();
   $row_users = $result_users->fetch_assoc();
@@ -248,13 +257,32 @@ if ($user_id != 1) {
   $users_number = $row_users['users_count'];
   $publisher_number = $row_publishers['publisher_count'];
   $book_number = $row_books['book_count'];
-    echo '<div>';
-        echo '<h2>Statistici ale bazei de date</h2>';
-        echo '<p>Numărul total de autori: ' . $authors_number . '</p>';
-        echo '<p>Numărul total de utilizatori: ' . $users_number . '</p>';
-        echo '<p>Numărul total de edituri: ' . $publisher_number . '</p>';
-        echo '<p>Numărul total de cărți: ' . $book_number . '</p>';
+echo '<div class="container">';
+echo '  <div class="row justify-content-center">';
+echo '    <div class="col-md-12 text-center" style="margin-top:50px; margin-bottom:50px;">';
+echo '      <h2>Statistici ale bazei de date</h2>';
+echo '    </div>';
+echo '  </div>';
+echo '  <div class="row text-center" style="padding-left:65px;">';
+
+// Iterați prin fiecare categorie și afișați coloanele cu butoane de detalii
+$categories = array(
+    array("Numărul total de autori", $authors_number, "links/authors.php"),
+    array("Numărul total de utilizatori", $users_number, "links/users.php"),
+    array("Numărul total de edituri", $publisher_number, "links/publishers.php"),
+    array("Numărul total de cărți", $book_number, "links/books.php")
+);
+
+foreach ($categories as $category) {
+    echo '<div class="col-sm-4" style=" width: 23%; padding: 10px; height: 250px; background-color:#fff; margin: 5px 5px 5px 5px; padding:25px 25px 25px 25px; box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16); -moz-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16); -webkit-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);border-radius: 5px;">';
+    echo '  <p style="font-size:17px;"><i class="fa fa-address-book" aria-hidden="true" style="margin-right:12px;"></i>' . $category[0] . '<br><br><p class="category-number">' . $category[1] . '</p>';
+    echo '  <a href="' . $category[2] . '" class="btn btn-transparent">Detalii</a>'; // Adăugați butonul de detalii cu link-ul corespunzător
     echo '</div>';
+}
+
+echo '  </div>';
+echo '</div>';
+
 }
 ?>
 
@@ -265,6 +293,25 @@ if ($user_id != 1) {
     box-sizing: border-box;
     text-decoration: none;
     list-style: none;
+}
+.category-number {
+    font-size: 30px; /* Ajustează mărimea fontului după preferințele tale */
+    color: #333; /* Schimbă culoarea textului la gri */
+}
+.btn-transparent {
+    color: #333;
+    background-color: transparent;
+    border: 2px solid #D0D0D0;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    margin-top:60px;
+    width:100%;
+}
+
+.btn-transparent:hover {
+    background-color: #D0D0D0;
+    color: #333;
+    text-decoration: none;
 }
 .input-group-row {
   display: flex;
@@ -498,6 +545,57 @@ input:focus {
   box-sizing: border-box;
   color: #666; /* Lighter font color */
 }
+@media only screen and (max-width: 767px) {
+    /* Adjust font size for smaller screens */
+    h1 {
+      font-size: 40px;
+    }
+
+    /* Center-align search bar elements */
+    .search-bar {
+      justify-content: center;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+
+    /* Adjust input column widths for better layout */
+    .input-group-row {
+      flex-direction: column;
+      width: auto;
+      margin-top: 10px;
+    }
+
+    .input-column {
+      width: 100%;
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+
+    /* Reduce padding for navbar items */
+    .navbar-nav>li>a {
+      padding: 15px 20px;
+      font-size: 14px;
+      margin-top: 0;
+    }
+
+    /* Adjust corner image size */
+    .corner-image {
+      width: 200px;
+      min-width: auto;
+      max-width: 100%;
+      margin-top: 10px;
+    }
+  }
+
+  /* Add more media query adjustments for other breakpoints */
+  @media only screen and (max-width: 479px) {
+    /* Example adjustments for even smaller screens */
+    h1 {
+      font-size: 30px;
+    }
+
+    /* ... */
+  }
 </style>
 </body>
 <footer id="footer"> 

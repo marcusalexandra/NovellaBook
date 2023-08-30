@@ -127,7 +127,7 @@
                   echo "<div class=container style='background-color:grey;'>";
                   echo '<input type="hidden" name="one_book" value="' . $books_array[$i]['book_id'] . '" />';
                   echo "</div>";
-                  echo "<button name='see_more' class='search-bar__button' type='submit'>Rezervă</button>";
+                  echo "<button name='see_more' class='search-bar__button' type='submit'style='color:#333; width:300px; margin-top:30px;'>Detalii</button>";
                   echo "</form>";
             echo '</div>';
             echo '</div>';

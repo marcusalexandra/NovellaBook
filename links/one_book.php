@@ -14,6 +14,7 @@
       $books_array['price']=$row['price'];
       $books_array['age'] = $row ['age'];
       $books_array['pages'] = $row['pages'];
+      $books_array['description'] = $row['description'];
       $books_array['language']=$row['language'];
       $books_array['photo'] = $row['book_picture'];
       $author_id = $row['author_id'];
@@ -134,7 +135,7 @@
 
   var reserved_dates = <?php echo json_encode($reserved_dates); ?>;
 </script>
-<title>Rezervare carte</title>
+<title>Detalii carte</title>
   <style>
   label {
   display: block;
@@ -224,7 +225,6 @@ input[type="text"] {
               <ul class="nav navbar-nav">
                 <li><a href="../index.php">Acasă</a></li>';
                   echo '<li><a href="books.php">Cărți</a></li>
-                  <li><a href="book.php">Adaugă carte</a></li>
                   <li><a href="authors_publications.php">Autori și publicații</a></li>
                   <li><a href="users.php">Utilizatori</a></li>';
                 echo '<li><a href="reservations.php">Rezervări</a></li>
@@ -245,75 +245,114 @@ input[type="text"] {
     }
   ?>
 
-        <?php
+<?php
+$title = $books_array['title'];
+$photo = $books_array['photo'];
+echo '<div class="card-container">
+  <div class="card-image">
+    <img src="' . $photo . '" style="max-height: 300px; width: 100%;" alt="' . $title . '">
+  </div>
+  <div class="card-content">
+  <div class="book-details">
+      <div class="book-details-content">
+    <div class="card-title"><p>' . $title . '</p></div>';
 
-          $title = $books_array['title'];
-          $photo = $books_array['photo'];
-          print_r($photo);
-          echo "<div style= 'background-color:blue;'><p>$title</p></div>";
-          echo "<img src='$photo' style='height: 90px; width: 90px;' alt='$title'>";
-          echo '<br>';
-          echo "<p>Price: " . $books_array['price'] . "</p>";
-          echo "<p>Age: " . $books_array['age'] . "</p>";
-          echo "<p>Pages: " . $books_array['pages'] . "</p>";
-          echo "<p>Language: " . $books_array['language'] . "</p>";
-          echo "<p>Publishing year: " . $books_array['publishing_year'] . "</p>";
-          echo "<p>Publisher name: " . $books_array["publisher_name"] . "</p>";
-          if($books_array["publisher_phone"] != null){
-            echo "<p>Publisher phone: " . $books_array["publisher_phone"] . "</p>";
-          }
+if ($books_array["publisher_phone"] != null) {
+    echo "<p>Publisher phone: " . $books_array["publisher_phone"] . "</p>";
+}
 
-          if($books_array["publisher_email"] != null ){
-              echo "<p>Publisher email: " . $books_array["publisher_email"] . "</p>";
-          }
+if ($books_array["publisher_email"] != null) {
+    echo "<p>Publisher email: " . $books_array["publisher_email"] . "</p>";
+}
 
-          echo "<p>Author name: " . $books_array['author_firstname'] . " " . $books_array['author_lastname']. "</p>";
-          if($books_array["author_email"] != null){
-            echo "<p>Author email: " . $books_array["author_email"] . "</p>";
-          }
-          if($books_array["author_phone"] != null){
-            echo "<p>Author phone: " . $books_array["author_phone"] . "</p>";
-          }
-        ?>
-        <?php
-        if($user_id != NULL){
-          echo "<form action='' method ='POST' >
-          <label for='checkin'>Check-In Date:</label>
-          <input type='text' id='checkin' name='checkin'>
+echo "<p>Author name: " . $books_array['author_firstname'] . " " . $books_array['author_lastname'] . "</p>";
 
-          <label for='checkout'>Check-Out Date:</label>
-          <input type='text' id='checkout' name='checkout'>
+if ($books_array["author_email"] != null) {
+    echo "<p>Author email: " . $books_array["author_email"] . "</p>";
+}
 
-            <button name='reserve' class='search-bar__button' type='submit'>Rezerva</button>
-            </form>";
-        }
+if ($books_array["author_phone"] != null) {
+    echo "<p>Author phone: " . $books_array["author_phone"] . "</p>";
+}
 
-        ?>
-    <?php
-      if($user_id != NULL){
-        echo "<div class='container'>
-            <form action='' method='POST'>
-            <h4>Rate this book:</h4>
-            <div class='star-rating'>
-              <input type='radio' id='star5' name='rating' value='5'>
-              <label for='star5'></label>
-              <input type='radio' id='star4' name='rating' value='4'>
-              <label for='star4'></label>
-              <input type='radio' id='star3' name='rating' value='3'>
-              <label for='star3'></label>
-              <input type='radio' id='star2' name='rating' value='2'>
-              <label for='star2'></label>
-              <input type='radio' id='star1' name='rating' value='1'>
-              <label for='star1'></label>
-            </div>
-            <div class='input-group'>
-              <input type='textbox' placeholder='Adaugă o recenzie' name='reviews' value='' required>
-            </div>
-              <button name='review' class='search-bar__button' type='submit'>Adaugă o recenzie</button>
-            </form>
-        </div>";
-      }
-  ?>
+echo '<p class="card-details">Preț: ' . $books_array['price'] . '</p>
+  <p class="card-details">Vârstă: ' . $books_array['age'] . '</p>
+  <p class="card-details">Pagini: ' . $books_array['pages'] . '</p>
+  <p class="card-details">Limbă: ' . $books_array['language'] . '</p>
+  <p class="card-details">Anul publicării: ' . $books_array['publishing_year'] . '</p>
+  <p class="card-details">Numele editurii: ' . $books_array["publisher_name"] . '</p>
+  <p class="card-details">Nota: 4.00 /5</p>
+  <p class="card-description" style="text-align:justify;">Descriere: ' . $books_array['description'] . '</p>
+</div>';
+if ($user_id != NULL) {
+    echo "<div class='container' style='max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f7f7f7;
+      border-radius: 1px;
+      box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
+    -moz-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
+    -webkit-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);margin-top:50px; margin-bottom:30px; margin-right:300px;'>
+      <form action='' method ='POST' >
+      <h5 style='font-size:16px;'>Data împrumutării:</h5>
+      <input type='text' id='checkin' name='checkin'>
+
+      <h5 style='font-size:16px;'>Data returnării:</h5>
+      <input type='text' id='checkout' name='checkout'>
+
+      <button name='reserve' class='search-bar__button' type='submit' style='background-color: #D0D0D0;
+      border: none;
+      border-radius: 5px;
+      color: #333;
+      cursor: pointer;
+      padding: 6px 12px;
+      font-size: 16px;
+      margin-right: 10px; width:300px; left:30px; position:relative;'>Rezervă</button>
+      </form>
+      </div>";
+}
+
+if ($user_id != NULL) {
+    echo "<div class='container'style='max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 1px;
+      box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
+    -moz-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
+    -webkit-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);margin-top:50px; margin-bottom:30px; margin-right:300px;'>
+        <form action='' method='POST'>
+        <h5 style='font-size:16px; left:80px; position:relative;'>Evaluează această carte:</h5>
+        <div class='star-rating'style='left:120px;position:relative;'>
+          <input type='radio' id='star5' name='rating' value='5'>
+          <label for='star5'></label>
+          <input type='radio' id='star4' name='rating' value='4'>
+          <label for='star4'></label>
+          <input type='radio' id='star3' name='rating' value='3'>
+          <label for='star3'></label>
+          <input type='radio' id='star2' name='rating' value='2'>
+          <label for='star2'></label>
+          <input type='radio' id='star1' name='rating' value='1'>
+          <label for='star1'></label>
+        </div>
+        <div class='input-group'style='left:30px;width:80%;'>
+          <input type='textbox' placeholder='Adaugă o recenzie' name='reviews' value='' required>
+        </div>
+        <button name='review' class='search-bar__button' type='submit' style='background-color: #D0D0D0;
+        border: none;
+        border-radius: 5px;
+        color: #333;
+        cursor: pointer;
+        padding: 6px 12px;
+        font-size: 16px;
+        margin-right: 10px;width:300px; left:30px; position:relative;'>Adaugă o recenzie</button>
+        </form>
+    </div>";
+}
+echo '</div>';
+?>
+
+      
    <div id="booking-calendar"></div>
   <?php
       $avg_query = "SELECT AVG(rating) AS avg_rating FROM reviews WHERE book_id = $book_id";
@@ -321,7 +360,7 @@ input[type="text"] {
       $row = mysqli_fetch_assoc($result);
       $average_rating = $row['avg_rating'];
       $avg = number_format((float)$average_rating, 2, '.', '');
-      echo "<div><p>Nota: $avg /5</p></div>";
+      //echo "<div><p>Nota: $avg /5</p></div>";
        $sql = "SELECT r.book_id, r.user_id, r.review, r.rating, u.firstname, u.lastname
                     FROM reviews AS r
                     JOIN users AS u ON r.user_id = u.user_id
@@ -338,23 +377,30 @@ input[type="text"] {
         $num_of_reviews = count($reviews);
   ?>
   <div class="container">
-  <h4>Reviews</h4>
-  <div style="overflow-y: scroll; max-height: 300px; background-color: gray;">
-    <?php
-    foreach ($reviews as $review) {
-      $authorFullName = $review['firstname'] . ' ' . $review['lastname'];
-      $reviewContent = $review['review'];
-      $rating = $review['rating'];
+    <h4 style="font-size: 16px;">Recenzii</h4>
+    <div class="reviews-container">
+      <?php
+      foreach ($reviews as $review) {
+        $authorFullName = $review['firstname'] . ' ' . $review['lastname'];
+        $reviewContent = $review['review'];
+        $rating = $review['rating'];
 
-      echo "<div class='review'>
-              <p><strong>Author:</strong> $authorFullName</p>
-              <p><strong>Review:</strong> $reviewContent</p>
-              <p><strong>Rating:</strong> $rating</p>
-            </div>";
-    }
-    ?>
+        echo "<div class='review'>
+                <p><strong>Autor:</strong> $authorFullName</p>
+                <p><strong>Recenzie:</strong> $reviewContent</p>
+                <p><strong>Rating:</strong> $rating</p>
+              </div>";
+      }
+      ?>
+    </div>
   </div>
 </div>
+
+
+
+
+
+
 <style>
   * {
     padding: 0;
@@ -415,7 +461,131 @@ input[type="text"] {
     font-size: 16px;
     margin-top:10px;
   }
+  
+.card-container {
+    display: flex;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+    margin-top:100px;
+    margin-bottom:250px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
+    -moz-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
+    -webkit-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
+  }
+
+  .card-image {
+    flex: 1;
+    max-height: 500px;
+    padding-top: 20px;
+  }
+  .card-image img {
+    max-height: 500px;
+  width: 300%;
+  border-radius: 10px 0 0 10px;
+  }
+
+  .card-content {
+    flex: 2;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: justify;
+  width: 100%;
+  text-align: left;
+
+  }
+  .card-details {
+  margin: 10px 0;
+}
+
+  .card-title {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  .card-description {
+    font-size: 16px;
+    margin-top: 15px;
+    text-align: center; /* Aliniaza descrierea pe mijloc */
+  }
+  .book-details {
+  flex: 1; /* Se extinde pentru a ocupa spațiul disponibil */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+  .book-details-content .card-title p {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 0;
+}
+.search-bar__button,
+.container button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.search-bar__button:hover,
+.container button:hover {
+  background-color: #0056b3;
+}
+/* Stilizare pentru input-uri */
+.container input[type="text"],
+.container input[type="textbox"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+/* Stilizare pentru star-rating */
+.star-rating {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.star-rating input[type="radio"] {
+  display: none;
+}
+
+.star-rating label {
+  display: inline-block;
+  cursor: pointer;
+  font-size: 24px;
+  color: #ffd700;
+  transition: color 0.3s ease-in-out;
+}
+
+.star-rating label:hover,
+.star-rating input[type="radio"]:checked ~ label {
+  color: #ffbc00;
+}
+input:focus{
+  outline: none;
+}
+.reviews-container {
+  /*overflow-y: scroll;*/
+  box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
+    -moz-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
+    -webkit-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16);
+  max-height: 300px;
+  display: flex;
+  border-radius: 1px;
+  margin-bottom: 150px;
+  flex-direction: column;
+  align-items: center; /* Așează conținutul pe mijlocul vertical */
+}
 </style>
 </body>
+
 </html>
-Scrie pentru David Pituțiu
+
