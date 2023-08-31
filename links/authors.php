@@ -5,9 +5,13 @@ session_start();
 $user_id = "";
 $user_id = $_SESSION['user_id'];
 
+$sql = "SELECT * FROM authors"; // Selectează toți autorii din baza de date
+$result = mysqli_query($connect, $sql);
+$author = array();
+$i = 0;
 if(isset($_POST['search_button_authors'])) {
-    $search_authors = mysqli_real_escape_string($connect, $_POST['search_authors']);
-    $sql = "SELECT * FROM authors WHERE lastname RLIKE('$search_authors')";
+    $search_query = mysqli_real_escape_string($connect, $_POST['search_authors']);
+    $sql = "SELECT * FROM authors WHERE firstname LIKE '%$search_query%' OR lastname LIKE '%$search_query%'";
     $result = mysqli_query($connect, $sql);
     $author = array();
     $i = 0;
@@ -20,7 +24,14 @@ if(isset($_POST['search_button_authors'])) {
         $i++;
     }
 }
-
+while ($row = $result->fetch_assoc()){
+    $author[$i]['author_id'] = $row['author_id'];
+    $author[$i]['firstname'] = $row['firstname'];
+    $author[$i]['lastname'] = $row['lastname'];
+    $author[$i]['email'] = $row['email'];
+    $author[$i]['phone'] = $row['phone'];
+    $i++;
+}
 if(isset($_POST['delete_authors'])) {
     $author_delete = mysqli_real_escape_string($connect, $_POST['author_delete']);
     $sql = "SELECT book_id FROM books WHERE author_id = $author_delete";
@@ -126,7 +137,7 @@ if(isset($_POST['edit_authors'])) {
                 <li><a href="books.php">Cărți</a></li>
                 <li><a href="authors.php">Autori</a></li>
                 <li><a href="categories.php">Categorii</a></li>
-                <li><a href="publishers.php">Edituri</a></li>
+                <li><a href="publishers.php">Publicații</a></li>
                 <li><a href="users.php">Utilizatori</a></li>
                 <li><a href="reservations.php">Rezervări</a></li>
                 </ul>
@@ -139,7 +150,7 @@ if(isset($_POST['edit_authors'])) {
                     <li><a href="logout.php">Deconectare</a></li>
                     </ul>
                     </li>';
-                echo '<li><a href="#footer">Contact</a></li>
+                echo '
                 </ul>
             </div>
           </div>
@@ -149,52 +160,58 @@ if(isset($_POST['edit_authors'])) {
   ?>
   <div class="container" style="padding-top:50px;padding-bottom:50px;">
     <form action="" method="POST" class="search-bar" style="width:600px; margin-bottom:50px;margin-left:350px;">
-        <button name="search_button" class="search-bar__button" type="submit">
+        <button name="search_button_authors" class="search-bar__button" type="submit">
             <i class="fa fa-search search-icon" style="border-right: 1px solid #888888; position:relative; padding-right:15px;"></i>
         </button>
-        <input class="search-bar__bar" type="text" name="search" id="search"/>
+        <input class="search-bar__bar" type="text" name="search_authors" id="search_authors"/>
     </form>
-    <table class="table table-bordered" style="background-color:#fff; text-align:center;"> <!-- Adauga clasa 'table-bordered' pentru a afisa o bordura la celulele tabelului -->
+    <table class="table table-bordered" style="background-color:#fff; text-align:center; box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16); -moz-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16); -webkit-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16); border-radius:5px;"> <!-- Adauga clasa 'table-bordered' pentru a afisa o bordura la celulele tabelului -->
         <thead>
         <tr>
-            <th>Nume</th>
-            <th>Prenume</th>
-            <th>Email</th>
-            <th>Nr. Telefon</th>
-            <th>Editare</th>
+            <th style="text-align:center;">Prenume</th>
+            <th style="text-align:center;">Nume</th>
+            <th style="text-align:center;">Email</th>
+            <th style="text-align:center;">Număr telefon</th>
+            <th style="text-align:center; width:25%;">Editare</th>
         </tr>
         </thead>
         <tbody>
         <?php
         if (!empty($author)) {
-            foreach ($author as $authorData) {
+            foreach ($author as $authorData)  {
                 $firstname = $authorData['firstname'];
                 $lastname = $authorData['lastname'];
                 $email = $authorData['email'];
                 $phone = $authorData['phone'];
                 $author_id = $authorData['author_id'];
-
+            
                 echo "<tr>";
-                echo "<td>$firstname</td>";
-                echo "<td>$lastname</td>";
-                echo "<td>$email</td>";
-                echo "<td>$phone</td>";
+                echo "<td style='padding:15px 15px 15px 15px;'>$firstname</td>";
+                echo "<td style='padding:15px 15px 15px 15px;'>$lastname</td>";
+                echo "<td style='padding:15px 15px 15px 15px;'>$email</td>";
+                echo "<td style='padding:15px 15px 15px 15px;'>$phone</td>";
 
                 echo "<td>";
-                echo "<form action='' method='POST'>";
-                echo "<div class='container' style='background-color: gray;'>";
-                echo "<input type='hidden' name='author_delete' value='$author_id' />";
-                echo "<button name='delete_authors' class='btn btn-danger' type='submit'>Delete</button>";
-                echo "</form>";
-                echo "<form action='edit_author.php' method='GET'>";
-                echo "<input type='hidden' name='author_id' value='$author_id' />";
-                echo "<button class='btn btn-primary' type='submit'>Editează</button>";
-                echo "</form>";
-                echo "<form action='authors_publications.php' method='GET'>";
-                echo "<button class='btn btn-success' type='submit'>Adaugă autor</button>";
-                echo "</form>";
-                echo "</div>";
-                echo "</td>";
+echo "<div class='container' style='display: flex; justify-content:center;'>";
+
+echo "<form action='' method='POST' style='margin-right: 10px;'>";
+echo "<input type='hidden' name='author_delete' value='$author_id' />";
+echo "<button name='delete_authors' class='btn btn-danger' type='submit' style='display: flex; align-items: center;'>";
+echo "<i class='fa fa-trash' aria-hidden='true' style='margin-right: 5px;'></i> Șterge";
+echo "</button>";
+echo "</form>";
+
+echo "<form action='edit_authors.php' method='GET' style='margin-right: 10px;'>";
+echo "<input type='hidden' name='author_id' value='$author_id' />";
+echo "<button class='btn btn-primary' type='submit' style='display: flex; align-items: center;'>";
+echo "<i class='fa fa-pencil' aria-hidden='true' style='margin-right: 5px;'></i> Editează";
+echo "</button>";
+echo "</form>";
+
+
+echo "</div>";
+echo "</td>";
+
 
                 echo "</tr>";
             }
@@ -204,9 +221,13 @@ if(isset($_POST['edit_authors'])) {
         ?>
         </tbody>
     </table>
+    <div style="display: flex; justify-content: center;">
+    <form action='authors_publications.php' method='GET' style="margin-right: 10px; display: flex; align-items: center;">
+        <button name="addsubmit" type='submit' class="btn" style="width:100%; background-color:#808080; color:#fff; font-size:18px; display: flex; align-items: center; justify-content: center;"><i class='fa fa-plus' aria-hidden='true' style='margin-right: 5px;'></i>Adaugă un autor</button>
+    </form>
+</div>
 </div>
 
-    
 <style>
     * {
     padding: 0;
@@ -219,7 +240,7 @@ if(isset($_POST['edit_authors'])) {
   .navbar-default{
     margin-bottom:0;
     border:none;
-    
+
   }
   .navbar-shadow {
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Aici puteți personaliza umbra */

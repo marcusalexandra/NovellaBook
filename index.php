@@ -142,7 +142,7 @@
                   <li><a href="links/books.php">Cărți</a></li>
                   <li><a href="links/authors.php">Autori</a></li>
                   <li><a href="links/categories.php">Categorii</a></li>
-                  <li><a href="links/publishers.php">Edituri</a></li>
+                  <li><a href="links/publishers.php">Publicații</a></li>
                   <li><a href="links/users.php">Utilizatori</a></li>
                   <li><a href="links/reservations.php">Rezervări</a></li>
                   </ul>
@@ -173,19 +173,22 @@ if ($user_id != 1) {
           </button>
           <input class="search-bar__bar" type="text" name="search" id="search"/>
           </form>
-          <div class="row input-group-row">
-  <div class="column input-column">
-    <label for="price">Selectează prețul maxim:</label>
-    <input type="number" class="form-control" name="price" value="">
-  </div>
-  <div class="column input-column">
-    <label for="age">Selectează vârsta maximă:</label>
-    <input type="number" class="form-control" name="age" value="">
-  </div>
-  <div class="column input-column">
-    <label for="category">Selectează o categorie existentă:</label>
-    <select name="category">
-      <option value=""></option>
+          <div style="display: flex; text-align:center;">
+          <div class="row" style="margin-top:25px; width:950px;">
+    <form action="" method="POST" class="filter" style="width:120%;">
+        <button name="apply_filters" class="btn" type="submit" style="width: 13%; height: 35px; background-color:#F0F0F0; margin-top:55px; ">Aplică Filtre</button>
+        <div class="col-sm-4 input-column" style="width: 25%; padding: 10px; height: 250px; margin: 5px 5px 5px 5px; padding:25px 25px 25px 25px;">
+            <label for="price">Selectează prețul maxim:</label>
+            <input type="number" class="form-control" name="price" value="">
+        </div>
+        <div class="col-sm-4 input-column" style="width: 25%; padding: 10px; height: 250px; margin: 5px 5px 5px 5px; padding:25px 25px 25px 25px;">
+            <label for="age">Selectează vârsta maximă:</label>
+            <input type="number" class="form-control" name="age" value="">
+        </div>
+        <div class="col-sm-4 input-column" style="width: 25%; padding: 10px; height: 250px; margin: 5px 5px 5px 5px; padding:25px 25px 25px 25px;">
+            <label for="category">Selectează o categorie:</label>
+            <select name="category">
+                <option value=""></option>
           ';
         $sql = mysqli_query($connect, "SELECT category_id FROM category");
             $i = 0;
@@ -203,6 +206,8 @@ if ($user_id != 1) {
               }
             }
             echo "</select>";
+            echo "</div>";
+            echo "</form>";
             echo "</div>";
             echo "</div>";
             if ($books_array != null) {
@@ -240,23 +245,27 @@ if ($user_id != 1) {
   $sql_users = "SELECT COUNT(*) as users_count FROM users";
   $sql_publishers = "SELECT COUNT(*) as publisher_count FROM publisher";
   $sql_books = "SELECT COUNT(*) as book_count FROM books";
-  
+  $sql_reservations = "SELECT COUNT(*) as reservations_count FROM reservations";
+
 
   $result_authors = mysqli_query($connect, $sql_authors);
   $result_users = mysqli_query($connect, $sql_users);
   $result_publishers = mysqli_query($connect, $sql_publishers);
   $result_books = mysqli_query($connect, $sql_books);
-  
+  $result_reservations = mysqli_query($connect, $sql_reservations);
+
 
   $row_authors = $result_authors->fetch_assoc();
   $row_users = $result_users->fetch_assoc();
   $row_publishers = $result_publishers->fetch_assoc();
   $row_books = $result_books->fetch_assoc();
+  $row_reservations = $result_reservations->fetch_assoc();
 
   $authors_number = $row_authors['author_count'];
   $users_number = $row_users['users_count'];
   $publisher_number = $row_publishers['publisher_count'];
   $book_number = $row_books['book_count'];
+  $reservations_number = $row_reservations['reservations_count'];
 echo '<div class="container">';
 echo '  <div class="row justify-content-center">';
 echo '    <div class="col-md-12 text-center" style="margin-top:50px; margin-bottom:50px;">';
@@ -269,8 +278,9 @@ echo '  <div class="row text-center" style="padding-left:65px;">';
 $categories = array(
     array("Numărul total de autori", $authors_number, "links/authors.php"),
     array("Numărul total de utilizatori", $users_number, "links/users.php"),
-    array("Numărul total de edituri", $publisher_number, "links/publishers.php"),
-    array("Numărul total de cărți", $book_number, "links/books.php")
+    array("Numărul total de publicații", $publisher_number, "links/publishers.php"),
+    array("Numărul total de cărți", $book_number, "links/books.php"),
+    array("Numărul total de rezervări", $reservations_number, "links/reservations.php")
 );
 
 foreach ($categories as $category) {
@@ -283,7 +293,7 @@ foreach ($categories as $category) {
 echo '  </div>';
 echo '</div>';
 
-}
+} 
 ?>
 
 <style>
@@ -487,7 +497,7 @@ h1 {
       left: -5px;
     }
 .main-container .corner-image {
-    margin-top: 155px; /* Eliminăm margin-top */
+    margin-top: 175px; /* Eliminăm margin-top */
     bottom: auto; /* Eliminăm poziționarea "bottom" */
     top: 100%; /* Plasăm imaginea deasupra footer-ului */
     transform: translateY(-100%); /* Plasăm imaginea în zona de vizibilitate */

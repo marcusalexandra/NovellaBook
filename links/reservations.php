@@ -88,7 +88,7 @@
                 <li><a href="books.php">Cărți</a></li>
                 <li><a href="authors.php">Autori</a></li>
                 <li><a href="categories.php">Categorii</a></li>
-                <li><a href="publishers.php">Edituri</a></li>
+                <li><a href="publishers.php">Publicații</a></li>
                 <li><a href="users.php">Utilizatori</a></li>
                 <li><a href="reservations.php">Rezervări</a></li>
                 </ul>
@@ -101,7 +101,7 @@
                     <li><a href="logout.php">Deconectare</a></li>
                     </ul>
                     </li>';
-                echo '<li><a href="#footer">Contact</a></li>
+                echo '
                 </ul>
             </div>
           </div>
@@ -134,11 +134,12 @@
               }
               echo "<img src='$book_picture' alt='$book_title' style='max-width: 50%; height: 50%;'>";
               echo "<p style='font-size:22px; margin-top:15px;'>$book_title</p>
-                  <p>Această carte a fot rezervată de la data de $reservation_date</p>
-                  <p>Cartea trebuie returnată în data de $return_date</p>
+              <p style='border-top:1px solid #808080; width:70%; padding:5px; margin-left:100px; '></p>
+                  <p style='text-align:left; margin-left:200px;'><i class='fa fa-calendar' aria-hidden='true' style='margin-right:10px;'></i>Această carte a fost rezervată de la data de $reservation_date</p>
+                  <p style='text-align:left; margin-left:200px;'><i class='fa fa-calendar' aria-hidden='true' style='margin-right:10px;'></i>Cartea trebuie returnată în data de $return_date</p>
                   <input type = 'hidden' name = 'reservation_id' value = '$reservation_id'>
                   <input type = 'hidden' name = 'book_id' value = '$book_id'>
-                  <button name='return' class='search-bar__button' type='submit'>Returnare
+                  <button name='return' class='search-bar__button' type='submit' style='color:#333;'>Returnare
               </form></div></div></div></div></div>";
             }
           }
@@ -168,9 +169,10 @@
               }
               echo "<img src='$book_picture' alt='$book_title' style='max-width: 50%; height: 50%;'>";
                 echo "<p style='font-size:22px; margin-top:15px;'>$book_title</p>
-                  <p>Utilizator: $lastname $firstname</p>
-                  <p>Cartea este împrumutată de la data de $reservation_date</p>
-                  <p>Cartea trebuie returnată la data de $return_date</p>
+                <p style='border-top:1px solid #808080; width:70%; padding:5px; margin-left:100px; '></p>
+                  <p style='text-align:left; margin-left:230px;><i class='fa fa-user' aria-hidden='true' style='margin-right:10px;'></i>Utilizator: $lastname $firstname</p>
+                  <p style='text-align:left; margin-left:230px;'><i class='fa fa-calendar' aria-hidden='true' style='margin-right:10px;'></i>Cartea este împrumutată de la data de $reservation_date</p>
+                  <p style='text-align:left; margin-left:230px;'><i class='fa fa-calendar' aria-hidden='true' style='margin-right:10px;'></i>Cartea trebuie returnată la data de $return_date</p>
                   <input type = 'hidden' name = 'reservation_id' value = '$reservation_id'>
                   <input type = 'hidden' name = 'book_id' value = '$book_id'>
               </form></div></div></div></div></div>";
@@ -291,76 +293,79 @@
 }
 </style>
 </body>
-<footer id="footer">
-  <div class="container" style="height:350px;">
-    <div class="row">
-      <div class="column" style="background-color:#B8B8B8; margin-left:55px;">
-        <h3 style="color:#333;">Informații suplimentare</h3>
-        <ul class="informations">
-          <li>
-            <i class="fa fa-arrow-right" aria-hidden="true"></i>
-            <a href="#">Despre noi</a>
-          </li>
-          <li>
-            <i class="fa fa-arrow-right" aria-hidden="true"></i>
-            <a href="#">Politici de confidențialitate</a>
-          </li>
-          <li>
-            <i class="fa fa-arrow-right" aria-hidden="true"></i>
-            <a href="#">Blog</a>
-          </li>
-        </ul>
+<?php 
+if($user_id != 1){
+    echo '<footer id="footer">
+      <div class="container" style="height:350px;">
+        <div class="row">
+          <div class="column" style="background-color:#B8B8B8; margin-left:55px;">
+            <h3 style="color:#333;">Informații suplimentare</h3>
+            <ul class="informations">
+              <li>
+                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                <a href="#">Despre noi</a>
+              </li>
+              <li>
+                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                <a href="#">Politici de confidențialitate</a>
+              </li>
+              <li>
+                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                <a href="#">Blog</a>
+              </li>
+            </ul>
+          </div>
+          <div class="column" style="background-color:#B8B8B8; width:25%;"></div>
+          <div class="column" style="background-color:#B8B8B8;">
+            <h3 style="color:#333;margin-right:165px;">Contact</h3>
+            <ul class="informations">
+              <li>
+                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                <a>Oradea, Strada Teilor, Nr.256</a>
+              </li>
+              <li>
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+                <a>novella.book@gmail.com</a>
+              </li>
+              <li>
+                <i class="fa fa-phone" aria-hidden="true"></i>
+                <a>+01 234 567 88</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <hr class="divider">
+        <div class="col-md-6 col-lg-8">
+          <p class="author-rights">Drept de autor ©
+            <script>document.write(new Date().getFullYear());</script>
+            Toate drepturile sunt rezervate
+          </p>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <ul class="footer-social">
+            <li class="social-media-icon">
+              <a href="#" data-toogle="toolip" data-placement="top" title data-original-title="Twitter">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+              </a>
+            </li>
+            <li class="social-media-icon">
+              <a href="#" data-toogle="toolip" data-placement="top" title data-original-title="Facebook">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+              </a>
+            </li>
+            <li class="social-media-icon">
+              <a href="#" data-toogle="toolip" data-placement="top" title data-original-title="Instagram">
+                <i class="fa fa-instagram" aria-hidden="true"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="column" style="background-color:#B8B8B8; width:25%;"></div>
-      <div class="column" style="background-color:#B8B8B8;">
-        <h3 style="color:#333;margin-right:165px;">Contact</h3>
-        <ul class="informations">
-          <li>
-            <i class="fa fa-map-marker" aria-hidden="true"></i>
-            <a>Oradea, Strada Teilor, Nr.256</a>
-          </li>
-          <li>
-            <i class="fa fa-envelope" aria-hidden="true"></i>
-            <a>novella.book@gmail.com</a>
-          </li>
-          <li>
-            <i class="fa fa-phone" aria-hidden="true"></i>
-            <a>+01 234 567 88</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <hr class="divider">
-    <div class="col-md-6 col-lg-8">
-      <p class="author-rights">Drept de autor ©
-        <script>document.write(new Date().getFullYear());</script>
-        Toate drepturile sunt rezervate
-      </p>
-    </div>
-    <div class="col-md-6 col-lg-4">
-    <ul class="footer-social">
-      <li class="social-media-icon">
-        <a href="#" data-toogle="toolip" data-placement="top" title data-original-title="Twitter">
-          <i class="fa fa-twitter" aria-hidden="true"></i>
-        </a>
-      </li>
-      <li class="social-media-icon">
-        <a href="#" data-toogle="toolip" data-placement="top" title data-original-title="Facebook">
-          <i class="fa fa-facebook" aria-hidden="true"></i>
-        </a>
-      </li>
-      <li class="social-media-icon">
-        <a href="#" data-toogle="toolip" data-placement="top" title data-original-title="Instagram">
-          <i class="fa fa-instagram" aria-hidden="true"></i>
-        </a>
-      </li>
-    </ul>
-    </div>
-  </div>
+    </footer>';
+}
+?>
 <style>
-  
-  /* Create three equal columns that floats next to each other */
-.column {
+  .column {
   float: left;
   width: 33.33%;
   padding: 10px;
@@ -444,5 +449,4 @@
     text-decoration: none; /* Eliminăm sublinierea */
 }
 </style>
-</footer> 
 </html>

@@ -18,6 +18,13 @@ include '../conn.php';
               $i++;
             }
   }
+  while ($row = $result->fetch_assoc()){
+    $publisher[$i]['publisher_id']= $row['publisher_id'];
+    $publisher[$i]['publisher_name']= $row['publisher_name'];
+    $publisher[$i]['publisher_email']= $row['publisher_email'];
+    $publisher[$i]['publisher_phone']= $row['publisher_phone'];
+    $i++;
+  }
   if(isset($_POST['publisher_delete'])) {
     $publishers_delete = $_POST['publishers_delete'];
     $sql = "SELECT book_id FROM books WHERE publisher_id = '$publishers_delete'";
@@ -41,92 +48,26 @@ include '../conn.php';
     $sql = "DELETE FROM publisher WHERE publisher_id = $publishers_delete";
     $result = mysqli_query($connect, $sql);
   }
+  if(isset($_POST['edit_publishers'])) {
+    $publisher_edit = mysqli_real_escape_string($connect, $_POST['publisher_edit']);
+    // Redirect to the edit_publisher.php page with the publisher_id as a parameter
+    header("Location: edit_publisher.php?publisher_id=$publisher_edit");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> <!-- Add this line for the sidebar icons -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <title>Publicații</title>
 </head>
-<body>
-<header>
-	<nav>
-		<ul class="navbar__links">
-			<li><a href="../index.php">Acasă</a></li>
-      <?php
-       if($user_id == null){
-          echo '<li><a href="login.php">Rezervări</a></li>
-                <li><a href="login.php">Profil</a></li>
-                <li><a href="login.php">Conectare</a></li>';
-        }
-        else {
-          if($user_id == 1) {
-            echo '<li><a href="books.php">Cărți</a></li>
-                  <li><a href="book.php">Adaugă carte</a></li>
-                  <li><a href="authors_publications.php">Autori și publicații</a></li>
-                  <li><a href="users.php">Utilizatori</a></li>';
-
-          }
-          echo '<li><a href="reservations.php">Rezervări</a></li>
-                <li><a href="profile.php">Profil</a></li>
-                <li><a href="logout.php">Deconectare</a></li>';
-        }
-        ?>
-			<li><a href="#footer">Contact</a></li>
-		</ul>
-	</nav>
-</header>
-      <form action="" method="POST">
-        <input class="search-bar__bar" type="text" placeholder="Search..." name="search_publisher" id="search_publisher" />
-		  	<button name="search_button_publisher" class="search-bar__button" type="submit">
-          <i class="fa fa-search"></i>
-        </button>
-      </form>
-    <table border="1">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        if (!empty($publisher)) {
-            foreach ($publisher as $publisherData) {
-                $name = $publisherData['publisher_name'];
-                $email = $publisherData['publisher_email'];
-                $phone = $publisherData['publisher_phone'];
-                $publisher_id = $publisherData['publisher_id'];
-
-                echo "<tr>";
-                echo "<td>$name</td>";
-                echo "<td>$email</td>";
-                echo "<td>$phone</td>";
-
-                // Opening the form and container div
-                echo "<td><form action='' method='POST'>";
-                echo "<div class='container' style='background-color: gray;'>";
-
-                // Use a hidden input to store the user_id value
-                echo "<input type='hidden' name='publishers_delete' value='$publisher_id' />";
-
-                // Submit button (a button within a form should be of type 'submit')
-                echo "<button name='publisher_delete' class='search-bar__button' type='submit'>Delete</button>";
-
-                // Close the form
-                echo "</form></div></td>";
-
-                // Close the table row
-                echo "</tr>";
-            }
-        } else {
-            echo "<tr><td colspan='5'>No results found.</td></tr>";
-        }
-        ?>
-    </tbody>
-</table>
+<body style="background-color: #e4e5e6;">
+<p>ANA</p>
 </body>
 </html>

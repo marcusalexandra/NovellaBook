@@ -105,12 +105,19 @@ $pass = $cpassword = ""; // Initialize these variables to avoid errors
             <div id="navbar" class="collapse navbar-collapse">
               <ul class="nav navbar-nav">
                 <li><a href="../index.php">Acasă</a></li>';
-                  echo '<li><a href="books.php">Cărți</a></li>
-                  <li><a href="book.php">Adaugă carte</a></li>
-                  <li><a href="authors_publications.php">Autori și publicații</a></li>
-                  <li><a href="users.php">Utilizatori</a></li>';
-                echo '<li><a href="reservations.php">Rezervări</a></li>
-                    <li class="dropdown">
+                echo '<li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-users" aria-hidden="true"></i> Gestiuni <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                <li><a href="books.php">Cărți</a></li>
+                <li><a href="authors.php">Autori</a></li>
+                <li><a href="categories.php">Categorii</a></li>
+                <li><a href="publishers.php">Publicații</a></li>
+                <li><a href="users.php">Utilizatori</a></li>
+                <li><a href="reservations.php">Rezervări</a></li>
+                </ul>
+                  </li>';
+                echo '<li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-user-circle-o" aria-hidden="true"></i> Profil <span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -118,7 +125,7 @@ $pass = $cpassword = ""; // Initialize these variables to avoid errors
                     <li><a href="logout.php">Deconectare</a></li>
                     </ul>
                     </li>';
-                echo '<li><a href="#footer">Contact</a></li>
+                echo '
                 </ul>
             </div>
           </div>
@@ -497,72 +504,77 @@ settingsButton.addEventListener('click', () => {
 });
 </script>
 </body>
-<footer id="footer"> 
-  <div class="container" style="height:350px;">
-    <div class="row">
-      <div class="column" style="background-color:#B8B8B8; margin-left:55px;">
-        <h3 style="color:#333;">Informații suplimentare</h3>
-        <ul class="informations">
-          <li>
-            <i class="fa fa-arrow-right" aria-hidden="true"></i>
-            <a href="#">Despre noi</a>
-          </li>
-          <li>
-            <i class="fa fa-arrow-right" aria-hidden="true"></i>
-            <a href="#">Politici de confidențialitate</a>
-          </li>
-          <li>
-            <i class="fa fa-arrow-right" aria-hidden="true"></i>
-            <a href="#">Blog</a>
-          </li>
-        </ul>
+<?php 
+if($user_id != 1){
+    echo '<footer id="footer">
+      <div class="container" style="height:350px;">
+        <div class="row">
+          <div class="column" style="background-color:#B8B8B8; margin-left:55px;">
+            <h3 style="color:#333;">Informații suplimentare</h3>
+            <ul class="informations">
+              <li>
+                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                <a href="#">Despre noi</a>
+              </li>
+              <li>
+                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                <a href="#">Politici de confidențialitate</a>
+              </li>
+              <li>
+                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                <a href="#">Blog</a>
+              </li>
+            </ul>
+          </div>
+          <div class="column" style="background-color:#B8B8B8; width:25%;"></div>
+          <div class="column" style="background-color:#B8B8B8;">
+            <h3 style="color:#333;margin-right:165px;">Contact</h3>
+            <ul class="informations">
+              <li>
+                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                <a>Oradea, Strada Teilor, Nr.256</a>
+              </li>
+              <li>
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+                <a>novella.book@gmail.com</a>
+              </li>
+              <li>
+                <i class="fa fa-phone" aria-hidden="true"></i>
+                <a>+01 234 567 88</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <hr class="divider">
+        <div class="col-md-6 col-lg-8">
+          <p class="author-rights">Drept de autor ©
+            <script>document.write(new Date().getFullYear());</script>
+            Toate drepturile sunt rezervate
+          </p>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <ul class="footer-social">
+            <li class="social-media-icon">
+              <a href="#" data-toogle="toolip" data-placement="top" title data-original-title="Twitter">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+              </a>
+            </li>
+            <li class="social-media-icon">
+              <a href="#" data-toogle="toolip" data-placement="top" title data-original-title="Facebook">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+              </a>
+            </li>
+            <li class="social-media-icon">
+              <a href="#" data-toogle="toolip" data-placement="top" title data-original-title="Instagram">
+                <i class="fa fa-instagram" aria-hidden="true"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="column" style="background-color:#B8B8B8; width:25%;"></div>
-      <div class="column" style="background-color:#B8B8B8;">
-        <h3 style="color:#333;margin-right:165px;">Contact</h3>
-        <ul class="informations">
-          <li>
-            <i class="fa fa-map-marker" aria-hidden="true"></i>
-            <a>Oradea, Strada Teilor, Nr.256</a>
-          </li>
-          <li>
-            <i class="fa fa-envelope" aria-hidden="true"></i>
-            <a>novella.book@gmail.com</a>
-          </li>
-          <li>
-            <i class="fa fa-phone" aria-hidden="true"></i>
-            <a>+01 234 567 88</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <hr class="divider">
-    <div class="col-md-6 col-lg-8">
-      <p class="author-rights">Drept de autor ©
-        <script>document.write(new Date().getFullYear());</script>
-        Toate drepturile sunt rezervate
-      </p>
-    </div>
-    <div class="col-md-6 col-lg-4">
-    <ul class="footer-social">
-      <li class="social-media-icon">
-        <a href="#" data-toogle="toolip" data-placement="top" title data-original-title="Twitter">
-          <i class="fa fa-twitter" aria-hidden="true"></i>
-        </a>
-      </li>
-      <li class="social-media-icon">
-        <a href="#" data-toogle="toolip" data-placement="top" title data-original-title="Facebook">
-          <i class="fa fa-facebook" aria-hidden="true"></i>
-        </a>
-      </li>
-      <li class="social-media-icon">
-        <a href="#" data-toogle="toolip" data-placement="top" title data-original-title="Instagram">
-          <i class="fa fa-instagram" aria-hidden="true"></i>
-        </a>
-      </li>
-    </ul>
-    </div>
-  </div>
+    </footer>';
+}
+?>
 <style>
   
   /* Create three equal columns that floats next to each other */

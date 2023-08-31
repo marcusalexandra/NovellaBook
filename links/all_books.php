@@ -114,6 +114,43 @@
     </button>
     <input class="search-bar__bar" type="text" name="search" id="search"/>
   </form>
+  <div style="display: flex; justify-content: center;">
+    <div class="row" style="margin-top: 25px; width: 120%;">
+        <form action="" method="POST" class="filter">
+            <button name="apply_filters" class="btn btn-primary" type="submit" style="height: 35px; margin-top: 55px;">Aplică Filtre</button>
+            <div class="col-sm-4 input-column">
+                <label for="price">Selectează prețul maxim:</label>
+                <input type="number" class="form-control" name="price" value="">
+            </div>
+            <div class="col-sm-4 input-column">
+                <label for="age">Selectează vârsta maximă:</label>
+                <input type="number" class="form-control" name="age" value="">
+            </div>
+            <div class="col-sm-4 input-column">
+                <label for="category">Selectează o categorie:</label>
+                <select class="form-control" name="category">
+                    <option value=""></option>
+                    <?php
+                    $sql = mysqli_query($connect, "SELECT category_id FROM category");
+                    $cat_id = array();
+                    while ($row = $sql->fetch_assoc()) {
+                        $cat_id[] = $row['category_id'];
+                    }
+                    foreach ($cat_id as $id) {
+                        $sql = mysqli_query($connect, "SELECT name FROM category WHERE category_id = '$id'");
+                        while ($row = $sql->fetch_assoc()) {
+                            $name = $row['name'];
+                            echo '<option value="'.$name.'">' . $name.'</option>';
+                        }
+                    }
+                    ?>
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
+
+            
   <div class="row">
         <?php
         for ($i = 0; $i < count($books_array); $i++) {
