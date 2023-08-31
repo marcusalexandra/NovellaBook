@@ -18,13 +18,7 @@ include '../conn.php';
               $i++;
             }
   }
-  while ($row = $result->fetch_assoc()){
-    $publisher[$i]['publisher_id']= $row['publisher_id'];
-    $publisher[$i]['publisher_name']= $row['publisher_name'];
-    $publisher[$i]['publisher_email']= $row['publisher_email'];
-    $publisher[$i]['publisher_phone']= $row['publisher_phone'];
-    $i++;
-  }
+ 
   if(isset($_POST['publisher_delete'])) {
     $publishers_delete = $_POST['publishers_delete'];
     $sql = "SELECT book_id FROM books WHERE publisher_id = '$publishers_delete'";
