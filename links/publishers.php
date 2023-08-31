@@ -18,11 +18,12 @@ include '../conn.php';
               $i++;
             }
   }
- 
+
   if(isset($_POST['publisher_delete'])) {
     $publishers_delete = $_POST['publishers_delete'];
     $sql = "SELECT book_id FROM books WHERE publisher_id = '$publishers_delete'";
     $result = mysqli_query($connect, $sql);
+    $i = 0;
     while ($row = $result->fetch_assoc()){
         $books[$i]['book_id']= $row['book_id'];
         $i++;
@@ -143,10 +144,10 @@ include '../conn.php';
   ?>
 <div class="container" style="padding-top:50px;padding-bottom:50px;">
 <form action="" method="POST" class="search-bar" style="width:600px; margin-bottom:50px;margin-left:350px;">
-        <button name="search_button_authors" class="search-bar__button" type="submit">
+        <button name="search_button_publisher" class="search-bar__button" type="submit">
             <i class="fa fa-search search-icon" style="border-right: 1px solid #888888; position:relative; padding-right:15px;"></i>
         </button>
-        <input class="search-bar__bar" type="text" name="search_authors" id="search_authors"/>
+        <input class="search-bar__bar" type="text" name="search_publisher" id="search_publisher"/>
     </form>
     <table class="table table-bordered" style="background-color:#fff; text-align:center; box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16); -moz-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16); -webkit-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16); border-radius:5px;"> <!-- Adauga clasa 'table-bordered' pentru a afisa o bordura la celulele tabelului -->
     <thead>
@@ -174,21 +175,21 @@ include '../conn.php';
                 echo "<td>";
                 echo "<div class='container' style='display: flex; justify-content:center;'>";
                 echo "<form action='' method='POST' style='margin-right: 10px;'>";
-                echo "<input type='hidden' name='author_delete' value='$publisher_id' />";
-                echo "<button name='delete_authors' class='btn btn-danger' type='submit' style='display: flex; align-items: center;'>";
+                echo "<input type='hidden' name='publisher_delete' value='$publisher_id' />";
+                echo "<button name='publishers_edit' class='btn btn-danger' type='submit' style='display: flex; align-items: center;'>";
                 echo "<i class='fa fa-trash' aria-hidden='true' style='margin-right: 5px;'></i> Șterge";
                 echo "</button>";
                 echo "</form>";
 
                 echo "<form action='edit_authors.php' method='GET' style='margin-right: 10px;'>";
                 echo "<input type='hidden' name='author_id' value='$publisher_id' />";
-                echo "<button class='btn btn-primary' type='submit' style='display: flex; align-items: center;'>";
+                echo "<button class='btn btn-primary' type='edit_publishers' style='display: flex; align-items: center;'>";
                 echo "<i class='fa fa-pencil' aria-hidden='true' style='margin-right: 5px;'></i> Editează";
                 echo "</button>";
                 echo "</form>";
                 echo "</div>";
                 echo "</td>";
-                
+
 
                 // Close the table row
                 echo "</tr>";

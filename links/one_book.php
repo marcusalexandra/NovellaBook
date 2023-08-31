@@ -244,7 +244,48 @@ input[type="text"] {
       </header>';
     }
   ?>
+ <div id="booking-calendar"></div>
+  <?php
+      $avg_query = "SELECT AVG(rating) AS avg_rating FROM reviews WHERE book_id = $book_id";
+      $result = mysqli_query($connect, $avg_query);
+      $row = mysqli_fetch_assoc($result);
+      $average_rating = $row['avg_rating'];
+      $avg = number_format((float)$average_rating, 2, '.', '');
+      //echo "<div><p>Nota: $avg /5</p></div>";
+       $sql = "SELECT r.book_id, r.user_id, r.review, r.rating, u.firstname, u.lastname
+                    FROM reviews AS r
+                    JOIN users AS u ON r.user_id = u.user_id
+                    WHERE r.book_id = '$book_id'";
+        $result = mysqli_query($connect, $sql);
+        $i = 0;
+        while ($row = mysqli_fetch_assoc($result)) {
+            $reviews[$i]['firstname'] = $row['firstname'];
+            $reviews[$i]['lastname']= $row['lastname'];
+            $reviews[$i]['review'] = $row['review'];
+            $reviews[$i]['rating'] = $row['rating'];
+            $i++;
+        }
+        $num_of_reviews = count($reviews);
+  ?>
+  <div class="container">
+    <h4 style="font-size: 16px;">Recenzii</h4>
+    <div class="reviews-container">
+      <?php
+      foreach ($reviews as $review) {
+        $authorFullName = $review['firstname'] . ' ' . $review['lastname'];
+        $reviewContent = $review['review'];
+        $rating = $review['rating'];
 
+        echo "<div class='review'>
+                <p><strong>Autor:</strong> $authorFullName</p>
+                <p><strong>Recenzie:</strong> $reviewContent</p>
+                <p><strong>Rating:</strong> $rating</p>
+              </div>";
+      }
+      ?>
+    </div>
+  </div>
+</div>
 <?php
 $title = $books_array['title'];
 $photo = $books_array['photo'];
@@ -281,7 +322,7 @@ echo '<p class="card-details">Preț: ' . $books_array['price'] . '</p>
   <p class="card-details">Limbă: ' . $books_array['language'] . '</p>
   <p class="card-details">Anul publicării: ' . $books_array['publishing_year'] . '</p>
   <p class="card-details">Numele editurii: ' . $books_array["publisher_name"] . '</p>
-  <p class="card-details">Nota: 4.00 /5</p>
+  <p class="card-details">Nota:' . $avg . '/5</p>
   <p class="card-description" style="text-align:justify;">Descriere: ' . $books_array['description'] . '</p>
 </div>';
 if ($user_id != NULL) {
@@ -352,7 +393,7 @@ if ($user_id != NULL) {
 echo '</div>';
 ?>
 
-      
+
    <div id="booking-calendar"></div>
   <?php
       $avg_query = "SELECT AVG(rating) AS avg_rating FROM reviews WHERE book_id = $book_id";
@@ -461,7 +502,7 @@ echo '</div>';
     font-size: 16px;
     margin-top:10px;
   }
-  
+
 .card-container {
     display: flex;
     max-width: 1100px;

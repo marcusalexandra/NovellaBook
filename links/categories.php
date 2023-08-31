@@ -137,49 +137,49 @@ if(isset($_POST['delete_category'])) {
         </nav>
       </header>';
     }
-  ?>
+?>
   <div class="container" style="padding-top:50px;padding-bottom:50px;">
   <form action="" method="POST" class="search-bar" style="width:600px; margin-bottom:50px;margin-left:350px;">
-        <button name="search_button_authors" class="search-bar__button" type="submit">
+        <button name="search_button_category" class="search-bar__button" type="submit">
             <i class="fa fa-search search-icon" style="border-right: 1px solid #888888; position:relative; padding-right:15px;"></i>
         </button>
-        <input class="search-bar__bar" type="text" name="search_authors" id="search_authors"/>
+        <input class="search-bar__bar" type="text" name="search_category" id="search_category"/>
     </form>
-    <table class="table table-bordered" style="background-color:#fff; text-align:center; box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16); -moz-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16); -webkit-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16); border-radius:5px;"> <!-- Adauga clasa 'table-bordered' pentru a afisa o bordura la celulele tabelului -->
-        <thead>
+    <table class="table table-bordered" style="background-color:#fff; text-align:center; box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16); -moz-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16); -webkit-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16); border-radius:5px;">
+    <thead>
         <tr>
             <th style="text-align:center;">Nume</th>
             <th style="text-align:center; width:20%;">Editare</th>
         </tr>
-        </thead>
-        <tbody>
+    </thead>
+    <tbody>
         <?php
-        foreach ($category as $categoryData) {
-            $name = $categoryData['name'];
-            $category_id = $categoryData['category_id'];
-        
-            echo "<tr>";
-            echo "<td style='padding:15px 15px 15px 15px;'>$name</td>";
-        
-            // Opening the form and container div
-            echo "<td><form action='' method='POST'>";
-            echo "<div class='container' style='display: flex; justify-content:center;'>";
-        
-            // Use a hidden input to store the category_delete value
-            echo "<input type='hidden' name='category_delete' value='$category_id' />";
-        
-            // Submit button (a button within a form should be of type 'submit')
-            echo "<button name='delete_category' class='search-bar__button' type='submit'style='display: flex; align-items: center;'><i class='fa fa-pencil' aria-hidden='true' style='margin-right: 5px;'></i>Șterge</button>";
-        
-            // Close the form
-            echo "</div></form></td>";
-        
-            // Close the table row
-            echo "</tr>";
+        if (!empty($category)) { // Verificăm dacă avem categorii
+            foreach ($category as $categoryData) {
+                $name = $categoryData['name'];
+                $category_id = $categoryData['category_id'];
+
+                echo "<tr>";
+                echo "<td style='padding:15px 15px 15px 15px;'>$name</td>";
+                echo "<td>";
+                echo "<form action='' method='POST'>";
+                echo "<div class='container' style='display: flex; justify-content:center;'>";
+                echo "<input type='hidden' name='category_delete' value='$category_id' />";
+                echo "<button name='delete_category' class='search-bar__button' type='submit' style='display: flex; align-items: center;'><i class='fa fa-pencil' aria-hidden='true' style='margin-right: 5px;'></i>Șterge</button>";
+                echo "</div></form></td>";
+                echo "</tr>";
+            }
+        } else {
+            echo "<tr><td colspan='2'>Nu există categorii disponibile.</td></tr>";
         }
         ?>
-        </tbody>
-    </table>
+    </tbody>
+</table>
+    <div style="display: flex; justify-content: center;">
+    <form action='authors_publications.php' method='GET' style="margin-right: 10px; display: flex; align-items: center;">
+        <button name="addsubmit" type='submit' class="btn" style="width:100%; background-color:#808080; color:#fff; font-size:18px; display: flex; align-items: center; justify-content: center;"><i class='fa fa-plus' aria-hidden='true' style='margin-right: 5px;'></i>Adaugă o categorie</button>
+    </form>
+</div>
   </div>
 <style>
 * {

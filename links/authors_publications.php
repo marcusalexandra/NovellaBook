@@ -67,11 +67,8 @@
 </head>
 <body style="background-color: #e4e5e6;">
 <header>
-  <a href="authors.php">
-    <i class="fa fa-arrow-left" aria-hidden="true" style="padding:50px; position:relative; font-size:25px; color:#333;"></i>
-  </a>
 </header>
-<div class="container" style="margin-top:20px;">
+<div class="container" style="margin-top:100px;">
   <div class="row">
     <div class="col-xs-12 col-sm-6 col-md-4 text-center">
       <div class="card-module">
