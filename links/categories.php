@@ -5,11 +5,12 @@ session_start();
 $user_id = "";
 $user_id = $_SESSION['user_id'];
 
+$category = array(); // Definim variabila $category aici pentru a o asigura că este întotdeauna definită
+
 if(isset($_POST['search_button_category'])) {
     $search_category = mysqli_real_escape_string($connect, $_POST['search_category']);
     $sql = "SELECT * FROM category WHERE name RLIKE('$search_category') ";
     $result = mysqli_query($connect, $sql);
-    $category = array();
     $i = 0;
     while ($row = $result->fetch_assoc()){
         $category[$i]['category_id']= $row['category_id'];
@@ -17,11 +18,7 @@ if(isset($_POST['search_button_category'])) {
         $i++;
     }
 }
-while ($row = $result->fetch_assoc()){
-    $category[$i]['category_id']= $row['category_id'];
-    $category[$i]['name']= $row['name'];
-    $i++;
-}
+
 if(isset($_POST['delete_category'])) {
     $category_delete = mysqli_real_escape_string($connect, $_POST['category_delete']);
     $sql = "SELECT book_id FROM books WHERE category_id = $category_delete";
@@ -157,33 +154,28 @@ if(isset($_POST['delete_category'])) {
         </thead>
         <tbody>
         <?php
-        if (!empty($category)) {
-            foreach ($category as $categoryData) {
-                $name = $categoryData['name'];
-                $category_id = $categoryData['category_id'];
-
-
-                echo "<tr>";
-                echo "<td style='padding:15px 15px 15px 15px;'>$name</td>";
-
-                // Opening the form and container div
-                echo "<td><form action='' method='POST'>";
-                echo "<div class='container' style='display: flex; justify-content:center;'>";
-
-                // Use a hidden input to store the category_delete value
-                echo "<input type='hidden' name='category_delete' value='$category_id' />";
-
-                // Submit button (a button within a form should be of type 'submit')
-                echo "<button name='delete_category' class='search-bar__button' type='submit'style='display: flex; align-items: center;'><i class='fa fa-pencil' aria-hidden='true' style='margin-right: 5px;'></i>Șterge</button>";
-
-                // Close the form
-                echo "</div></form></td>";
-
-                // Close the table row
-                echo "</tr>";
-            }
-        } else {
-            echo "<tr><td colspan='2'>No results found.</td></tr>";
+        foreach ($category as $categoryData) {
+            $name = $categoryData['name'];
+            $category_id = $categoryData['category_id'];
+        
+            echo "<tr>";
+            echo "<td style='padding:15px 15px 15px 15px;'>$name</td>";
+        
+            // Opening the form and container div
+            echo "<td><form action='' method='POST'>";
+            echo "<div class='container' style='display: flex; justify-content:center;'>";
+        
+            // Use a hidden input to store the category_delete value
+            echo "<input type='hidden' name='category_delete' value='$category_id' />";
+        
+            // Submit button (a button within a form should be of type 'submit')
+            echo "<button name='delete_category' class='search-bar__button' type='submit'style='display: flex; align-items: center;'><i class='fa fa-pencil' aria-hidden='true' style='margin-right: 5px;'></i>Șterge</button>";
+        
+            // Close the form
+            echo "</div></form></td>";
+        
+            // Close the table row
+            echo "</tr>";
         }
         ?>
         </tbody>
