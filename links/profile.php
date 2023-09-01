@@ -488,6 +488,73 @@ $pass = $cpassword = ""; // Initialize these variables to avoid errors
     width: 100%;
     margin-top:264px
 }
+/* Media Queries */
+@media only screen and (max-width: 991px) {
+    .profile-card {
+      margin-top: 50px;
+    }
+  }
+
+  @media only screen and (max-width: 767px) {
+    .navbar-nav {
+      flex-direction: column;
+    }
+    .nav-item {
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+    .profile-card {
+      flex-direction: column;
+      align-items: center;
+    }
+    .profile-icon {
+      margin-right: 0;
+      margin-bottom: 20px;
+    }
+  }
+  /* Media Query pentru ecran de 448px */
+/* Media Query pentru ecran de 448px */
+@media only screen and (max-width: 448px) {
+  /* ... alte stiluri existente ... */
+
+  .profile-card {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-details {
+    width: 90%; /* Redu dimensiunea cardului */
+    padding: 10px; /* Ajustează padding-ul */
+    box-shadow: none;
+  }
+
+  .profile-icon {
+    width: 80px; /* Redu dimensiunea iconiței */
+    height: 80px;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .profile-icon i {
+    font-size: 30px; /* Redu dimensiunea iconiței */
+  }
+
+  .settings-button {
+    font-size: 12px; /* Redu dimensiunea butonului de setări */
+    padding: 8px 15px;
+    margin-top: 10px;
+  }
+
+  /* Ajustează stilurile pentru conținutul cărții */
+  .card-content {
+    margin-bottom: 10px;
+    font-size: 14px; /* Redu dimensiunea fontului */
+  }
+}
+
+
 </style>
 <script>
 const settingsButton = document.getElementById('settingsButton');

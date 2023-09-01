@@ -21,15 +21,50 @@
 
   if (isset($_POST['search_button'])) {
     $searchTerm = mysqli_real_escape_string($connect, $_POST['search']);
+    $category = $_POST['category']; // Capture category filter
+    $price = $_POST['price'];       // Capture price filter
+    $age = $_POST['age'];
     $sql = "SELECT a.book_id, a.title, a.publishing_year, a.price, a.pages, a.author_id, a.category_id, a.age, a.book_picture, au.firstname AS firstname, au.lastname AS lastname, c.name AS name
         FROM books a
         JOIN authors au ON a.author_id = au.author_id
         JOIN category c ON a.category_id = c.category_id
         WHERE a.title LIKE '%$searchTerm%'";
+   if (!empty($category)) {
+    $sql .= " AND a.category_id = '$category'";
+}
+
+if (!empty($price)) {
+    $sql .= " AND a.price <= $price";
+}
+
+if (!empty($age)) {
+    $sql .= " AND a.age <= $age";
+}
 } else {
     $sql = "SELECT a.book_id, a.title, a.publishing_year, a.price, a.pages, a.author_id, a.category_id, a.age, a.book_picture, au.firstname AS firstname, au.lastname AS lastname, c.name AS name
         FROM books a JOIN authors au ON a.author_id = au.author_id JOIN category c ON a.category_id = c.category_id
         LIMIT $offset, $booksPerPage";
+    if (!empty($category)) {
+        $sql .= " WHERE a.category_id = '$category'";
+    }
+
+    if (!empty($price)) {
+        if (strpos($sql, 'WHERE') === false) {
+            $sql .= " WHERE";
+        } else {
+            $sql .= " AND";
+        }
+        $sql .= " a.price <= $price";
+    }
+
+    if (!empty($age)) {
+        if (strpos($sql, 'WHERE') === false) {
+            $sql .= " WHERE";
+        } else {
+            $sql .= " AND";
+        }
+        $sql .= " a.age <= $age";
+    }
 }
   $result = mysqli_query($connect, $sql);
   $i = 0;
@@ -107,50 +142,52 @@
     }
   ?>
 </body>
-<div class="container" style="padding-top:50px;padding-bottom:50px;">
-  <form action="" method="POST" class="search-bar" style="width:600px; margin-bottom:50px;margin-left:350px;">
+<div class="container" style="padding-top: 50px; padding-bottom: 50px;">
+  <form action="" method="POST" class="search-bar" style="width: 600px; margin-bottom: 50px; margin-left: 350px; background-color: #D0D0D0;">
     <button name="search_button" class="search-bar__button" type="submit">
       <i class="fa fa-search search-icon" style="border-right: 1px solid #888888; position:relative; padding-right:15px;"></i>
     </button>
     <input class="search-bar__bar" type="text" name="search" id="search"/>
   </form>
-  <div style="display: flex; justify-content: center;">
-    <div class="row" style="margin-top: 25px; width: 120%;">
-        <form action="" method="POST" class="filter">
-            <button name="apply_filters" class="btn btn-primary" type="submit" style="height: 35px; margin-top: 55px;">Aplică Filtre</button>
-            <div class="col-sm-4 input-column">
-                <label for="price">Selectează prețul maxim:</label>
-                <input type="number" class="form-control" name="price" value="">
-            </div>
-            <div class="col-sm-4 input-column">
-                <label for="age">Selectează vârsta maximă:</label>
-                <input type="number" class="form-control" name="age" value="">
-            </div>
-            <div class="col-sm-4 input-column">
-                <label for="category">Selectează o categorie:</label>
-                <select class="form-control" name="category">
-                    <option value=""></option>
-                    <?php
-                    $sql = mysqli_query($connect, "SELECT category_id FROM category");
-                    $cat_id = array();
+  <form action="" method="POST" class="search-bar" style="margin-left: 180px; width: 900px;  justify-content: center; text-align: center; margin-bottom: 50px; background-color: transparent; border: none;">
+    <div class="row" style="margin-top: 25px;">
+        <div class="col-sm-4 input-column">
+            <label for="price">Selectează prețul maxim:</label>
+            <input type="number" class="form-control" name="price" value="">
+        </div>
+        <div class="col-sm-4 input-column">
+            <label for="age">Selectează vârsta maximă:</label>
+            <input type="number" class="form-control" name="age" value="">
+        </div>
+        <div class="col-sm-4 input-column">
+            <label for="category">Selectează o categorie:</label>
+            <select class="form-control" name="category">
+                <option value=""></option>
+                <?php
+                $sql = mysqli_query($connect, "SELECT category_id FROM category");
+                $cat_id = array();
+                while ($row = $sql->fetch_assoc()) {
+                    $cat_id[] = $row['category_id'];
+                }
+                foreach ($cat_id as $id) {
+                    $sql = mysqli_query($connect, "SELECT name FROM category WHERE category_id = '$id'");
                     while ($row = $sql->fetch_assoc()) {
-                        $cat_id[] = $row['category_id'];
+                        $name = $row['name'];
+                        echo '<option value="'.$name.'">' . $name.'</option>';
                     }
-                    foreach ($cat_id as $id) {
-                        $sql = mysqli_query($connect, "SELECT name FROM category WHERE category_id = '$id'");
-                        while ($row = $sql->fetch_assoc()) {
-                            $name = $row['name'];
-                            echo '<option value="'.$name.'">' . $name.'</option>';
-                        }
-                    }
-                    ?>
-                </select>
-            </div>
-        </form>
+                }
+                ?>
+            </select>
+        </div>
+        <div class="col-sm-4 input-column" style="margin-top: 25px;">
+            <button name="search_button" class="search-bar__button btn btn-primary" type="submit" style="background-color:#D0D0D0; color:#333; margin-left:300px;">Aplică filtrele</button>
+        </div>
     </div>
-</div>
+</form>
 
-            
+
+
+
   <div class="row">
         <?php
         for ($i = 0; $i < count($books_array); $i++) {
@@ -173,13 +210,7 @@
         ?>
     </div>
 </div>
-  <div class="pagination">
-        <?php
-        for ($page = 1; $page <= $totalPages; $page++) {
-            echo '<a href="?page=' . $page . '">' . $page . '</a>';
-        }
-        ?>
-    </div>
+  
 <style>
   * {
     padding: 0;
@@ -242,11 +273,9 @@
   .search-bar {
     display: flex;
     align-items: center;
-    background-color: #D0D0D0;
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 5px;
-    margin-right: 10px;
     margin-top: 20px;
 }
 

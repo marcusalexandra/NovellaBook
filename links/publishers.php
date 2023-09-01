@@ -144,7 +144,7 @@ include '../conn.php';
   ?>
 <div class="container" style="padding-top:50px;padding-bottom:50px;">
 <form action="" method="POST" class="search-bar" style="width:600px; margin-bottom:50px;margin-left:350px;">
-        <button name="search_button_publisher" class="search-bar__button" type="submit">
+        <button name="search_button_publisher" class="search-bar__button" type="submit" style="background-color: #D0D0D0;">
             <i class="fa fa-search search-icon" style="border-right: 1px solid #888888; position:relative; padding-right:15px;"></i>
         </button>
         <input class="search-bar__bar" type="text" name="search_publisher" id="search_publisher"/>
@@ -175,15 +175,15 @@ include '../conn.php';
                 echo "<td>";
                 echo "<div class='container' style='display: flex; justify-content:center;'>";
                 echo "<form action='' method='POST' style='margin-right: 10px;'>";
-                echo "<input type='hidden' name='publisher_delete' value='$publisher_id' />";
-                echo "<button name='publishers_edit' class='btn btn-danger' type='submit' style='display: flex; align-items: center;'>";
+                echo "<input type='hidden' name='publishers_delete' value='$publisher_id' />";
+                echo "<button name='publisher_delete' class='btn btn-danger' type='submit' style='display: flex; align-items: center;'>";
                 echo "<i class='fa fa-trash' aria-hidden='true' style='margin-right: 5px;'></i> Șterge";
                 echo "</button>";
                 echo "</form>";
 
                 echo "<form action='edit_authors.php' method='GET' style='margin-right: 10px;'>";
-                echo "<input type='hidden' name='author_id' value='$publisher_id' />";
-                echo "<button class='btn btn-primary' type='edit_publishers' style='display: flex; align-items: center;'>";
+                echo "<input type='hidden' name='edit_publishers' value='$publisher_id' />";
+                echo "<button class='btn btn-primary' type='edit_publisher' style='display: flex; align-items: center;'>";
                 echo "<i class='fa fa-pencil' aria-hidden='true' style='margin-right: 5px;'></i> Editează";
                 echo "</button>";
                 echo "</form>";
@@ -271,7 +271,6 @@ include '../conn.php';
   .search-bar {
     display: flex;
     align-items: center;
-    background-color: #D0D0D0;
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 5px;
@@ -280,7 +279,6 @@ include '../conn.php';
 }
 
 .search-bar__button {
-    background-color: #D0D0D0;
     border: none;
     border-radius: 5px;
     color: #fff;

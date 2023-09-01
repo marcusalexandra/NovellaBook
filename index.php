@@ -165,48 +165,50 @@
   ?>
   <?php
 if ($user_id != 1) {
-  echo '<div class="main-container">
-          <h1>Descoperă lumi noi între paginile noastre</h1>
-          <form action="" method="POST" class="search-bar">
-          <button name="search_button" class="search-bar__button" type="submit">
-          <i class="fa fa-search search-icon" style="border-right: 1px solid #888888; position:relative; padding-right:15px;"></i>
-          </button>
-          <input class="search-bar__bar" type="text" name="search" id="search"/>
-          <div style="display: flex; text-align:center;">
-          <div class="row" style="margin-top:25px; width:950px;">
-        <div class="col-sm-4 input-column" style="width: 25%; padding: 10px; height: 250px; margin: 5px 5px 5px 5px; padding:25px 25px 25px 25px;">
-            <label for="price">Selectează prețul maxim:</label>
-            <input type="number" class="form-control" name="price" value="">
+echo '<div class="main-container">
+    <h1>Descoperă lumi noi între paginile noastre</h1>
+    <form action="" method="POST" class="search-bar">
+        <button name="search_button" class="search-bar__button" type="submit">
+            <i class="fa fa-search search-icon" style="border-right: 1px solid #888888; position:relative; padding-right:15px;"></i>
+        </button>
+        <input class="search-bar__bar" type="text" name="search" id="search"/>
+    </form>
+    <form action="" method="POST" class="search-bar" style="background-color:transparent;margin-left: 100px; width: 900px; justify-content: center; text-align: center; margin-bottom: 50px;  border: none;">
+        <div class="row" style="margin-top: 25px; display: flex; justify-content: center; align-items: flex-start;">
+            <div class="col-sm-4 input-column" style="width:300px;">
+                <label for="price">Selectează prețul maxim:</label>
+                <input type="number" class="form-control" name="price" value="">
+            </div>
+            <div class="col-sm-4 input-column">
+                <label for="age">Selectează vârsta maximă:</label>
+                <input type="number" class="form-control" name="age" value="">
+            </div>
+            <div class="col-sm-4 input-column">
+                <label for="category">Selectează o categorie:</label>
+                <select class="form-control" name="category">
+                    <option value=""></option>';
+                
+                $sql = mysqli_query($connect, "SELECT category_id FROM category");
+                $cat_id = array();
+                while ($row = $sql->fetch_assoc()) {
+                    $cat_id[] = $row['category_id'];
+                }
+                foreach ($cat_id as $id) {
+                    $sql = mysqli_query($connect, "SELECT name FROM category WHERE category_id = '$id'");
+                    while ($row = $sql->fetch_assoc()) {
+                        $name = $row['name'];
+                        echo '<option value="'.$name.'">' . $name.'</option>';
+                    }
+                }
+
+echo '          </select>
+            </div>
+            
+                <button name="search_button" class="search-bar__button btn btn-primary" type="submit" style="background-color:#D0D0D0; color:#333; margin-left:50px; margin-top:30px; padding:10px; width:120px;">Aplică filtrele</button>
         </div>
-        <div class="col-sm-4 input-column" style="width: 25%; padding: 10px; height: 250px; margin: 5px 5px 5px 5px; padding:25px 25px 25px 25px;">
-            <label for="age">Selectează vârsta maximă:</label>
-            <input type="number" class="form-control" name="age" value="">
-        </div>
-        <div class="col-sm-4 input-column" style="width: 25%; padding: 10px; height: 250px; margin: 5px 5px 5px 5px; padding:25px 25px 25px 25px;">
-            <label for="category">Selectează o categorie:</label>
-            <select name="category">
-                <option value=""></option>
-          ';
-        $sql = mysqli_query($connect, "SELECT category_id FROM category");
-            $i = 0;
-            $cat_id = array();
-            while ($row = $sql->fetch_assoc()){
-              $cat_id[$i] = $row['category_id'];
-              $i++;
-            }
-            $count = count($cat_id);
-            for($i = 0; $i < $count; $i++){
-              $sql = mysqli_query($connect, "SELECT name FROM category WHERE category_id = '$cat_id[$i]'");
-              while ($row = $sql->fetch_assoc()){
-                $name = $row['name'];
-                echo '<option name = "'.$name.'" value="'.$name.' ">' . $name.'</option>';
-              }
-            }
-            echo "</select>";
-            echo "</div>";
-            echo "</form>";
-            echo "</div>";
-            echo "</div>";
+    </form>';
+
+
             if ($books_array != null) {
               $count = count($books_array);
               for ($j = 0; $j < $count; $j++) {
@@ -498,7 +500,7 @@ h1 {
       left: -5px;
     }
 .main-container .corner-image {
-    margin-top: 175px; /* Eliminăm margin-top */
+    margin-top: 75px; /* Eliminăm margin-top */
     bottom: auto; /* Eliminăm poziționarea "bottom" */
     top: 100%; /* Plasăm imaginea deasupra footer-ului */
     transform: translateY(-100%); /* Plasăm imaginea în zona de vizibilitate */
