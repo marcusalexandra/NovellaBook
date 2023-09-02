@@ -1,102 +1,117 @@
 <?php
-  include '../conn.php';
-  error_reporting(0);
-  session_start();
-  $user_id = "";
-  $user_id = $_SESSION['user_id'];
-  $book_id = $_SESSION['one_book'];
-    $sql = "SELECT * FROM books WHERE book_id = '$book_id'";
-    $result = mysqli_query($connect, $sql);
-    $books_array = array();
-    while ($row = $result->fetch_assoc()){
-      $books_array['title'] = $row['title'];
-      $books_array['publishing_year']=$row['publishing_year'];
-      $books_array['price']=$row['price'];
-      $books_array['age'] = $row ['age'];
-      $books_array['pages'] = $row['pages'];
-      $books_array['description'] = $row['description'];
-      $books_array['language']=$row['language'];
-      $books_array['photo'] = $row['book_picture'];
-      $author_id = $row['author_id'];
-      $sql = "SELECT *  FROM authors WHERE author_id = '$author_id'";
-      $result_author = mysqli_query($connect, $sql);
-      while($row_author = $result_author -> fetch_assoc()) {
+include '../conn.php';
+error_reporting(0);
+session_start();
+$user_id = $_SESSION['user_id'];
+$book_id = $_GET['book_id']; // Am modificat aici pentru a prelua book_id din parametrul URL, nu din sesiune
+
+if (empty($book_id)) {
+    // Dacă book_id lipsește din parametrul URL, puteți trata această situație
+    echo "Eroare: Lipsește book_id din parametrul URL.";
+    exit();
+}
+
+$sql = "SELECT * FROM books WHERE book_id = '$book_id'";
+$result = mysqli_query($connect, $sql);
+$books_array = array();
+
+while ($row = $result->fetch_assoc()) {
+    $books_array['title'] = $row['title'];
+    $books_array['publishing_year'] = $row['publishing_year'];
+    $books_array['price'] = $row['price'];
+    $books_array['age'] = $row['age'];
+    $books_array['pages'] = $row['pages'];
+    $books_array['description'] = $row['description'];
+    $books_array['language'] = $row['language'];
+    $books_array['photo'] = $row['book_picture'];
+    $author_id = $row['author_id'];
+
+    $sql = "SELECT * FROM authors WHERE author_id = '$author_id'";
+    $result_author = mysqli_query($connect, $sql);
+
+    while ($row_author = $result_author->fetch_assoc()) {
         $books_array['author_firstname'] = $row_author["firstname"];
         $books_array['author_lastname'] = $row_author["lastname"];
         $books_array['author_email'] = $row_author["email"];
         $books_array['author_phone'] = $row_author["phone"];
-      }
-      $category_id = $row['category_id'];
-      $sql = "SELECT *  FROM category WHERE category_id = '$category_id'";
-      $result_category = mysqli_query($connect, $sql);
-      while($row_category = $result_category -> fetch_assoc()) {
+    }
+
+    $category_id = $row['category_id'];
+    $sql = "SELECT * FROM category WHERE category_id = '$category_id'";
+    $result_category = mysqli_query($connect, $sql);
+
+    while ($row_category = $result_category->fetch_assoc()) {
         $books_array['category_name'] = $row_category["name"];
-      }
-      $publisher_id = $row['publisher_id'];
-      $sql = "SELECT *  FROM publisher WHERE publisher_id = '$publisher_id'";
-      $result_publisher = mysqli_query($connect, $sql);
-      while($row_publisher = $result_publisher -> fetch_assoc()) {
+    }
+
+    $publisher_id = $row['publisher_id'];
+    $sql = "SELECT * FROM publisher WHERE publisher_id = '$publisher_id'";
+    $result_publisher = mysqli_query($connect, $sql);
+
+    while ($row_publisher = $result_publisher->fetch_assoc()) {
         $books_array['publisher_name'] = $row_publisher["publisher_name"];
         $books_array['publisher_email'] = $row_publisher["publisher_email"];
         $books_array['publisher_phone'] = $row_publisher["publisher_phone"];
-      }
-      $books_array['description']=$row['description'];
     }
-    if(isset($_POST['review'])) {
-      $reviews = $_POST['reviews'];
-      $rating = $_POST['rating'];
-      $sql = "INSERT INTO reviews(review, rating, user_id, book_id)
+}
+
+if (isset($_POST['review'])) {
+    $reviews = $_POST['reviews'];
+    $rating = $_POST['rating'];
+    $sql = "INSERT INTO reviews (review, rating, user_id, book_id)
             VALUES ('$reviews', '$rating', '$user_id', '$book_id')";
-      mysqli_query($connect,$sql);
-      header("Refresh:0");
+    mysqli_query($connect, $sql);
+    header("Location: detalii_carte.php?book_id=$book_id"); // Am adăugat acest lucru pentru a reveni la pagina de detalii a cărții după adăugarea recenziei
+    exit();
+}
+
+$reserved_dates = array();
+
+$sql = "SELECT reservation_date, return_date FROM reservations WHERE book_id = '$book_id'";
+$result = mysqli_query($connect, $sql);
+
+while ($row = mysqli_fetch_assoc($result)) {
+    $start_date = $row['reservation_date'];
+    $end_date = $row['return_date'];
+    $reserved_dates = array_merge($reserved_dates, generateDateRange($start_date, $end_date));
+}
+
+function generateDateRange($start_date, $end_date) {
+    $dates = array();
+    $current_date = strtotime($start_date);
+
+    while ($current_date <= strtotime($end_date)) {
+        $dates[] = date('Y-m-d', $current_date);
+        $current_date = strtotime('+1 day', $current_date);
     }
-      $reserved_dates = array();
 
-      $sql = "SELECT reservation_date, return_date FROM reservations WHERE book_id = '$book_id'";
-      $result = mysqli_query($connect, $sql);
+    return $dates;
+}
 
-      while ($row = mysqli_fetch_assoc($result)) {
-      $start_date = $row['reservation_date'];
-      $end_date = $row['return_date'];
-      $reserved_dates = array_merge($reserved_dates, generateDateRange($start_date, $end_date));
-      }
-      function generateDateRange($start_date, $end_date) {
-      $dates = array();
-      $current_date = strtotime($start_date);
+if (isset($_POST['reserve'])) {
+    $reserve_date = $_POST['checkin'];
+    $return_date = $_POST['checkout'];
 
-      while ($current_date <= strtotime($end_date)) {
-          $dates[] = date('Y-m-d', $current_date);
-          $current_date = strtotime('+1 day', $current_date);
-      }
-      return $dates;
-      }
-      if (isset($_POST['reserve'])) {
-        $reserve_date = $_POST['checkin'];
-        $return_date = $_POST['checkout'];
+    $reserve_date_obj = new DateTime($reserve_date);
+    $return_date_obj = new DateTime($return_date);
 
-        $reserve_date_obj = new DateTime($reserve_date);
-        $return_date_obj = new DateTime($return_date);
+    $sql = "SELECT * FROM reservations WHERE book_id = '$book_id'
+            AND reservation_date <= '$return_date' AND return_date >= '$reserve_date'";
+    $result = mysqli_query($connect, $sql);
 
-        $sql = "SELECT * FROM reservations WHERE book_id = '$book_id'
-                AND reservation_date <= '$return_date' AND return_date >= '$reserve_date'";
-        $result = mysqli_query($connect, $sql);
-
-        if (mysqli_num_rows($result) == 0) {
-            $sql = "INSERT INTO reservations (reservation_date, return_date, user_id, book_id)
-                    VALUES ('$reserve_date', '$return_date', '$user_id', '$book_id')";
-            if (mysqli_query($connect, $sql)) {
-              header("Refresh:0");
-                exit();
-            } else {
-                echo "Error: " . mysqli_error($connect);
-              }
+    if (mysqli_num_rows($result) == 0) {
+        $sql = "INSERT INTO reservations (reservation_date, return_date, user_id, book_id)
+                VALUES ('$reserve_date', '$return_date', '$user_id', '$book_id')";
+        if (mysqli_query($connect, $sql)) {
+            header("Location: detalii_carte.php?book_id=$book_id"); // Am adăugat acest lucru pentru a reveni la pagina de detalii a cărții după rezervare
+            exit();
         } else {
-            echo "Error: The selected date range overlaps with an existing reservation. Please choose different dates.";
+            echo "Error: " . mysqli_error($connect);
         }
+    } else {
+        echo "Error: Intervalul de date selectat se suprapune cu o rezervare existentă. Vă rugăm să alegeți alte date.";
     }
-
-
-
+}
 ?>
 
 <!DOCTYPE html>

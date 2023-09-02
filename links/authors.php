@@ -157,7 +157,7 @@ if(isset($_POST['edit_authors'])) {
         </nav>
       </header>';
     }
-  ?>
+?>
   <div class="container" style="padding-top:50px;padding-bottom:50px;">
     <form action="" method="POST" class="search-bar" style="width:600px; margin-bottom:50px;margin-left:350px;">
         <button name="search_button_authors" class="search-bar__button" type="submit">
@@ -192,7 +192,7 @@ if(isset($_POST['edit_authors'])) {
                 echo "<td style='padding:15px 15px 15px 15px;'>$phone</td>";
 
                 echo "<td>";
-echo "<div class='container' style='display: flex; justify-content:center;'>";
+                echo "<div class='container' style='display: flex; justify-content:center;'>";
 
 echo "<form action='' method='POST' style='margin-right: 10px;'>";
 echo "<input type='hidden' name='author_delete' value='$author_id' />";
@@ -201,18 +201,15 @@ echo "<i class='fa fa-trash' aria-hidden='true' style='margin-right: 5px;'></i> 
 echo "</button>";
 echo "</form>";
 
-echo "<form action='edit_authors.php' method='GET' style='margin-right: 10px;'>";
-echo "<input type='hidden' name='author_id' value='$author_id' />";
-echo "<button class='btn btn-primary' type='submit' style='display: flex; align-items: center;'>";
-echo "<i class='fa fa-pencil' aria-hidden='true' style='margin-right: 5px;'></i> Editează";
-echo "</button>";
-echo "</form>";
+                echo "<form action='edit_books.php' method='GET' style='margin-right: 10px;'>";
+                echo "<input type='hidden' name='book_id' value='{$bookData['book_id']}' />";
+                echo "<button class='btn btn-primary' type='submit' style='display: flex; align-items: center;'>";
+                echo "<i class='fa fa-pencil' aria-hidden='true' style='margin-right: 5px;'></i> Editează";
+                echo "</button>";
+                echo "</form>";
 
-
-echo "</div>";
-echo "</td>";
-
-
+                echo "</div>";
+                echo "</td>";
                 echo "</tr>";
             }
         } else {

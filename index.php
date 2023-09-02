@@ -204,7 +204,7 @@ echo '<div class="main-container">
 echo '          </select>
             </div>
             
-                <button name="search_button" class="search-bar__button btn btn-primary" type="submit" style="background-color:#D0D0D0; color:#333; margin-left:50px; margin-top:30px; padding:10px; width:120px;">Aplică filtrele</button>
+                <button name="search_button" class="search-bar__button btn btn-primary" type="submit" style="background-color:#D0D0D0; color:#333; margin-left:50px; margin-top:35px; padding:5px; width:120px;">Aplică filtrele</button>
         </div>
     </form>';
 
@@ -262,7 +262,7 @@ echo '          </select>
   $row_categories = $result_categories->fetch_assoc();
 
   $authors_number = $row_authors['author_count'];
-  $users_number = $row_users['users_count'];
+  $users_number = $row_users['users_count']-1;
   $publisher_number = $row_publishers['publisher_count'];
   $book_number = $row_books['book_count'];
   $reservations_number = $row_reservations['reservations_count'];

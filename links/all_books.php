@@ -84,9 +84,8 @@ if (!empty($age)) {
   }
   if(isset($_POST['see_more'])) {
     $one_book = $_POST['one_book'];
-    $_SESSION['one_book'] = $one_book;
-    header("Location: one_book.php");
-  }
+    header("Location: one_book.php?book_id=$one_book");
+}
 
 ?>
 <!DOCTYPE html>
@@ -142,7 +141,7 @@ if (!empty($age)) {
     }
   ?>
 </body>
-<div class="container" style="padding-top: 50px; padding-bottom: 50px;">
+<div class="container" style="padding-top: 50px; padding-bottom: 100px;">
   <form action="" method="POST" class="search-bar" style="width: 600px; margin-bottom: 50px; margin-left: 350px; background-color: #D0D0D0;">
     <button name="search_button" class="search-bar__button" type="submit">
       <i class="fa fa-search search-icon" style="border-right: 1px solid #888888; position:relative; padding-right:15px;"></i>

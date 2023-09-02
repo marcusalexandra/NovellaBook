@@ -5,61 +5,36 @@ session_start();
 $user_id = "";
 $user_id = $_SESSION['user_id'];
 
-$category = array();
-
-$search_term = "";
-
-$sql = "SELECT * FROM category";
-$result = mysqli_query($connect, $sql);
-
-if ($result) {
-    while ($row = $result->fetch_assoc()) {
-        $category[] = $row;
-    }
-} else {
-    echo "Eroare la interogare: " . mysqli_error($connect);
+if(isset($_GET['publisher_id'])) {
+    $publisher_id = mysqli_real_escape_string($connect, $_GET['publisher_id']);
+    $sql = "SELECT * FROM publisher WHERE publisher_id = '$publisher_id'";
+    $result = mysqli_query($connect, $sql);
+    $publisherData = mysqli_fetch_assoc($result);
 }
 
-if(isset($_POST['search_button_category'])) {
-    $search_term = mysqli_real_escape_string($connect, $_POST['search_category']);
-    $sql = "SELECT * FROM category WHERE name RLIKE('$search_term') "; // Modificat aici
+if(isset($_POST['edit_publishers'])) {
+    $publisher_id = mysqli_real_escape_string($connect, $_GET['edit_publishers']);
+    $sql = "SELECT * FROM publisher WHERE publisher_id = '$publisher_id'";
     $result = mysqli_query($connect, $sql);
-    $i = 0;
-    $category = array(); // Resetați array-ul $category pentru a afișa rezultatele căutării
-    while ($row = $result->fetch_assoc()){
-        $category[$i]['category_id'] = $row['category_id'];
-        $category[$i]['name'] = $row['name'];
-        $i++;
-    }
-}
+    $publisherData = mysqli_fetch_assoc($result);
+    // Preiați datele introduse în formular
+    $new_publisher_name = mysqli_real_escape_string($connect, $_POST['new_publisher_name']);
+    $new_publisher_email = mysqli_real_escape_string($connect, $_POST['new_publisher_email']);
+    $new_publisher_phone = mysqli_real_escape_string($connect, $_POST['new_publisher_phone']);
 
-if(isset($_POST['delete_category'])) {
-    $category_delete = mysqli_real_escape_string($connect, $_POST['category_delete']);
-    $sql = "SELECT book_id FROM books WHERE category_id = $category_delete";
+    // Actualizați datele în baza de date
+    $sql = "UPDATE publisher SET publisher_name='$new_publisher_name', publisher_email='$new_publisher_email', publisher_phone='$new_publisher_phone' WHERE publisher_id='$publisher_id'";
     $result = mysqli_query($connect, $sql);
-    $book = array();
-    $i = 0;
-    while ($row = $result->fetch_assoc()){
-        $book[$i]['book_id'] = $row['book_id'];
-        $i++;
-    }
-    foreach ($book as $bookData) {
-        $book_id = $bookData['book_id'];
-        $sql = "DELETE FROM reservations WHERE book_id = $book_id";
-        $result = mysqli_query($connect, $sql);
-    }
-    foreach ($book as $bookData) {
-        $book_id = $bookData['book_id'];
-        $sql = "DELETE FROM reviews WHERE book_id = $book_id";
-        $result = mysqli_query($connect, $sql);
-    }
-    $sql = "DELETE FROM books WHERE category_id = $category_delete";
-    $result = mysqli_query($connect, $sql);
-    $sql = "DELETE FROM category WHERE category_id = $category_delete";
-    $result = mysqli_query($connect, $sql);
+
+    // Afișați un mesaj pop-up de succes
+    echo "<script>alert('Schimbările au fost realizate cu succes!');</script>";
+
+    // Actualizați datele editorului pentru a fi afișate în câmpurile de editare
+    $publisherData['publisher_name'] = $new_publisher_name;
+    $publisherData['publisher_email'] = $new_publisher_email;
+    $publisherData['publisher_phone'] = $new_publisher_phone;
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -67,11 +42,11 @@ if(isset($_POST['delete_category'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> <!-- Add this line for the sidebar icons -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <title>Categorii</title>
+    <title>Editare Editori</title>
 </head>
 <body style="background-color: #e4e5e6;">
 <?php
@@ -110,7 +85,7 @@ if(isset($_POST['delete_category'])) {
           </div>
         </nav>
       </header>';
-    }elseif($user_id == 1){
+    } elseif($user_id == 1) {
       //header nou
       echo'<header>
         <nav class="navbar navbar-default navbar-shadow">
@@ -153,49 +128,38 @@ if(isset($_POST['delete_category'])) {
       </header>';
     }
 ?>
-  <div class="container" style="padding-top:50px;padding-bottom:50px;">
-  <form action="" method="POST" class="search-bar" style="width:600px; margin-bottom:50px;margin-left:350px;">
-        <button name="search_button_category" class="search-bar__button" type="submit">
-            <i class="fa fa-search search-icon" style="border-right: 1px solid #888888; position:relative; padding-right:15px;"></i>
-        </button>
-        <input class="search-bar__bar" type="text" name="search_category" id="search_category"/>
-    </form>
-    <table class="table table-bordered" style="background-color:#fff; text-align:center; box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16); -moz-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16); -webkit-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16); border-radius:5px;">
-    <thead>
-        <tr>
-            <th style="text-align:center; width:20%;">Nume</th>
-            <th style="text-align:center; width:20%;">Editare</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        if (!empty($category)) { // Verificăm dacă avem categorii
-            foreach ($category as $categoryData) {
-                $name = $categoryData['name'];
-                $category_id = $categoryData['category_id'];
 
-                echo "<tr>";
-                echo "<td style='padding:15px 15px 15px 15px;'>$name</td>";
-                echo "<td>";
-                echo "<form action='' method='POST'>";
-                echo "<div class='container' style='display: flex; justify-content:center;'>";
-                echo "<input type='hidden' name='category_delete' value='$category_id' />";
-                echo "<button name='delete_category' class='btn btn-danger' type='submit' style='display: flex; align-items: center;'><i class='fa fa-trash' aria-hidden='true' style='margin-right: 5px;'></i>Șterge</button>";
-                echo "</div></form></td>";
-                echo "</tr>";
-            }
-        } else {
-            echo "<tr><td colspan='2'>Nu există categorii disponibile.</td></tr>";
-        }
-        ?>
-    </tbody>
-</table>
-    <div style="display: flex; justify-content: center;">
-    <form action='authors_publications.php' method='GET' style="margin-right: 10px; display: flex; align-items: center;">
-        <button name="addsubmit" type='submit' class="btn" style="width:100%; background-color:#808080; color:#fff; font-size:18px; display: flex; align-items: center; justify-content: center;"><i class='fa fa-plus' aria-hidden='true' style='margin-right: 5px;'></i>Adaugă o categorie</button>
-    </form>
+<a href="publishers.php">
+    <i class="fa fa-arrow-left" aria-hidden="true" style="padding:30px; position:relative; font-size:25px; color:#333;"></i>
+</a>
+<div class="container" style="padding-top:50px;padding-bottom:50px;">
+    <table class="table" class="table table-bordered" style="background-color:#fff; text-align:center; box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16); -moz-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16); -webkit-box-shadow: 0px 2px 5px 0px rgba(6, 6, 6, 0.16); border-radius:5px;">
+        <thead>
+            <tr>
+                <th style="text-align:center;">Nume</th>
+                <th style="text-align:center;">Email</th>
+                <th style="text-align:center;">Număr Telefon</th>
+                <th style="text-align:center;">Editare</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <div class='container' style='display: flex; justify-content:center;'>
+                    <form action="" method="POST">
+                    <td><input class="input-field" type="text" name="new_publisher_name" value="<?php echo htmlspecialchars($publisherData['publisher_name']); ?>"></td>
+                    <td><input class="input-field" type="text" name="new_publisher_email" value="<?php echo htmlspecialchars($publisherData['publisher_email']); ?>"></td>
+                    <td><input class="input-field" type="text" name="new_publisher_phone" value="<?php echo htmlspecialchars($publisherData['publisher_phone']); ?>"></td>
+
+                        <td>
+                            <input type="hidden" name="publisher_id" value="<?php echo $publisher_id; ?>">
+                            <button name="edit_publishers" class="btn" type="submit"><i class="fa fa-check" aria-hidden="true" style="margin-right:10px;"></i>Salvare</button>
+                        </td>
+                    </form>
+                </div>
+            </tr>
+        </tbody>
+    </table>
 </div>
-  </div>
 <style>
 * {
     padding: 0;
@@ -259,49 +223,34 @@ if(isset($_POST['delete_category'])) {
     font-size: 16px;
     margin-top:10px;
   }
-  .search-bar {
-    display: flex;
-    align-items: center;
-    background-color: #D0D0D0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 5px;
-    margin-right: 10px;
-    margin-top: 20px;
-}
+  .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            border: none; /* Eliminăm bordurile tabelului */
+        }
 
-.search-bar__button {
-    background-color: #D0D0D0;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    cursor: pointer;
-    padding: 6px 12px;
-    font-size: 16px;
-    margin-right: 10px; /* Adjust this margin to control spacing between icon and input */
-}
+        .table th, .table td {
+            padding: 10px;
+            text-align: center;
+            border: none; /* Eliminăm bordurile celulelor */
+        }
 
-.search-icon {
-    font-size: 20px;
-    color: #333; /* Culoarea pentru iconiță */
-}
+        .input-field {
+            width: 30%;
+            padding: 5px;
+            border: none;
+            outline: none;
+            box-shadow: none;
+        }
 
-.search-bar__bar {
-    border: none;
-    padding: 5px;
-    font-size: 16px;
-    color: #333; /* Culoarea pentru text */
-    background-color: #D0D0D0;
-}
-
-.search-bar__button i {
-  font-size: 20px;
-  color: #888888;
-  font-weight: lighter;
-}
-input:focus {
-    outline: none;
-}
+        .btn {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
 </style>
 </body>
 </html>

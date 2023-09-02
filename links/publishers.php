@@ -1,23 +1,24 @@
 <?php
 include '../conn.php';
-  error_reporting(0);
-  session_start();
-  $user_id = "";
-  $user_id = $_SESSION['user_id'];
-  if(isset($_POST['search_button_publisher'])) {
-    $search_publisher = $_POST['search_publisher'];
-    $sql = "SELECT * FROM publisher WHERE publisher_name RLIKE('$search_publisher') ";
+error_reporting(0);
+session_start();
+$user_id = "";
+$user_id = $_SESSION['user_id'];
+
+// Interogare pentru a selecta toate publicațiile din baza de date
+$sql = "SELECT * FROM publisher";
+$result = mysqli_query($connect, $sql);
+$publisher = array();
+
+if(isset($_POST['search_button_publisher'])) {
+    $search_query = mysqli_real_escape_string($connect, $_POST['search_publisher']);
+    $sql = "SELECT * FROM publisher WHERE publisher_name LIKE '%$search_query%'";
     $result = mysqli_query($connect, $sql);
-    $publisher = array();
-    $i = 0;
-    while ($row = $result->fetch_assoc()){
-              $publisher[$i]['publisher_id']= $row['publisher_id'];
-              $publisher[$i]['publisher_name']= $row['publisher_name'];
-              $publisher[$i]['publisher_email']= $row['publisher_email'];
-              $publisher[$i]['publisher_phone']= $row['publisher_phone'];
-              $i++;
-            }
-  }
+}
+
+while ($row = $result->fetch_assoc()){
+    $publisher[] = $row;
+}
 
   if(isset($_POST['publisher_delete'])) {
     $publishers_delete = $_POST['publishers_delete'];
@@ -46,7 +47,7 @@ include '../conn.php';
   if(isset($_POST['edit_publishers'])) {
     $publisher_edit = mysqli_real_escape_string($connect, $_POST['publisher_edit']);
     // Redirect to the edit_publisher.php page with the publisher_id as a parameter
-    header("Location: edit_publisher.php?publisher_id=$publisher_edit");
+    header("Location: edit_publishers.php?publisher_id=$publisher_edit");
     exit();
 }
 ?>
@@ -121,7 +122,7 @@ include '../conn.php';
                 <li><a href="books.php">Cărți</a></li>
                 <li><a href="authors.php">Autori</a></li>
                 <li><a href="categories.php">Categorii</a></li>
-                <li><a href="publishers.php">Edituri</a></li>
+                <li><a href="publishers.php">Publicații</a></li>
                 <li><a href="users.php">Utilizatori</a></li>
                 <li><a href="reservations.php">Rezervări</a></li>
                 </ul>
@@ -141,7 +142,7 @@ include '../conn.php';
         </nav>
       </header>';
     }
-  ?>
+?>
 <div class="container" style="padding-top:50px;padding-bottom:50px;">
 <form action="" method="POST" class="search-bar" style="width:600px; margin-bottom:50px;margin-left:350px;">
         <button name="search_button_publisher" class="search-bar__button" type="submit" style="background-color: #D0D0D0;">
@@ -176,19 +177,20 @@ include '../conn.php';
                 echo "<div class='container' style='display: flex; justify-content:center;'>";
                 echo "<form action='' method='POST' style='margin-right: 10px;'>";
                 echo "<input type='hidden' name='publishers_delete' value='$publisher_id' />";
-                echo "<button name='publisher_delete' class='btn btn-danger' type='submit' style='display: flex; align-items: center;'>";
+                echo "<button name='publisher_delete' class='btn btn-danger' type='submit' style='display: flex; align-items: center;' onclick='deleteCategory';>";
                 echo "<i class='fa fa-trash' aria-hidden='true' style='margin-right: 5px;'></i> Șterge";
                 echo "</button>";
                 echo "</form>";
 
-                echo "<form action='edit_authors.php' method='GET' style='margin-right: 10px;'>";
+                echo "<form action='edit_publishers.php' method='GET' style='margin-right: 10px;'>";
                 echo "<input type='hidden' name='edit_publishers' value='$publisher_id' />";
-                echo "<button class='btn btn-primary' type='edit_publisher' style='display: flex; align-items: center;'>";
+                echo "<button class='btn btn-primary' type='submit' style='display: flex; align-items: center;'>";
                 echo "<i class='fa fa-pencil' aria-hidden='true' style='margin-right: 5px;'></i> Editează";
                 echo "</button>";
                 echo "</form>";
                 echo "</div>";
                 echo "</td>";
+
 
 
                 // Close the table row
@@ -205,6 +207,15 @@ include '../conn.php';
         <button name="addsubmit" type='submit' class="btn" style="width:100%; background-color:#808080; color:#fff; font-size:18px; display: flex; align-items: center; justify-content: center;"><i class='fa fa-plus' aria-hidden='true' style='margin-right: 5px;'></i>Adaugă o publicație</button>
     </form>
 </div>
+<script>
+    function deleteCategory(categoryId) {
+    if (confirm("Sunteți sigur că doriți să ștergeți această categorie?")) {
+        // Trimiteți o solicitare AJAX către server pentru a efectua ștergerea
+        // Puteți utiliza jQuery pentru acest lucru sau alte metode de trimitere a solicitărilor AJAX.
+        // După ștergere, actualizați pagina sau eliminați rândul din tabel folosind JavaScript.
+    }
+}
+  </script>
 <style>
 * {
     padding: 0;
@@ -271,6 +282,7 @@ include '../conn.php';
   .search-bar {
     display: flex;
     align-items: center;
+    background-color: #D0D0D0;
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 5px;
