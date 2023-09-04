@@ -130,7 +130,7 @@
                     <div class="card-content">
                     <form action ="" method = "POST">';
               if($return_date <= date("Y-m-d")){
-                echo "Această carte trebuie returnată!";
+                echo "<p style='color:red;'>Această carte trebuie returnată!</p>";
               }
               echo "<img src='$book_picture' alt='$book_title' style='max-width: 50%; height: 50%;'>";
               echo "<p style='font-size:22px; margin-top:15px;'>$book_title</p>

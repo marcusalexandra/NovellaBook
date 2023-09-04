@@ -43,6 +43,7 @@ while ($row = $result->fetch_assoc()){
     $result = mysqli_query($connect, $sql);
     $sql = "DELETE FROM publisher WHERE publisher_id = $publishers_delete";
     $result = mysqli_query($connect, $sql);
+    header("Refresh:0");
   }
   if(isset($_POST['edit_publishers'])) {
     $publisher_edit = mysqli_real_escape_string($connect, $_POST['publisher_edit']);

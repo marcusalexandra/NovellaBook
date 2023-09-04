@@ -4,7 +4,7 @@
   session_start();
   $user_id = "";
   $user_id = $_SESSION['user_id'];
-  
+
   $sql = "SELECT * FROM users WHERE user_id <>'1'"; // Selectează toți utilizatorii în afara celui cu user_id 1 din baza de date
   $result = mysqli_query($connect, $sql);
   $user = array();
@@ -17,10 +17,15 @@
       $user[$i]['phone'] = $row['phone'];
       $i++;
   }
-  if(isset($_POST['delete'])) {
+  if(isset($_POST['delete_users'])) {
     $user_delete = $_POST['user_delete'];
+    $sql = "DELETE FROM reviews WHERE user_id = '$user_delete'";
+    $result = mysqli_query($connect, $sql);
+    $sql = "DELETE FROM reservations WHERE user_id = '$user_delete'";
+    $result = mysqli_query($connect, $sql);
     $sql = "DELETE FROM users WHERE user_id = '$user_delete'";
     $result = mysqli_query($connect, $sql);
+    header("Refresh:0");
   }
 ?>
 <!DOCTYPE html>
@@ -142,7 +147,6 @@
             $email = $userData['email'];
             $phone = $userData['phone'];
             $user_id = $userData['user_id'];
-
             echo "<tr>";
             echo "<td style='padding:15px 15px 15px 15px;'>$firstname</td>";
             echo "<td style='padding:15px 15px 15px 15px;'>$lastname</td>";
@@ -171,7 +175,7 @@
     </tbody>
 </table>
 
-      
+
     </tbody>
 </table>
   </div>

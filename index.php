@@ -64,8 +64,7 @@
   }
   if(isset($_POST['see_more'])) {
     $one_book = $_POST['one_book'];
-    $_SESSION['one_book'] = $one_book;
-    header("Location: links/one_book.php");
+    header("Location: links/one_book.php?book_id=$one_book");
   }
 ?>
 <!DOCTYPE html>
@@ -187,7 +186,7 @@ echo '<div class="main-container">
                 <label for="category">Selectează o categorie:</label>
                 <select class="form-control" name="category">
                     <option value=""></option>';
-                
+
                 $sql = mysqli_query($connect, "SELECT category_id FROM category");
                 $cat_id = array();
                 while ($row = $sql->fetch_assoc()) {
@@ -203,39 +202,39 @@ echo '<div class="main-container">
 
 echo '          </select>
             </div>
-            
+
                 <button name="search_button" class="search-bar__button btn btn-primary" type="submit" style="background-color:#D0D0D0; color:#333; margin-left:50px; margin-top:35px; padding:5px; width:120px;">Aplică filtrele</button>
         </div>
     </form>';
 
-
+              echo "<form action='' method='POST'>";
             if ($books_array != null) {
               $count = count($books_array);
               for ($j = 0; $j < $count; $j++) {
-                  $title = $books_array[$j]['title'];
-                  $book_id = $books_array[$j]['book_id'];
-          
-                  // Opening the form and container div
-                  echo "<form action='' method='POST'>";
-                  echo "<div class=container style='background-color:grey;'>";
-          
-                  // Output the book title within a <p> tag
-          
-                  // Use a hidden input to store the book_id value
-                  echo "<input type='hidden' name='one_book' value='$book_id' />";
-          
-                  // Closing the container div
-                  echo "</div>";
-          
-                  // Submit button (a button within a form should be of type 'submit')
-                  echo "<button name='see_more' class='search-bar__button' type='submit'>Cartea ta te așteaptă aici</button>";
-          
-                  // Close the form
-                  echo "</form>";
-          
-                  // Adding line breaks
-                  echo "<br><br>";
-              }
+                $title = $books_array[$j]['title'];
+                $book_id = $books_array[$j]['book_id'];
+
+                // Opening the form and container div
+                echo "<form action='' method='POST'>";
+                echo "<div class=container style='background-color:grey;'>";
+
+                // Output the book title within a <p> tag
+
+                // Use a hidden input to store the book_id value
+                echo "<input type='hidden' name='one_book' value='$book_id' />";
+
+                // Closing the container div
+                echo "</div>";
+
+                // Submit button (a button within a form should be of type 'submit')
+                echo "<button name='see_more' class='search-bar__button' type='submit'>Cartea ta te așteaptă aici</button>";
+
+                // Close the form
+                echo "</form>";
+
+                // Adding line breaks
+                echo "<br><br>";
+            }
           }
           echo '<img class="corner-image" src="Images/fundal.png">';
           echo "</div>";
@@ -296,7 +295,7 @@ echo '  </div>';
 echo '</div>';
 
 }
- 
+
 ?>
 
 <style>
@@ -378,7 +377,7 @@ echo '</div>';
   .navbar-default{
     margin-bottom:0;
     border:none;
-    
+
   }
   .navbar-shadow {
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Aici puteți personaliza umbra */
@@ -504,7 +503,7 @@ h1 {
     bottom: auto; /* Eliminăm poziționarea "bottom" */
     top: 100%; /* Plasăm imaginea deasupra footer-ului */
     transform: translateY(-100%); /* Plasăm imaginea în zona de vizibilitate */
-  } 
+  }
 .input-group-row {
   display: flex;
   flex-wrap: wrap;
@@ -529,7 +528,7 @@ h1 {
 }
 input:focus {
     outline: none;
-} 
+}
 .input-group{
     margin-bottom: 20px;
     cursor: pointer;
@@ -546,7 +545,7 @@ input:focus {
   display: block;
   margin-bottom: 5px;
   font-size:14px;
-  color: #404040; 
+  color: #404040;
   margin-right:10px;
 }
 
@@ -611,7 +610,7 @@ input:focus {
   }
 </style>
 </body>
-<footer id="footer"> 
+<footer id="footer">
   <div class="container" style="height:350px;">
     <div class="row">
       <div class="column" style="background-color:#B8B8B8; margin-left:55px;">
@@ -693,7 +692,7 @@ input:focus {
   width: 33.33%;
   padding: 10px;
   height: 200px;
-  margin-top:5px; 
+  margin-top:5px;
 }
 
 /* Clear floats after the columns */
@@ -772,5 +771,5 @@ input:focus {
     text-decoration: none; /* Eliminăm sublinierea */
 }
 </style>
-</footer>     
+</footer>
 </html>

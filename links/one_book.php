@@ -61,7 +61,7 @@ if (isset($_POST['review'])) {
     $sql = "INSERT INTO reviews (review, rating, user_id, book_id)
             VALUES ('$reviews', '$rating', '$user_id', '$book_id')";
     mysqli_query($connect, $sql);
-    header("Location: detalii_carte.php?book_id=$book_id"); // Am adăugat acest lucru pentru a reveni la pagina de detalii a cărții după adăugarea recenziei
+    header("Location: one_book.php?book_id=$book_id"); // Am adăugat acest lucru pentru a reveni la pagina de detalii a cărții după adăugarea recenziei
     exit();
 }
 
@@ -103,7 +103,7 @@ if (isset($_POST['reserve'])) {
         $sql = "INSERT INTO reservations (reservation_date, return_date, user_id, book_id)
                 VALUES ('$reserve_date', '$return_date', '$user_id', '$book_id')";
         if (mysqli_query($connect, $sql)) {
-            header("Location: detalii_carte.php?book_id=$book_id"); // Am adăugat acest lucru pentru a reveni la pagina de detalii a cărții după rezervare
+            header("Location: one_book.php?book_id=$book_id"); // Am adăugat acest lucru pentru a reveni la pagina de detalii a cărții după rezervare
             exit();
         } else {
             echo "Error: " . mysqli_error($connect);
@@ -261,46 +261,35 @@ input[type="text"] {
   ?>
  <div id="booking-calendar"></div>
   <?php
-      $avg_query = "SELECT AVG(rating) AS avg_rating FROM reviews WHERE book_id = $book_id";
-      $result = mysqli_query($connect, $avg_query);
-      $row = mysqli_fetch_assoc($result);
-      $average_rating = $row['avg_rating'];
-      $avg = number_format((float)$average_rating, 2, '.', '');
-      //echo "<div><p>Nota: $avg /5</p></div>";
-       $sql = "SELECT r.book_id, r.user_id, r.review, r.rating, u.firstname, u.lastname
-                    FROM reviews AS r
-                    JOIN users AS u ON r.user_id = u.user_id
-                    WHERE r.book_id = '$book_id'";
-        $result = mysqli_query($connect, $sql);
-        $i = 0;
-        while ($row = mysqli_fetch_assoc($result)) {
-            $reviews[$i]['firstname'] = $row['firstname'];
-            $reviews[$i]['lastname']= $row['lastname'];
-            $reviews[$i]['review'] = $row['review'];
-            $reviews[$i]['rating'] = $row['rating'];
-            $i++;
-        }
-        $num_of_reviews = count($reviews);
-  ?>
-  <div class="container">
-    <h4 style="font-size: 16px;">Recenzii</h4>
-    <div class="reviews-container">
-      <?php
-      foreach ($reviews as $review) {
-        $authorFullName = $review['firstname'] . ' ' . $review['lastname'];
-        $reviewContent = $review['review'];
-        $rating = $review['rating'];
+    $sqlCheckReviews = "SELECT COUNT(*) AS review_count FROM reviews WHERE book_id = '$book_id'";
+    $resultCheckReviews = mysqli_query($connect, $sqlCheckReviews);
 
-        echo "<div class='review'>
-                <p><strong>Autor:</strong> $authorFullName</p>
-                <p><strong>Recenzie:</strong> $reviewContent</p>
-                <p><strong>Rating:</strong> $rating</p>
-              </div>";
+    if ($resultCheckReviews) {
+      $rowCheckReviews = mysqli_fetch_assoc($resultCheckReviews);
+      $reviewCount = $rowCheckReviews['review_count'];
+      if ($reviewCount > 0) {
+        $avg_query = "SELECT AVG(rating) AS avg_rating FROM reviews WHERE book_id = $book_id";
+        $result = mysqli_query($connect, $avg_query);
+        $row = mysqli_fetch_assoc($result);
+        $average_rating = $row['avg_rating'];
+        $avg = number_format((float)$average_rating, 2, '.', '');
+        $sql = "SELECT r.book_id, r.user_id, r.review, r.rating, u.firstname, u.lastname
+                      FROM reviews AS r
+                      JOIN users AS u ON r.user_id = u.user_id
+                      WHERE r.book_id = '$book_id'";
+          $result = mysqli_query($connect, $sql);
+          $i = 0;
+          while ($row = mysqli_fetch_assoc($result)) {
+              $reviews[$i]['firstname'] = $row['firstname'];
+              $reviews[$i]['lastname']= $row['lastname'];
+              $reviews[$i]['review'] = $row['review'];
+              $reviews[$i]['rating'] = $row['rating'];
+              $i++;
+          }
+          $num_of_reviews = count($reviews);
+        }
       }
-      ?>
-    </div>
-  </div>
-</div>
+  ?>
 <?php
 $title = $books_array['title'];
 $photo = $books_array['photo'];
@@ -410,28 +399,8 @@ echo '</div>';
 
 
    <div id="booking-calendar"></div>
-  <?php
-      $avg_query = "SELECT AVG(rating) AS avg_rating FROM reviews WHERE book_id = $book_id";
-      $result = mysqli_query($connect, $avg_query);
-      $row = mysqli_fetch_assoc($result);
-      $average_rating = $row['avg_rating'];
-      $avg = number_format((float)$average_rating, 2, '.', '');
-      //echo "<div><p>Nota: $avg /5</p></div>";
-       $sql = "SELECT r.book_id, r.user_id, r.review, r.rating, u.firstname, u.lastname
-                    FROM reviews AS r
-                    JOIN users AS u ON r.user_id = u.user_id
-                    WHERE r.book_id = '$book_id'";
-        $result = mysqli_query($connect, $sql);
-        $i = 0;
-        while ($row = mysqli_fetch_assoc($result)) {
-            $reviews[$i]['firstname'] = $row['firstname'];
-            $reviews[$i]['lastname']= $row['lastname'];
-            $reviews[$i]['review'] = $row['review'];
-            $reviews[$i]['rating'] = $row['rating'];
-            $i++;
-        }
-        $num_of_reviews = count($reviews);
-  ?>
+
+  <?php if ($avg != 0) : ?>
   <div class="container">
     <h4 style="font-size: 16px;">Recenzii</h4>
     <div class="reviews-container">
@@ -450,6 +419,8 @@ echo '</div>';
       ?>
     </div>
   </div>
+  <?php endif; ?>
+
 </div>
 
 

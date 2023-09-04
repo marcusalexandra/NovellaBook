@@ -142,13 +142,13 @@ if (!empty($age)) {
   ?>
 </body>
 <div class="container" style="padding-top: 50px; padding-bottom: 100px;">
-  <form action="" method="POST" class="search-bar" style="width: 600px; margin-bottom: 50px; margin-left: 350px; background-color: #D0D0D0;">
+  <form action="" method="POST" class="search-bar form-1-style">
     <button name="search_button" class="search-bar__button" type="submit">
       <i class="fa fa-search search-icon" style="border-right: 1px solid #888888; position:relative; padding-right:15px;"></i>
     </button>
     <input class="search-bar__bar" type="text" name="search" id="search"/>
   </form>
-  <form action="" method="POST" class="search-bar" style="margin-left: 180px; width: 900px;  justify-content: center; text-align: center; margin-bottom: 50px; background-color: transparent; border: none;">
+  <form action="" method="POST" class="search-bar list" style="margin-left: 180px; width: 900px;  justify-content: center; text-align: center; margin-bottom: 50px; background-color: transparent; border: none;">
     <div class="row" style="margin-top: 25px;">
         <div class="col-sm-4 input-column">
             <label for="price">Selectează prețul maxim:</label>
@@ -309,6 +309,13 @@ if (!empty($age)) {
   color: #888888;
   font-weight: lighter;
 }
+.search-bar.form-1-style {
+  width: 600px; margin-bottom: 50px; margin-left: 350px; background-color: #D0D0D0;
+}
+.serch-bar.list{
+  margin-left: 180px; width: 900px;  justify-content: center; text-align: center; margin-bottom: 50px; background-color: transparent; border: none;
+}
+
   .hidden {
     display: none;
 }
@@ -389,6 +396,72 @@ input:focus {
     position: relative;
     bottom: 0;
     width: 100%;
+}
+/* Stiluri pentru media query de 480px */
+@media all and  (max-width: 480px) {
+  .search-bar.form-1-style {
+  width: 400px; margin-bottom: 50px; margin-left: 25px; background-color: #D0D0D0;
+}
+.serch-bar.list{
+  margin-left: 25px; width: 400px;  justify-content: center; text-align: center; margin-bottom: 50px; background-color: transparent; border: none;
+}
+  .navbar-nav {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .navbar-nav > li {
+    position: relative;
+  }
+
+  .navbar-nav .dropdown-menu {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background-color: #fff;
+    z-index: 1;
+  }
+
+  .navbar-nav .dropdown:hover .dropdown-menu {
+    display: block;
+  }
+
+  .navbar-nav .dropdown > a::after {
+    content: "\f107";
+    font-family: FontAwesome;
+    float: right;
+  }
+
+  .navbar-nav .profile-dropdown > a::after {
+    content: "\f105";
+    font-family: FontAwesome;
+    float: right;
+  }
+
+  .navbar-nav .profile-dropdown:hover .dropdown-menu {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .container {
+    max-width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .search-bar {
+    width: 50px;
+    margin-left: 0;
+  }
+
+  .search-bar__bar {
+    width: 100px;;
+  }
+
+  .search-bar__button {
+    margin-right: 0;
+  }
 }
 </style>
 <footer id="footer">
@@ -551,6 +624,7 @@ input:focus {
     color: #555; /* Schimbăm culoarea textului la trecerea cursorului peste link */
     text-decoration: none; /* Eliminăm sublinierea */
 }
+
 </style>
 </footer>
 </html>

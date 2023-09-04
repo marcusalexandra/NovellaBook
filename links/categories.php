@@ -57,6 +57,7 @@ if(isset($_POST['delete_category'])) {
     $result = mysqli_query($connect, $sql);
     $sql = "DELETE FROM category WHERE category_id = $category_delete";
     $result = mysqli_query($connect, $sql);
+    header("Refresh:0");
 }
 ?>
 

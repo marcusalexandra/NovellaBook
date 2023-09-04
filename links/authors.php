@@ -56,12 +56,13 @@ if(isset($_POST['delete_authors'])) {
     $result = mysqli_query($connect, $sql);
     $sql = "DELETE FROM authors WHERE author_id = $author_delete";
     $result = mysqli_query($connect, $sql);
+    header("Refresh:0");
 }
 
 if(isset($_POST['edit_authors'])) {
     $author_edit = mysqli_real_escape_string($connect, $_POST['author_edit']);
     // Redirect to the edit_author.php page with the author_id as a parameter
-    header("Location: edit_author.php?author_id=$author_edit");
+    header("Location: edit_authors.php?author_id=$author_edit");
     exit();
 }
 ?>
@@ -184,7 +185,7 @@ if(isset($_POST['edit_authors'])) {
                 $email = $authorData['email'];
                 $phone = $authorData['phone'];
                 $author_id = $authorData['author_id'];
-            
+
                 echo "<tr>";
                 echo "<td style='padding:15px 15px 15px 15px;'>$firstname</td>";
                 echo "<td style='padding:15px 15px 15px 15px;'>$lastname</td>";
@@ -201,8 +202,8 @@ echo "<i class='fa fa-trash' aria-hidden='true' style='margin-right: 5px;'></i> 
 echo "</button>";
 echo "</form>";
 
-                echo "<form action='edit_books.php' method='GET' style='margin-right: 10px;'>";
-                echo "<input type='hidden' name='book_id' value='{$bookData['book_id']}' />";
+                echo "<form action='edit_authors.php' method='GET' style='margin-right: 10px;'>";
+                echo "<input type='hidden' name='author_id' value='{$author_id}' />";
                 echo "<button class='btn btn-primary' type='submit' style='display: flex; align-items: center;'>";
                 echo "<i class='fa fa-pencil' aria-hidden='true' style='margin-right: 5px;'></i> Editează";
                 echo "</button>";
